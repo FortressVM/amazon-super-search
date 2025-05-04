@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Amazon Super Search</title>
   <style>
     :root {
@@ -25,336 +25,193 @@
     }
     .container {
       max-width: 800px;
-      margin: auto;
+      margin: 2rem auto;
       background: var(--bg);
       padding: 1rem;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       position: relative;
     }
-    h1 {
-      text-align: center;
-    }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 1rem;
-    }
+    h1 { text-align: center; margin-top: 0; }
+    label { display:block; font-weight:bold; margin-top:1rem; }
     input, select, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-sizing: border-box;
+      width:100%; padding:10px; margin-top:.5rem;
+      border:1px solid #ccc; border-radius:5px; box-sizing:border-box;
     }
-    .row {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-    .col {
-      flex: 1;
-      min-width: 200px;
-    }
-    .advanced {
-      margin-top: 1rem;
-      padding: 1rem;
-      background: var(--card);
-      border-radius: 5px;
-    }
-    .toggle {
-      cursor: pointer;
-      font-weight: bold;
-      color: var(--primary);
-      text-align: right;
-      margin-top: 0.5rem;
-    }
-    .hidden {
-      display: none;
-    }
-    .dark-toggle {
-      margin-top: 1rem;
-      text-align: center;
-    }
+    .row { display:flex; gap:1rem; flex-wrap:wrap; }
+    .col { flex:1; min-width:150px; }
+    .toggle { cursor:pointer; color:var(--primary); text-align:right; margin-top:.5rem; }
+    .hidden { display:none; }
+    .dark-toggle { text-align:center; margin-top:1rem; }
     .dark-toggle button {
-      background: var(--primary);
-      color: #000;
-      font-weight: bold;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      cursor: pointer;
+      background:var(--primary); color:#000; border:none;
+      padding:10px 20px; border-radius:6px; cursor:pointer;
     }
     .trust-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: gold;
-      color: black;
-      font-weight: bold;
-      padding: 5px 12px;
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      box-shadow: 0 0 5px rgba(0,0,0,0.2);
-      font-size: 0.85rem;
+      position:absolute; top:10px; right:10px;
+      background:gold; color:black; padding:5px 12px;
+      border-radius:20px; font-size:.85rem;
     }
-    .trust-badge span {
-      margin-left: 5px;
-    }
-
-    /* Toggle switch styling */
     .switch {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid #444;
-      border-radius: 6px;
-      padding: 12px 16px;
-      margin: 10px 0;
-      font-weight: bold;
-      color: var(--text);
+      display:flex; justify-content:space-between; align-items:center;
+      background:rgba(255,255,255,0.05); border:1px solid #444;
+      border-radius:6px; padding:12px 16px; margin:10px 0;
     }
-    .switch-toggle {
-      display: flex;
-      align-items: center;
-      gap: 6px;
+    .switch-toggle { display:flex; align-items:center; gap:6px; }
+    .switch-toggle input {
+      -webkit-appearance:none; width:40px; height:22px; background:#ccc;
+      border-radius:20px; position:relative; cursor:pointer; transition:0.3s;
     }
-    .switch-toggle input[type="checkbox"] {
-      appearance: none;
-      width: 40px;
-      height: 22px;
-      background: #ccc;
-      border-radius: 20px;
-      position: relative;
-      outline: none;
-      cursor: pointer;
-      transition: background 0.3s;
+    .switch-toggle input::before {
+      content:''; position:absolute; width:18px; height:18px;
+      background:white; border-radius:50%; top:2px; left:2px; transition:0.3s;
     }
-    .switch-toggle input[type="checkbox"]::before {
-      content: '';
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      background: white;
-      border-radius: 50%;
-      top: 2px;
-      left: 2px;
-      transition: 0.3s;
-    }
-    .switch-toggle input[type="checkbox"]:checked {
-      background: var(--primary);
-    }
-    .switch-toggle input[type="checkbox"]:checked::before {
-      transform: translateX(18px);
-    }
-    .switch-toggle span {
-      font-size: 0.8rem;
-    }
-    .status-label {
-      font-size: 0.9rem;
-      min-width: 100px;
-      text-align: right;
-    }
+    .switch-toggle input:checked { background:var(--primary); }
+    .switch-toggle input:checked::before { transform:translateX(18px); }
+    .status-label { font-size:.9rem; min-width:100px; text-align:right; }
+    @media (max-width:600px) { .row { flex-direction:column; } }
   </style>
 </head>
 <body>
-<div class="container">
-  <div class="trust-badge">🛡️ <span>Verified Secure</span></div>
-  <h1>Amazon Super Search</h1>
-  <div class="dark-toggle">
-    <button onclick="toggleTheme()">🌓 Toggle Dark Mode</button>
-  </div>
-
-  <label for="search">Search Query</label>
-  <input id="search" type="text" placeholder="e.g. red girls hiking boots (use AND, OR, NOT)">
-
-  <div class="row">
-    <div class="col">
-      <label for="category">Department</label>
-      <select id="category">
-        <option value="">All Departments</option>
-        <option value="fashion-girls">Girls' Fashion</option>
-        <option value="outdoor">Outdoor Gear</option>
-        <option value="shoes">Shoes</option>
-      </select>
+  <div class="container">
+    <div class="trust-badge">🛡️ <span>Verified Secure</span></div>
+    <h1>Amazon Super Search</h1>
+    <div class="dark-toggle">
+      <button onclick="toggleTheme()">🌓 Toggle Dark Mode</button>
     </div>
-    <div class="col">
-      <label for="minPrice">Min Price ($)</label>
-      <input id="minPrice" type="number" step="0.01">
-    </div>
-    <div class="col">
-      <label for="maxPrice">Max Price ($)</label>
-      <input id="maxPrice" type="number" step="0.01">
-    </div>
-  </div>
 
-  <div class="row">
-    <div class="col">
-      <label for="minRating">Minimum Rating</label>
-      <select id="minRating">
-        <option value="">Any</option>
-        <option value="4">4 Stars & Up</option>
-        <option value="3">3 Stars & Up</option>
-      </select>
-    </div>
-    <div class="col">
-      <label for="minReviews">Min. Number of Reviews</label>
-      <input id="minReviews" type="number">
-    </div>
-  </div>
-
-  <div class="toggle" onclick="toggleAdvanced()">
-    <span id="toggleText">Show Advanced Filters</span> <span id="toggleArrow">⯈</span>
-  </div>
-
-  <div id="advancedSection" class="advanced hidden">
-    <label class="switch">
-      <span>Prime Eligible</span>
-      <div class="switch-toggle">
-        <span id="primeStatus" class="status-label">Currently OFF</span>
-        <input type="checkbox" id="primeOnly" onchange="updateStatus('primeOnly', 'primeStatus')">
-        <span>On</span>
-      </div>
-    </label>
-
-    <label class="switch">
-      <span>Has Video Review</span>
-      <div class="switch-toggle">
-        <span id="videoStatus" class="status-label">Currently OFF</span>
-        <input type="checkbox" id="videoOnly" onchange="updateStatus('videoOnly', 'videoStatus')">
-        <span>On</span>
-      </div>
-    </label>
-
-    <label class="switch">
-      <span>Organic</span>
-      <div class="switch-toggle">
-        <span id="organicStatus" class="status-label">Currently OFF</span>
-        <input type="checkbox" id="organic" onchange="updateStatus('organic', 'organicStatus')">
-        <span>On</span>
-      </div>
-    </label>
-
-    <label class="switch">
-      <span>Cruelty-Free</span>
-      <div class="switch-toggle">
-        <span id="crueltyStatus" class="status-label">Currently OFF</span>
-        <input type="checkbox" id="crueltyFree" onchange="updateStatus('crueltyFree', 'crueltyStatus')">
-        <span>On</span>
-      </div>
-    </label>
-
-    <label class="switch">
-      <span>Gluten-Free</span>
-      <div class="switch-toggle">
-        <span id="glutenStatus" class="status-label">Currently OFF</span>
-        <input type="checkbox" id="glutenFree" onchange="updateStatus('glutenFree', 'glutenStatus')">
-        <span>On</span>
-      </div>
-    </label>
+    <label for="search">Search Query</label>
+    <input id="search" type="text" placeholder="e.g. red girls hiking boots (use AND, OR, NOT)">
 
     <div class="row">
       <div class="col">
-        <label for="sort">Sort By</label>
-        <select id="sort">
-          <option value="relevance">Relevance</option>
-          <option value="price-asc">Price: Low to High</option>
-          <option value="price-desc">Price: High to Low</option>
-          <option value="rating-desc">Rating: High to Low</option>
+        <label for="category">Department</label>
+        <select id="category">
+          <option value="">All Departments</option>
+          <option value="fashion-girls">Girls' Fashion</option>
+          <option value="outdoor">Outdoor Gear</option>
+          <option value="shoes">Shoes</option>
         </select>
       </div>
       <div class="col">
-        <label for="discount">Min Discount (%)</label>
-        <input id="discount" type="range" min="0" max="90" step="5" oninput="this.nextElementSibling.value = this.value + '%'">
-        <output>0%</output>
+        <label for="minPrice">Min Price ($)</label>
+        <input id="minPrice" type="number" step="0.01">
+      </div>
+      <div class="col">
+        <label for="maxPrice">Max Price ($)</label>
+        <input id="maxPrice" type="number" step="0.01">
       </div>
     </div>
 
     <div class="row">
       <div class="col">
-        <label for="material">Material</label>
-        <input id="material" type="text" placeholder="e.g. leather, cotton">
+        <label for="minRating">Minimum Rating</label>
+        <select id="minRating">
+          <option value="">Any</option>
+          <option value="4">4 Stars & Up</option>
+          <option value="3">3 Stars & Up</option>
+        </select>
       </div>
       <div class="col">
-        <label for="dimensions">Dimensions (LxWxH or weight)</label>
-        <input id="dimensions" type="text" placeholder="e.g. 10x5x2 or 1.5lb">
+        <label for="minReviews">Min. Reviews</label>
+        <input id="minReviews" type="number">
       </div>
     </div>
+
+    <div class="toggle" onclick="toggleAdvanced()">
+      <span id="toggleText">Show Advanced Filters</span> <span id="toggleArrow">⯈</span>
+    </div>
+    <div id="advancedSection" class="hidden">
+      <label class="switch">
+        <span>Prime Eligible</span>
+        <div class="switch-toggle">
+          <span id="primeStatus" class="status-label">Currently OFF</span>
+          <input type="checkbox" id="primeOnly" onchange="updateStatus('primeOnly','primeStatus')"><span>On</span>
+        </div>
+      </label>
+      <label class="switch">
+        <span>Has Video Review</span>
+        <div class="switch-toggle">
+          <span id="videoStatus" class="status-label">Currently OFF</span>
+          <input type="checkbox" id="videoOnly" onchange="updateStatus('videoOnly','videoStatus')"><span>On</span>
+        </div>
+      </label>
+      <label class="switch">
+        <span>Organic</span>
+        <div class="switch-toggle">
+          <span id="organicStatus" class="status-label">Currently OFF</span>
+          <input type="checkbox" id="organic" onchange="updateStatus('organic','organicStatus')"><span>On</span>
+        </div>
+      </label>
+      <label class="switch">
+        <span>Cruelty-Free</span>
+        <div class="switch-toggle">
+          <span id="crueltyStatus" class="status-label">Currently OFF</span>
+          <input type="checkbox" id="crueltyFree" onchange="updateStatus('crueltyFree','crueltyStatus')"><span>On</span>
+        </div>
+      </label>
+      <label class="switch">
+        <span>Gluten-Free</span>
+        <div class="switch-toggle">
+          <span id="glutenStatus" class="status-label">Currently OFF</span>
+          <input type="checkbox" id="glutenFree" onchange="updateStatus('glutenFree','glutenStatus')"><span>On</span>
+        </div>
+      </label>
+
+      <div class="row">
+        <div class="col">
+          <label for="sort">Sort By</label>
+          <select id="sort">
+            <option value="relevance">Relevance</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="rating-desc">Rating: High to Low</option>
+          </select>
+        </div>
+        <div class="col">
+          <label for="discount">Min Discount (%)</label>
+          <input id="discount" type="range" min="0" max="90" step="5" oninput="this.nextElementSibling.value=this.value+'%'">
+          <output>0%</output>
+        </div>
+      </div>
+    </div>
+
+    <button onclick="startSearch()" style="margin-top:1rem;">🔍 Search Amazon</button>
   </div>
 
-  <button onclick="startSearch()">🔍 Search Amazon</button>
-</div>
-
-<script>
-function toggleTheme() {
-  document.body.classList.toggle("dark");
-}
-
-function toggleAdvanced() {
-  const adv = document.getElementById("advancedSection");
-  const text = document.getElementById("toggleText");
-  const arrow = document.getElementById("toggleArrow");
-  const isHidden = adv.classList.toggle("hidden");
-
-  text.textContent = isHidden ? "Show Advanced Filters" : "Hide Advanced Filters";
-  arrow.innerHTML = isHidden ? "⯈" : "⯆";
-}
-
-function updateStatus(toggleId, labelId) {
-  const checkbox = document.getElementById(toggleId);
-  const label = document.getElementById(labelId);
-  label.textContent = checkbox.checked ? "Currently ON" : "Currently OFF";
-}
-
-window.onload = () => {
-  updateStatus("primeOnly", "primeStatus");
-  updateStatus("videoOnly", "videoStatus");
-  updateStatus("organic", "organicStatus");
-  updateStatus("crueltyFree", "crueltyStatus");
-  updateStatus("glutenFree", "glutenStatus");
-};
-
-function startSearch() {
-  const AFFILIATE_TAG = "echolover25-20";
-  const query = document.getElementById("search").value.trim();
-  const minPrice = document.getElementById("minPrice").value;
-  const maxPrice = document.getElementById("maxPrice").value;
-  const minRating = document.getElementById("minRating").value;
-  const sort = document.getElementById("sort").value;
-  const prime = document.getElementById("primeOnly").checked;
-
-  const filters = [];
-
-  if (minPrice || maxPrice) {
-    const low = minPrice ? Math.floor(parseFloat(minPrice) * 100) : 0;
-    const high = maxPrice ? Math.floor(parseFloat(maxPrice) * 100) : 99999999;
-    filters.push(`p_36:${low}-${high}`);
-  }
-
-  if (minRating === "4") filters.push("p_72:2661618011");
-  if (minRating === "3") filters.push("p_72:2661619011");
-  if (prime) filters.push("p_85:2470955011");
-
-  let url = `https://www.amazon.com/s?k=${encodeURIComponent(query)}&tag=${AFFILIATE_TAG}`;
-
-  if (filters.length > 0) {
-    url += `&rh=${filters.join(",")}`;
-  }
-
-  if (sort && sort !== "relevance") {
-    const sortMap = {
-      "price-asc": "price-asc-rank",
-      "price-desc": "price-desc-rank",
-      "rating-desc": "review-rank"
-    };
-    url += `&s=${sortMap[sort] || ""}`;
-  }
-
-  window.open(url, "_blank");
-}
-</script>
+  <script>
+    function toggleTheme(){ document.body.classList.toggle('dark'); }
+    function toggleAdvanced(){
+      const adv = document.getElementById('advancedSection'),
+            txt = document.getElementById('toggleText'),
+            arr = document.getElementById('toggleArrow'),
+            hidden = adv.classList.toggle('hidden');
+      txt.textContent = hidden?'Show Advanced Filters':'Hide Advanced Filters';
+      arr.textContent = hidden?'⯈':'⯆';
+    }
+    function updateStatus(id,lbl){
+      document.getElementById(lbl).textContent =
+        document.getElementById(id).checked?'Currently ON':'Currently OFF';
+    }
+    window.onload = ()=>['primeOnly','videoOnly','organic','crueltyFree','glutenFree']
+      .forEach(id=>updateStatus(id,id.replace(/(Only|Free)$/,'Status')));
+    function startSearch(){
+      const TAG='echolover25-20',
+            q=encodeURIComponent(document.getElementById('search').value.trim()),
+            filters=[],
+            min=document.getElementById('minPrice').value,
+            max=document.getElementById('maxPrice').value;
+      if(min||max){
+        const low=min?Math.floor(min*100):0,
+              high=max?Math.floor(max*100):99999999;
+        filters.push(`p_36:${low}-${high}`);
+      }
+      if(document.getElementById('minRating').value==='4') filters.push('p_72:2661618011');
+      if(document.getElementById('primeOnly').checked) filters.push('p_85:2470955011');
+      let url=`https://www.amazon.com/s?k=${q}&tag=${TAG}`;
+      if(filters.length) url+=`&rh=${filters.join(',')}`;
+      window.open(url,'_blank');
+    }
+  </script>
 </body>
 </html>
