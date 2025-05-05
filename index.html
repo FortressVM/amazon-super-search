@@ -27,35 +27,38 @@
       <div class="accordion mb-3" id="accordionCore">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingCore">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCore" aria-expanded="true" aria-controls="collapseCore">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCore">
               Core Filters & Sorters
             </button>
           </h2>
-          <div id="collapseCore" class="accordion-collapse collapse show" aria-labelledby="headingCore" data-bs-parent="#accordionCore">
+          <div id="collapseCore" class="accordion-collapse collapse show" data-bs-parent="#accordionCore">
             <div class="accordion-body">
+              <!-- Price Range & Discount -->
               <div class="row g-3">
                 <div class="col-md-6">
                   <label class="form-label">Price Range ($)</label>
                   <div class="d-flex">
-                    <input type="number" step="0.01" class="form-control me-2" name="min-price" placeholder="Min">
-                    <input type="number" step="0.01" class="form-control" name="max-price" placeholder="Max">
+                    <input type="number" step="0.01" class="form-control me-2" name="min-price">
+                    <input type="number" step="0.01" class="form-control" name="max-price">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <label class="form-label">% Off Discount ≥</label>
-                  <input type="range" class="form-range" min="0" max="90" step="5" name="percent-off" oninput="this.nextElementSibling.innerText=this.value+'%';">
-                  <div class="slider-label"><span>0%</span><span>90%</span></div>
-                  <small>Selected: <span>0%</span></small>
+                  <input type="range" class="form-range" min="10" max="90" step="5" name="percent-off" oninput="this.nextElementSibling.innerText=this.value+'%';">
+                  <div class="slider-label"><span>10%</span><span>90%</span></div>
                 </div>
-                <div class="col-md-4 form-check">
+              </div>
+              <!-- Prime, Stock, Rating, Sort -->
+              <div class="row g-3 mt-3">
+                <div class="col-md-3 form-check">
                   <input class="form-check-input" type="checkbox" name="prime-only" id="primeOnly">
                   <label class="form-check-label" for="primeOnly">Prime Only</label>
                 </div>
-                <div class="col-md-4 form-check">
+                <div class="col-md-3 form-check">
                   <input class="form-check-input" type="checkbox" name="in-stock" id="inStock">
-                  <label class="form-check-label" for="inStock">In Stock / Ships Today</label>
+                  <label class="form-check-label" for="inStock">In Stock</label>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <label class="form-label">Customer Review</label>
                   <select class="form-select" name="min-rating">
                     <option value="">Any</option>
@@ -65,14 +68,14 @@
                     <option>1 ★ & up</option>
                   </select>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3">
                   <label class="form-label">Sort By</label>
                   <select class="form-select" name="sort">
-                    <option>Relevance</option>
-                    <option>Price: Low to High</option>
-                    <option>Price: High to Low</option>
-                    <option>Newest Arrivals</option>
-                    <option>Greatest Discount</option>
+                    <option value="">Relevance</option>
+                    <option value="price-asc-rank">Price: Low to High</option>
+                    <option value="price-desc-rank">Price: High to Low</option>
+                    <option value="date-desc-rank">Newest Arrivals</option>
+                    <option value="discount-percent-desc-rank">Greatest Discount</option>
                   </select>
                 </div>
               </div>
@@ -83,28 +86,22 @@
 
       <!-- Advanced Panels -->
       <div class="accordion" id="accordionAdvanced">
-
         <!-- Power-User Tools -->
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingPower">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePower" aria-expanded="false" aria-controls="collapsePower">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePower">
               Power-User Tools
             </button>
           </h2>
-          <div id="collapsePower" class="accordion-collapse collapse" aria-labelledby="headingPower" data-bs-parent="#accordionAdvanced">
+          <div id="collapsePower" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
             <div class="accordion-body">
+              <!-- Boolean, Field filters, Direct lookup -->
               <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" name="enable-boolean" id="enableBoolean">
-                <label class="form-check-label" for="enableBoolean">Enable Boolean Operators (AND/OR/NOT / exact-match)</label>
+                <input class="form-check-input" type="checkbox" name="enable-boolean">
+                <label class="form-check-label">Boolean Operators</label>
               </div>
-              <div class="mb-2">
-                <label class="form-label">Field Filters (e.g. field-title:wireless)</label>
-                <input type="text" class="form-control" name="field-filters" placeholder="e.g. field-brand:Sony">
-              </div>
-              <div class="mb-2">
-                <label class="form-label">ASIN / ISBN Direct Lookup</label>
-                <input type="text" class="form-control" name="direct-lookup" placeholder="Enter ASIN, ISBN or UPC">
-              </div>
+              <input type="text" class="form-control mb-2" name="field-filters" placeholder="field-title:wireless">
+              <input type="text" class="form-control mb-2" name="direct-lookup" placeholder="ASIN/ISBN/UPC">
             </div>
           </div>
         </div>
@@ -112,24 +109,17 @@
         <!-- Deal-Hunter Goodies -->
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingDeal">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDeal" aria-expanded="false" aria-controls="collapseDeal">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDeal">
               Deal-Hunter Goodies
             </button>
           </h2>
-          <div id="collapseDeal" class="accordion-collapse collapse" aria-labelledby="headingDeal" data-bs-parent="#accordionAdvanced">
+          <div id="collapseDeal" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
             <div class="accordion-body">
-              <div class="mb-3">
-                <label class="form-label">Price Drop ≥ X% Below 90-Day Avg</label>
-                <input type="number" class="form-control" name="price-drop" placeholder="e.g. 20">
-              </div>
-              <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" name="coupon-only" id="couponOnly">
-                <label class="form-check-label" for="couponOnly">Coupon-Clippable Only</label>
-              </div>
-              <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" name="warehouse-refurb" id="warehouseRefurb">
-                <label class="form-check-label" for="warehouseRefurb">Warehouse / Open-Box</label>
-              </div>
+              <input type="number" class="form-control mb-2" name="price-drop" placeholder="X% below 90-day avg">
+              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="coupon-only"><label class="form-check-label">Coupon Only</label></div>
+              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="warehouse-refurb"><label class="form-check-label">Warehouse/Refurb</label></div>
+              <button type="button" class="btn btn-outline-secondary mb-2">Show Lightning Deals</button>
+              <button type="button" class="btn btn-outline-secondary">Upcoming Deals</button>
             </div>
           </div>
         </div>
@@ -137,23 +127,15 @@
         <!-- Comparison & Research Aids -->
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingCompare">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCompare" aria-expanded="false" aria-controls="collapseCompare">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCompare">
               Comparison & Research Aids
             </button>
           </h2>
-          <div id="collapseCompare" class="accordion-collapse collapse" aria-labelledby="headingCompare" data-bs-parent="#accordionAdvanced">
+          <div id="collapseCompare" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
             <div class="accordion-body">
-              <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" name="side-by-side" id="sideBySide">
-                <label class="form-check-label" for="sideBySide">Side-by-Side Spec Tables</label>
-              </div>
-              <div class="mb-2">
-                <button type="button" class="btn btn-outline-secondary">Show Price-History Charts</button>
-              </div>
-              <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" name="verified-only" id="verifiedOnly">
-                <label class="form-check-label" for="verifiedOnly">Verified-Purchase Only Reviews</label>
-              </div>
+              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="side-by-side"><label class="form-check-label">Side-by-Side Tables</label></div>
+              <button type="button" class="btn btn-outline-secondary mb-2">Price-History Charts</button>
+              <div class="form-check"><input class="form-check-input" type="checkbox" name="verified-only"><label class="form-check-label">Verified Purchase Only</label></div>
             </div>
           </div>
         </div>
@@ -161,102 +143,15 @@
         <!-- Personalization & AI-Driven -->
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingPersonal">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePersonal" aria-expanded="false" aria-controls="collapsePersonal">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePersonal">
               Personalization & AI-Driven
             </button>
           </h2>
-          <div id="collapsePersonal" class="accordion-collapse collapse" aria-labelledby="headingPersonal" data-bs-parent="#accordionAdvanced">
+          <div id="collapsePersonal" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
             <div class="accordion-body">
-              <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" name="predictive-score" id="predictiveScore">
-                <label class="form-check-label" for="predictiveScore">Buy-Now-or-Wait Score</label>
-              </div>
-              <div class="mb-2">
-                <label class="form-label">Restock Forecasts</label>
-                <input type="text" class="form-control" name="restock-forecast" placeholder="ASIN…">
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="emotion-feedback" id="emotionFeedback">
-                <label class="form-check-label" for="emotionFeedback">Emotion-Feedback Loop</label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Visual & Voice Interfaces -->
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingVisual">
-            <button class="accordion-button collapsed" type="button" data-bstoggle="collapse" data-bs-target="#collapseVisual" aria-expanded="false" aria-controls="collapseVisual">
-              Visual & Voice Interfaces
-            </button>
-          </h2>
-          <div id="collapseVisual" class="accordioncollapse collapse" aria-labelledby="headingVisual" data-bs-parent="#accordionAdvanced">
-            <div class="accordion-body">
-              <div class="mb-2">
-                <label class="form-label">Image-Based Search</label>
-                <input type="file" class="form-control" name="image-search">
-              </div>
-              <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" name="ar-preview" id="arPreview">
-                <label class="form-check-label" for="arPreview">AR-Preview Links</label>
-              </div>
-              <div class="mb-2">
-                <label class="form-label">Natural-Language Query</label>
-                <input type="text" class="form-control" name="nl-query" placeholder="Describe what you need…">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Niche & Lifestyle Filters -->
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingNiche">
-            <button class="accordion-button collapsed" type="button" data-bstoggle="collapse" data-bs-target="#collapseNiche" aria-expanded="false" aria-controls="collapseNiche">
-              Niche & Lifestyle Filters
-            </button>
-          </h2>
-          <div id="collapseNiche" class="accordioncollapse collapse" aria-labelledby="headingNiche" data-bs-parent="#accordionAdvanced">
-            <div class="accordion-body">
-              <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" name="sustainability" id="sustainability">
-                <label class="form-check-label" for="sustainability">Sustainability & Ethical</label>
-              </div>
-              <div class="mb-2">
-                <label class="form-label">Delivery Date (by…)</label>
-                <input type="date" class="form-control" name="delivery-by">
-              </div>
-              <div class="mb-2">
-                <label class="form-label">Global-Ship & Tax Estimator</label>
-                <input type="text" class="form-control" name="global-tax" placeholder="Your country code">
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="business-mode" id="businessMode">
-                <label class="form-check-label" for="businessMode">Business / Wholesale Mode</label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Social & Collaborative -->
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingSocial">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bstarget="#collapseSocial" aria-expanded="false" aria-controls="collapseSocial">
-              Social & Collaborative
-            </button>
-          </h2>
-          <div id="collapseSocial" class="accordioncollapse collapse" aria-labelledby="headingSocial" data-bs-parent="#accordionAdvanced">
-            <div class="accordion-body">
-              <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" name="group-wish" id="groupWish">
-                <label class="form-check-label" for="groupWish">Group-Wish Notifications</label>
-              </div>
-              <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" name="user-bundles" id="userBundles">
-                <label class="form-check-label" for="userBundles">User-Generated Bundles</label>
-              </div>
-              <div class="mb-2">
-                <button type="button" class="btn btn-outline-secondary">Spread the Love! Copy Link</button>
-              </div>
+              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="predictive-score"><label class="form-check-label">Buy-Now-or-Wait Score</label></div>
+              <input type="text" class="form-control mb-2" name="restock-forecast" placeholder="ASIN for restock forecast">
+              <div class="form-check"><input class="form-check-input" type="checkbox" name="emotion-feedback"><label class="form-check-label">Emotion Feedback Loop</label></div>
             </div>
           </div>
         </div>
@@ -269,10 +164,53 @@
     </form>
   </div>
 
-  <!-- Bootstrap JS Bundle -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
   <script>
-    // full working JS here...
+    document.getElementById('amazon-search-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const data = new FormData(this);
+      const params = new URLSearchParams();
+      // Affiliate tag
+      params.set('tag', data.get('tag'));
+      // Keywords
+      if (data.get('q')) params.set('k', data.get('q').trim());
+      // Price range
+      ['min-price','max-price'].forEach(name => {
+        const v = data.get(name);
+        if (v) params.set(name==='min-price'?'low-price':'high-price', parseFloat(v).toFixed(2));
+      });
+      // Discount
+      if (data.get('percent-off')) params.append('rh', 'p_n_pct-off-with-discount:' + data.get('percent-off'));
+      // Prime & stock
+      if (data.get('prime-only')) params.append('rh', (params.get('rh')||'') + ',p_85:');
+      if (data.get('in-stock')) params.append('rh', (params.get('rh')||'') + ',p_n_availability:1248879011');
+      // Rating
+      const ratingMap = {'4 ★ & up':'2661618011','3 ★ & up':'2661619011','2 ★ & up':'2661620011','1 ★ & up':'2661621011'};
+      if (ratingMap[data.get('min-rating')]) params.append('p_72', ratingMap[data.get('min-rating')]);
+      // Sort
+      if (data.get('sort')) params.set('s', data.get('sort'));
+      // Power-user filters
+      if (data.get('enable-boolean')) params.set('bop', 'enable');
+      if (data.get('field-filters')) params.set('rh', (params.get('rh')||'') + ',' + data.get('field-filters'));
+      // Direct lookup
+      if (data.get('direct-lookup')) {
+        window.open(`https://www.amazon.com/dp/${encodeURIComponent(data.get('direct-lookup'))}/?tag=${data.get('tag')}`, '_blank');
+        return;
+      }
+      // Deal-hunter
+      if (data.get('price-drop')) params.append('rh', (params.get('rh')||'') + ',p_n_pct-price-drop:' + data.get('price-drop'));
+      if (data.get('coupon-only')) params.append('rh', (params.get('rh')||'') + ',p_5:couponEligible');
+      if (data.get('warehouse-refurb')) params.append('rh', (params.get('rh')||'') + ',p_n_condition-type:1380442031');
+      // Comparison & research
+      if (data.get('side-by-side')) params.set('compare', 'side-by-side');
+      if (data.get('verified-only')) params.set('reviewerType', 'avp_only_reviews');
+      // Personalization & AI
+      if (data.get('predictive-score')) params.set('predictive', '1');
+      if (data.get('restock-forecast')) params.set('restockASIN', data.get('restock-forecast'));
+      if (data.get('emotion-feedback')) params.set('emotion', '1');
+      // Redirect to Amazon
+      window.open(`https://www.amazon.com/s?${params.toString()}`, '_blank');
+    });
   </script>
 </body>
 </html>
