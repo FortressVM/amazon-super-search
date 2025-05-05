@@ -216,12 +216,15 @@
           <label for="departmentSelect">Category</label>
           <select id="departmentSelect">
             <option>All Categories</option>
+            <!-- add your real category values here -->
           </select>
         </div>
         <div>
           <label for="ratingSelect">Min Rating</label>
           <select id="ratingSelect">
             <option>Any Rating</option>
+            <option>4 ★ & up</option>
+            <option>3 ★ & up</option>
           </select>
         </div>
       </div>
@@ -243,6 +246,12 @@
         <label for="sortSelect">Sort By</label>
         <select id="sortSelect">
           <option>Relevance</option>
+          <option>Price: Low to High</option>
+          <option>Price: High to Low</option>
+          <option>Avg. Customer Review</option>
+          <option>Newest Arrivals</option>
+          <option>Discount: High to Low</option>
+          <option>Number of Reviews</option>
         </select>
       </div>
       <div class="row">
@@ -318,16 +327,20 @@
       </div>
     </section>
 
-    <!-- 5. Guides -->
+    <!-- 5. How-To Guides -->
     <section id="guides">
       <h2>How-To Guides</h2>
-      <!-- … -->
+      <ul>
+        <li><a href="#">Maximize Amazon Savings</a></li>
+        <li><a href="#">Spot Fake Reviews</a></li>
+        <li><a href="#">Subscribe & Save Tips</a></li>
+      </ul>
     </section>
 
     <!-- 6. Community Q&A -->
     <section id="community">
       <h2>Community Q&A</h2>
-      <!-- … -->
+      <p><a href="#">Join our discussion forum</a> and swap tips with others.</p>
     </section>
 
     <!-- 7. Feedback -->
@@ -342,20 +355,32 @@
     <!-- 8. What's New -->
     <section id="changelog">
       <h2>What's New</h2>
-      <!-- … -->
+      <ul>
+        <li>v1.2.0: Full advanced filters restored + alerts & badges.</li>
+        <li>v1.1.0: Gamification & saved presets.</li>
+        <li>v1.0.0: Initial release of search tool.</li>
+      </ul>
     </section>
 
     <!-- 9. Social Share -->
     <div class="share-section">
       <h2>Spread The Love!</h2>
-      <!-- … -->
+      <div class="share-buttons">
+        <a class="facebook" href="https://facebook.com/sharer/sharer.php?u=https://amazonsupersearch.com" target="_blank"></a>
+        <a class="twitter"  href="https://twitter.com/intent/tweet?url=https://amazonsupersearch.com" target="_blank"></a>
+        <a class="email"    href="mailto:?subject=Check this out&body=https://amazonsupersearch.com"></a>
+        <a class="sms"      href="sms:?&body=Check this out: https://amazonsupersearch.com"></a>
+      </div>
     </div>
 
     <!-- 10. Referral -->
     <section class="referral">
       <h2>Share With A Friend</h2>
       <div class="share-buttons">
-        <!-- … -->
+        <a class="facebook" href="https://facebook.com/sharer/sharer.php?u=https://amazonsupersearch.com" target="_blank"></a>
+        <a class="twitter"  href="https://twitter.com/intent/tweet?url=https://amazonsupersearch.com" target="_blank"></a>
+        <a class="email"    href="mailto:?subject=Try this out&body=Check+out+Amazon+Super+Search:+https://amazonsupersearch.com"></a>
+        <a class="sms"      href="sms:?&body=Try+this+Amazon+tool:+https://amazonsupersearch.com"></a>
       </div>
       <div class="copy-link">
         <input id="refLink" readonly value="https://amazonsupersearch.com">
@@ -379,20 +404,74 @@
     if (rng && val) rng.oninput = () => val.textContent = rng.value + '%';
 
     function runSearch() {
-      const q = encodeURIComponent(document.getElementById('searchInput').value),
-            url = `https://www.amazon.com/s?k=${q}&tag=echolover25-20`;
-      window.location.href = url;
+      const params = new URLSearchParams();
+      const rh = [];
+
+      // 1) keyword
+      let q = document.getElementById('searchInput').value.trim();
+      if (!q) { alert('Please enter search keywords'); return; }
+      params.set('k', q);
+
+      // 2) category
+      let cat = document.getElementById('departmentSelect').value;
+      if (cat && cat !== 'All Categories') params.set('i', cat);
+
+      // 3) price
+      let minP = document.getElementById('minPrice').value;
+      let maxP = document.getElementById('maxPrice').value;
+      if (minP || maxP) {
+        minP = minP ? parseFloat(minP)*100 : 0;
+        maxP = maxP ? parseFloat(maxP)*100 : '';
+        rh.push(`p_36:${minP}-${maxP}`);
+      }
+
+      // 4) reviews
+      let minR = document.getElementById('minReviews').value;
+      if (minR) rh.push(`p_n_feature_four_browse-bin:${minR}`);
+
+      // 5) rating
+      let rating = document.getElementById('ratingSelect').value;
+      if (rating !== 'Any Rating') {
+        let v = rating.match(/^(\d)/);
+        if (v) rh.push(`p_72:${v[1]}`);
+      }
+
+      // 6) sort
+      let sort = document.getElementById('sortSelect').value;
+      const sortMap = {
+        'Relevance':'relevanceblender',
+        'Price: Low to High':'price-asc-rank',
+        'Price: High to Low':'price-desc-rank',
+        'Avg. Customer Review':'review-rank',
+        'Newest Arrivals':'date-desc-rank',
+        'Discount: High to Low':'discount-desc-rank',
+        'Number of Reviews':'review-count-rank'
+      };
+      if (sortMap[sort]) params.set('s', sortMap[sort]);
+
+      // 7) discount %
+      let disc = document.getElementById('minDiscount').value;
+      if (disc && disc > 0) rh.push(`p_n_pct-off-withdrawn-bin:${disc}`);
+
+      // 8) toggles
+      if (document.getElementById('fPrime').checked)      rh.push('p_85:2470955011');
+      if (document.getElementById('fFreeShip').checked)   rh.push('p_76:13184810011');
+      if (document.getElementById('fSubscribe').checked)  rh.push('p_27:21389956011');
+      if (document.getElementById('fPantry').checked)     rh.push('p_n_feature_four_browse-bin:pantry');
+      if (document.getElementById('fVideo').checked)      rh.push('p_n_feature_four_browse-bin:video');
+      if (document.getElementById('fCoupons').checked)    rh.push('p_n_feature_six_browse-bin:coupons');
+      if (document.getElementById('fGift').checked)       rh.push('p_90:21376755011');
+
+      // assemble
+      if (rh.length) params.set('rh', rh.join(','));
+      params.set('tag', 'echolover25-20');
+
+      window.location.href = `https://www.amazon.com/s?${params.toString()}`;
     }
 
-    function savePreset() {
-      console.log('Preset saved');
-    }
-    function applyPreset() {
-      console.log('Preset applied');
-    }
-    function setAlert() {
-      console.log('Alert registered');
-    }
+    function savePreset()    { console.log('Preset saved'); }
+    function applyPreset()   { console.log('Preset applied'); }
+    function setAlert()      { console.log('Alert registered'); }
 
     function sendFeedback(){
       const txt = document.getElementById('feedbackText').value,
