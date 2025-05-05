@@ -163,27 +163,15 @@
       border-radius: 6px;
       margin-top: 2rem;
     }
-    .referral input { width: 80%; display: inline-block; }
-    .referral button { width: auto; display: inline-block; margin-left: 0.5rem; }
-
-    /* ---------------- Community & Feedback ---------------- */
-    .feedback textarea { height: 100px; }
-    .feedback button { width: auto; }
-
-    /* ---------------- Changelog & Share ---------------- */
-    .changelog ul { padding-left: 1.25rem; }
-    .share-section {
-      margin-top: 2rem;
-      text-align: center;
-    }
-    .share-buttons {
+    .referral .share-buttons {
       display: flex;
       justify-content: center;
       gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 1rem;
+      margin-bottom: 1rem;
     }
-    .share-buttons a {
+
+    /* Share-button styles reused */
+    .share-section .share-buttons a {
       display: inline-block;
       width: 48px;
       height: 48px;
@@ -192,7 +180,7 @@
       box-shadow: 0 0 6px rgba(0,0,0,0.2);
       transition: transform 0.3s ease;
     }
-    .share-buttons a:hover {
+    .share-section .share-buttons a:hover {
       transform: scale(1.2);
       box-shadow: 0 0 12px rgba(255,140,0,0.7);
     }
@@ -200,6 +188,39 @@
     .twitter  { background-image: url('https://cdn-icons-png.flaticon.com/512/733/733579.png'); }
     .email    { background-image: url('https://cdn-icons-png.flaticon.com/512/732/732200.png'); }
     .sms      { background-image: url('https://cdn-icons-png.flaticon.com/512/1042/1042338.png'); }
+
+    /* Copy-link */
+    .copy-link {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .copy-link input {
+      width: 70%;
+      padding: 0.4rem;
+      font-size: 0.95rem;
+      border-radius: 5px;
+      border: 1px solid #aaa;
+    }
+    .copy-link button {
+      background: #ff9900;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* ---------------- Community & Feedback ---------------- */
+    .feedback textarea { height: 100px; }
+    .feedback button { width: auto; }
+
+    /* ---------------- Changelog & Social ---------------- */
+    .changelog ul { padding-left: 1.25rem; }
+    .share-section {
+      margin-top: 2rem;
+      text-align: center;
+    }
 
     /* ---------------- PWA Install Banner ---------------- */
     #installBanner {
@@ -283,12 +304,10 @@
     <!-- 3. Search Form -->
     <section id="search">
       <h2>Search</h2>
-
       <div class="row">
         <label for="searchInput">Search Keywords</label>
         <input id="searchInput" type="text" placeholder="e.g. wireless headphones">
       </div>
-
       <div class="row inline-group">
         <div>
           <label for="departmentSelect">Category</label>
@@ -306,7 +325,6 @@
           </select>
         </div>
       </div>
-
       <div class="row inline-group">
         <div>
           <label for="minPrice">Min Price ($)</label>
@@ -317,12 +335,10 @@
           <input id="maxPrice" type="number">
         </div>
       </div>
-
       <div class="row">
         <label for="minReviews">Min # of Reviews</label>
         <input id="minReviews" type="number">
       </div>
-
       <div class="row">
         <label for="sortSelect">Sort By</label>
         <select id="sortSelect">
@@ -335,24 +351,21 @@
           <option>Number of Reviews</option>
         </select>
       </div>
-
       <div class="row">
         <label for="minDiscount">Min Discount (%)</label>
         <input id="minDiscount" type="range" min="0" max="100" value="0">
         <div id="discountValue">0%</div>
       </div>
-
       <div class="row">
         <strong>Optional Filters</strong>
         <div class="toggle-row"><span>Prime</span><label><input id="fPrime" type="checkbox"><span class="slider"></span></label></div>
         <div class="toggle-row"><span>Free Shipping</span><label><input id="fFreeShip" type="checkbox"><span class="slider"></span></label></div>
-        <div class="toggle-row"><span>Subscribe &amp; Save</span><label><input id="fSubscribe" type="checkbox"><span class="slider"></span></label></div>
+        <div class="toggle-row"><span>Subscribe & Save</span><label><input id="fSubscribe" type="checkbox"><span class="slider"></span></label></div>
         <div class="toggle-row"><span>Amazon Pantry</span><label><input id="fPantry" type="checkbox"><span class="slider"></span></label></div>
         <div class="toggle-row"><span>Video Review</span><label><input id="fVideo" type="checkbox"><span class="slider"></span></label></div>
         <div class="toggle-row"><span>Coupons</span><label><input id="fCoupons" type="checkbox"><span class="slider"></span></label></div>
         <div class="toggle-row"><span>Gift Wrap</span><label><input id="fGift" type="checkbox"><span class="slider"></span></label></div>
       </div>
-
       <div class="row inline-group">
         <button onclick="startSearch()">Search</button>
         <button onclick="savePreset()">Save Preset</button>
@@ -376,21 +389,42 @@
       <ul>
         <li><a href="#">Maximize Amazon Savings</a></li>
         <li><a href="#">Spot Fake Reviews</a></li>
-        <li><a href="#">Subscribe &amp; Save Tips</a></li>
+        <li><a href="#">Subscribe & Save Tips</a></li>
       </ul>
     </section>
 
     <!-- 6. Referral Program -->
     <section class="referral">
       <h2>Refer a Friend</h2>
-      <p>Give a friend 7 days of Premium—get 7 days free for yourself!</p>
-      <input id="refLink" type="text" readonly value="https://amazonsupersearch.com/?ref=YOURCODE">
-      <button onclick="copyReferral()">Copy Link</button>
+      <div class="share-buttons">
+        <a class="facebook"
+           href="https://www.facebook.com/sharer/sharer.php?u=https://amazonsupersearch.com/?ref=YOURCODE"
+           target="_blank"
+           title="Share on Facebook"></a>
+        <a class="twitter"
+           href="https://twitter.com/intent/tweet?url=https://amazonsupersearch.com/?ref=YOURCODE"
+           target="_blank"
+           title="Share on Twitter"></a>
+        <a class="email"
+           href="mailto:?subject=Check+this+out&body=Try+this+tool:+https://amazonsupersearch.com/?ref=YOURCODE"
+           title="Share via Email"></a>
+        <a class="sms"
+           href="sms:?&body=Check+this+out:+https://amazonsupersearch.com/?ref=YOURCODE"
+           title="Share via SMS"></a>
+      </div>
+      <div class="copy-link">
+        <input
+          id="refLink"
+          type="text"
+          readonly
+          value="https://amazonsupersearch.com/?ref=YOURCODE" />
+        <button onclick="copyReferral()">Copy Link</button>
+      </div>
     </section>
 
     <!-- 7. Community & 8. Feedback -->
     <section id="community">
-      <h2>Community Q&amp;A</h2>
+      <h2>Community Q&A</h2>
       <p><a href="#">Join our discussion forum</a> and swap tips with others.</p>
     </section>
     <section id="feedback" class="feedback">
@@ -416,7 +450,7 @@
         <a class="facebook" href="https://facebook.com/sharer/sharer.php?u=https://amazonsupersearch.com" target="_blank"></a>
         <a class="twitter"  href="https://twitter.com/intent/tweet?url=https://amazonsupersearch.com" target="_blank"></a>
         <a class="email"    href="mailto:?subject=Check this out&body=https://amazonsupersearch.com"></a>
-        <a class="sms"      href="sms:?&body=Check this out: https://amazonsupersearch.com"></a>
+        <a class="sms"      href="sms:?&body=Check this out:+https://amazonsupersearch.com"></a>
       </div>
     </div>
 
