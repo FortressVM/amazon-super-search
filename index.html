@@ -24,7 +24,7 @@
       padding: 1rem;
     }
     .container {
-      max-width: 900px;
+      max-width: 800px;
       margin: 2rem auto;
       background: var(--bg);
       padding: 1rem;
@@ -39,7 +39,7 @@
       border:1px solid #ccc; border-radius:5px; box-sizing:border-box;
     }
     .row { display:flex; gap:1rem; flex-wrap:wrap; }
-    .col { flex:1; min-width:180px; }
+    .col { flex:1; min-width:150px; }
     .toggle { cursor:pointer; color:var(--primary); text-align:right; margin-top:.5rem; }
     .hidden { display:none; }
     .dark-toggle { text-align:center; margin-top:1rem; }
@@ -74,32 +74,58 @@
 </head>
 <body>
   <div class="container">
-    <div class="trust-badge">🛡️ Verified Secure</div>
+    <div class="trust-badge">🛡️ <span>Verified Secure</span></div>
     <h1>Amazon Super Search</h1>
     <div class="dark-toggle">
       <button onclick="toggleTheme()">🌓 Toggle Dark Mode</button>
     </div>
 
-    <!-- Basic Filters -->
-    <label for="search">Keyword</label>
-    <input id="search" type="text" placeholder="e.g. red girls hiking boots">
+    <label for="search">Search Query</label>
+    <input id="search" type="text" placeholder="e.g. red girls hiking boots (use AND, OR, NOT)">
+
+    <label for="category">Department</label>
+    <select id="category">
+      <option value="">All Departments</option>
+      <option value="digital-music">Amazon Music</option>
+      <option value="instant-video">Amazon Video</option>
+      <option value="appliances">Appliances</option>
+      <option value="mobile-apps">Apps &amp; Games</option>
+      <option value="arts-crafts">Arts &amp; Crafts</option>
+      <option value="automotive">Automotive</option>
+      <option value="baby-products">Baby</option>
+      <option value="beauty">Beauty &amp; Personal Care</option>
+      <option value="stripbooks">Books</option>
+      <option value="popular">CDs &amp; Vinyl</option>
+      <option value="collectibles">Collectibles</option>
+      <option value="computers">Computers</option>
+      <option value="electronics">Electronics</option>
+      <option value="fashion-womens">Women's Fashion</option>
+      <option value="fashion-mens">Men's Fashion</option>
+      <option value="fashion-girls">Girls' Fashion</option>
+      <option value="fashion-boys">Boys' Fashion</option>
+      <option value="fashion-baby">Baby Fashion</option>
+      <option value="gift-cards">Gift Cards</option>
+      <option value="grocery">Grocery &amp; Gourmet Food</option>
+      <option value="handmade">Handmade</option>
+      <option value="healthpersonalcare">Health &amp; Household</option>
+      <option value="hpc">Home &amp; Kitchen</option>
+      <option value="industrial">Industrial &amp; Scientific</option>
+      <option value="jewelry">Jewelry</option>
+      <option value="kitchen">Kitchen &amp; Dining</option>
+      <option value="lawn-and-garden">Patio, Lawn &amp; Garden</option>
+      <option value="luggage">Luggage &amp; Travel Gear</option>
+      <option value="movies-tv">Movies &amp; TV</option>
+      <option value="music">Musical Instruments</option>
+      <option value="office-products">Office Products</option>
+      <option value="pet-supplies">Pet Supplies</option>
+      <option value="software">Software</option>
+      <option value="sports">Sports &amp; Outdoors</option>
+      <option value="tools">Tools &amp; Home Improvement</option>
+      <option value="toys-and-games">Toys &amp; Games</option>
+      <option value="videogames">Video Games</option>
+    </select>
 
     <div class="row">
-      <div class="col">
-        <label for="category">Department</label>
-        <select id="category">
-          <option value="">All</option>
-          <option value="aps">All Categories</option>
-          <option value="electronics">Electronics</option>
-          <option value="books">Books</option>
-          <option value="fashion">Clothing</option>
-          <option value="beauty">Beauty</option>
-          <option value="home">Home & Kitchen</option>
-          <option value="toys">Toys & Games</option>
-          <option value="sports">Sports</option>
-          <!-- …you can add more Amazon browse nodes here… -->
-        </select>
-      </div>
       <div class="col">
         <label for="minPrice">Min Price ($)</label>
         <input id="minPrice" type="number" step="0.01">
@@ -112,98 +138,45 @@
 
     <div class="row">
       <div class="col">
-        <label for="minRating">Min. Rating</label>
+        <label for="minRating">Minimum Rating</label>
         <select id="minRating">
           <option value="">Any</option>
-          <option value="4">4 ★ & Up</option>
-          <option value="3">3 ★ & Up</option>
+          <option value="4">4 Stars &amp; Up</option>
+          <option value="3">3 Stars &amp; Up</option>
         </select>
       </div>
       <div class="col">
         <label for="minReviews">Min. Reviews</label>
-        <input id="minReviews" type="number" placeholder="e.g. 50">
+        <input id="minReviews" type="number">
       </div>
     </div>
 
-    <div class="toggle" onclick="toggleAdvanced()"> 
+    <div class="toggle" onclick="toggleAdvanced()">
       <span id="toggleText">Show Advanced Filters</span> <span id="toggleArrow">⯈</span>
     </div>
-
-    <!-- Advanced Filters -->
     <div id="advancedSection" class="hidden">
       <label class="switch">
-        <span>Prime</span>
+        <span>Prime Eligible</span>
         <div class="switch-toggle">
-          <span id="primeStatus" class="status-label">OFF</span>
+          <span id="primeStatus" class="status-label">Currently OFF</span>
           <input type="checkbox" id="primeOnly" onchange="updateStatus('primeOnly','primeStatus')"><span>On</span>
         </div>
       </label>
-      <label class="switch">
-        <span>Free Shipping</span>
-        <div class="switch-toggle">
-          <span id="freeShipStatus" class="status-label">OFF</span>
-          <input type="checkbox" id="freeShipping" onchange="updateStatus('freeShipping','freeShipStatus')"><span>On</span>
-        </div>
-      </label>
-      <label class="switch">
-        <span>Coupons</span>
-        <div class="switch-toggle">
-          <span id="couponStatus" class="status-label">OFF</span>
-          <input type="checkbox" id="coupon" onchange="updateStatus('coupon','couponStatus')"><span>On</span>
-        </div>
-      </label>
-      <label class="switch">
-        <span>New Releases</span>
-        <div class="switch-toggle">
-          <span id="newReleaseStatus" class="status-label">OFF</span>
-          <input type="checkbox" id="newRelease" onchange="updateStatus('newRelease','newReleaseStatus')"><span>On</span>
-        </div>
-      </label>
-      <label class="switch">
-        <span>In Stock</span>
-        <div class="switch-toggle">
-          <span id="inStockStatus" class="status-label">OFF</span>
-          <input type="checkbox" id="inStock" onchange="updateStatus('inStock','inStockStatus')"><span>On</span>
-        </div>
-      </label>
-
+      <!-- add other switches here... -->
       <div class="row">
-        <div class="col">
-          <label for="condition">Condition</label>
-          <select id="condition">
-            <option value="">Any</option>
-            <option value="new">New</option>
-            <option value="used">Used</option>
-            <option value="refurbished">Refurbished</option>
-          </select>
-        </div>
-        <div class="col">
-          <label for="brand">Brand</label>
-          <input id="brand" type="text" placeholder="e.g. Nike, Samsung">
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <label for="language">Language</label>
-          <select id="language">
-            <option value="">Any</option>
-            <option value="en_US">English (US)</option>
-            <option value="en_GB">English (UK)</option>
-            <option value="de_DE">German</option>
-            <option value="fr_FR">French</option>
-            <!-- …etc… -->
-          </select>
-        </div>
         <div class="col">
           <label for="sort">Sort By</label>
           <select id="sort">
-            <option value="relevanceblender">Relevance</option>
-            <option value="price-asc-rank">Price: Low to High</option>
-            <option value="price-desc-rank">Price: High to Low</option>
-            <option value="review-rank">Avg. Customer Review</option>
-            <option value="date-desc-rank">Newest Arrivals</option>
+            <option value="relevance">Relevance</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="rating-desc">Rating: High to Low</option>
           </select>
+        </div>
+        <div class="col">
+          <label for="discount">Min Discount (%)</label>
+          <input id="discount" type="range" min="0" max="90" step="5" oninput="this.nextElementSibling.value=this.value+'%'">
+          <output>0%</output>
         </div>
       </div>
     </div>
@@ -214,75 +187,60 @@
   <script>
     function toggleTheme(){ document.body.classList.toggle('dark'); }
     function toggleAdvanced(){
-      const adv=document.getElementById('advancedSection'),
-            txt=document.getElementById('toggleText'),
-            arr=document.getElementById('toggleArrow'),
-            hidden=adv.classList.toggle('hidden');
-      txt.textContent = hidden ? 'Show Advanced Filters' : 'Hide Advanced Filters';
-      arr.textContent = hidden ? '⯈' : '⯆';
+      const adv = document.getElementById('advancedSection'),
+            txt = document.getElementById('toggleText'),
+            arr = document.getElementById('toggleArrow'),
+            hidden = adv.classList.toggle('hidden');
+      txt.textContent = hidden?'Show Advanced Filters':'Hide Advanced Filters';
+      arr.textContent = hidden?'⯈':'⯆';
     }
     function updateStatus(id,lbl){
       document.getElementById(lbl).textContent =
-        document.getElementById(id).checked ? 'ON':'OFF';
+        document.getElementById(id).checked?'Currently ON':'Currently OFF';
     }
-    window.onload = () => {
-      ['primeOnly','freeShipping','coupon','newRelease','inStock']
-        .forEach(id=> updateStatus(id,id+'Status') );
-    };
+    window.onload = ()=>['primeOnly'].forEach(id=>
+      updateStatus(id,id.replace(/(Only|Free)$/,'Status'))
+    );
 
     function startSearch(){
-      const TAG='echolover25-20',
-            params=[],
-            q=document.getElementById('search').value.trim();
-      if(q) params.push(`k=${encodeURIComponent(q)}`);
+      const TAG        = 'echolover25-20',
+            q          = encodeURIComponent(document.getElementById('search').value.trim()),
+            dept       = document.getElementById('category').value,
+            min        = document.getElementById('minPrice').value,
+            max        = document.getElementById('maxPrice').value,
+            rating     = document.getElementById('minRating').value,
+            reviews    = document.getElementById('minReviews').value,
+            sort       = document.getElementById('sort').value,
+            primeOnly  = document.getElementById('primeOnly').checked,
+            filters    = [];
 
-      // Department (browse node)
-      const cat=document.getElementById('category').value;
-      if(cat) params.push(`i=${cat}`);
+      // price filter
+      if(min||max){
+        const low = min?Math.floor(min*100):0,
+              high= max?Math.floor(max*100):99999999;
+        filters.push(`p_36:${low}-${high}`);
+      }
+      // rating filter
+      if(rating==='4') filters.push('p_72:2661618011');
+      if(rating==='3') filters.push('p_72:2661619011');
+      // prime filter
+      if(primeOnly) filters.push('p_85:2470955011');
+      // min reviews
+      if(reviews) filters.push(`p_n_feature_eight_browse-bin:${reviews}`);
 
-      // Price
-      const minP=document.getElementById('minPrice').value,
-            maxP=document.getElementById('maxPrice').value;
-      if(minP||maxP){
-        const low=minP?Math.floor(minP*100):0,
-              high=maxP?Math.floor(maxP*100):99999999;
-        params.push(`rh=p_36:${low}-${high}`);
+      // build base URL 
+      let url = `https://www.amazon.com/s?k=${q}&tag=${TAG}`;
+      if(dept)  url += `&i=${dept}`;
+      if(filters.length) url += `&rh=${filters.join(',')}`;
+      if(sort && sort!=='relevance'){
+        const sortMap = {
+          'price-asc':'price-asc-rank',
+          'price-desc':'price-desc-rank',
+          'rating-desc':'review-rank'
+        };
+        url += `&s=${sortMap[sort]||''}`;
       }
 
-      // Ratings & reviews
-      const minR=document.getElementById('minRating').value;
-      if(minR==='4') params.push('rh=p_72:2661618011');
-      if(minR==='3') params.push('rh=p_72:2661619011');
-
-      const revCt=document.getElementById('minReviews').value;
-      if(revCt) params.push(`rh=p_72:${revCt*1}`); 
-
-      // Toggles
-      if(document.getElementById('primeOnly').checked)     params.push('rh=p_85:2470955011');
-      if(document.getElementById('freeShipping').checked) params.push('rh=p_76:%20');
-      if(document.getElementById('coupon').checked)       params.push('rh=p_89:2661601011');
-      if(document.getElementById('newRelease').checked)   params.push('rh=n:283155');
-      if(document.getElementById('inStock').checked)      params.push('rh=p_n_availability:14674923011');
-
-      // Condition
-      const cond=document.getElementById('condition').value;
-      if(cond) params.push(`rh=p_n_condition-type:2695042031${cond==='used'?5612828011:''}`);
-
-      // Brand
-      const brand=document.getElementById('brand').value.trim();
-      if(brand) params.push(`rh=p_89:${encodeURIComponent(brand)}`);
-
-      // Language
-      const lang=document.getElementById('language').value;
-      if(lang) params.push(`bbn=133140011&language=${lang}`);
-
-      // Sort
-      const sort=document.getElementById('sort').value;
-      if(sort && sort!=='relevanceblender') params.push(`s=${sort}`);
-
-      // Build URL
-      const base='https://www.amazon.com/s?tag='+TAG;
-      const url= base + '&' + params.filter(p=>p).join('&');
       window.open(url,'_blank');
     }
   </script>
