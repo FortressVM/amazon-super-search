@@ -234,8 +234,8 @@
   <header>
     <h1>Amazon Super Search</h1>
     <nav>
-      <a href="#dashboard">Dashboard</a>
       <a href="#search">Search</a>
+      <a href="#dashboard">Dashboard</a>
       <a href="#featured">Weekly Finds</a>
       <a href="#guides">Guides</a>
       <a href="#community">Community</a>
@@ -252,30 +252,7 @@
 
   <div class="container">
 
-    <!-- 1. Dashboard & Presets -->
-    <section id="dashboard">
-      <h2>Your Dashboard & Presets</h2>
-      <div class="presets">
-        <label>Saved Presets:</label>
-        <select id="presetSelect">
-          <option>– Select a preset –</option>
-          <option>Electronics Deals</option>
-          <option>Under $20 Finds</option>
-        </select>
-        <button onclick="applyPreset()">Apply</button>
-        <button onclick="savePreset()">Save Current Preset</button>
-      </div>
-      <div>
-        <label>Recommended Searches:</label>
-        <ul>
-          <li><a href="#" onclick="setKeywords('wireless earbuds')">Wireless Earbuds</a></li>
-          <li><a href="#" onclick="setKeywords('gaming laptops')">Gaming Laptops</a></li>
-          <li><a href="#" onclick="setKeywords('kitchen gadgets')">Kitchen Gadgets</a></li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- 2+3. Alerts & Search -->
+    <!-- 1. Search (now first) -->
     <section id="search">
       <h2>Price-Drop & Deal Alerts</h2>
       <div class="row">
@@ -356,7 +333,30 @@
       </div>
     </section>
 
-    <!-- 4. Weekly Featured Finds -->
+    <!-- 2. Dashboard & Presets -->
+    <section id="dashboard">
+      <h2>Your Dashboard & Presets</h2>
+      <div class="presets">
+        <label>Saved Presets:</label>
+        <select id="presetSelect">
+          <option>– Select a preset –</option>
+          <option>Electronics Deals</option>
+          <option>Under $20 Finds</option>
+        </select>
+        <button onclick="applyPreset()">Apply</button>
+        <button onclick="savePreset()">Save Current Preset</button>
+      </div>
+      <div>
+        <label>Recommended Searches:</label>
+        <ul>
+          <li><a href="#" onclick="setKeywords('wireless earbuds')">Wireless Earbuds</a></li>
+          <li><a href="#" onclick="setKeywords('gaming laptops')">Gaming Laptops</a></li>
+          <li><a href="#" onclick="setKeywords('kitchen gadgets')">Kitchen Gadgets</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 3. Weekly Featured Finds -->
     <section id="featured">
       <h2>Weekly Featured Finds</h2>
       <div class="grid">
@@ -367,7 +367,7 @@
       </div>
     </section>
 
-    <!-- 5. How-To Guides -->
+    <!-- 4. How-To Guides -->
     <section id="guides">
       <h2>How-To Guides</h2>
       <ul>
@@ -377,13 +377,13 @@
       </ul>
     </section>
 
-    <!-- 6. Community Q&A -->
+    <!-- 5. Community Q&A -->
     <section id="community">
       <h2>Community Q&A</h2>
       <p><a href="#">Join our discussion forum</a> and swap tips with others.</p>
     </section>
 
-    <!-- 7. Feedback -->
+    <!-- 6. Feedback -->
     <section id="feedback" class="feedback">
       <h2>Send Us Feedback</h2>
       <textarea id="feedbackText" placeholder="What would make this tool better?"></textarea>
@@ -436,14 +436,14 @@
 
   </div>
 
-  <!-- Section‐toggling script -->
+  <!-- Section-toggling script -->
   <script>
     const sections = ['dashboard','search','featured','guides','community','feedback'];
     function showSection(id) {
       sections.forEach(sec => {
         const el = document.getElementById(sec);
         if (!el) return;
-        el.style.display = sec===id ? 'block' : 'none';
+        el.style.display = sec === id ? 'block' : 'none';
       });
     }
     document.querySelectorAll('header nav a').forEach(a => {
@@ -489,7 +489,6 @@
       if (!txt) return alert('Please enter feedback.');
       alert('Thanks for your feedback!');
     }
-    // Discount slider live update
     const rng = document.getElementById('minDiscount'),
           val = document.getElementById('discountValue');
     if (rng && val) rng.oninput = () => val.textContent = rng.value + '%';
