@@ -32,28 +32,28 @@
 
   function getCurrentSearch() {
     return {
-      search: document.getElementById('search').value,
-      category: document.getElementById('category').value,
-      minPrice: document.getElementById('minPrice').value,
-      maxPrice: document.getElementById('maxPrice').value,
-      minRating: document.getElementById('minRating').value,
-      minReviews: document.getElementById('minReviews').value,
-      includeKeywords: document.getElementById('includeKeywords').value,
-      excludeKeywords: document.getElementById('excludeKeywords').value,
-      exactPhrase: document.getElementById('exactPhrase').value,
-      language: document.getElementById('language').value,
-      currency: document.getElementById('currency').value,
-      preset: document.getElementById('preset').value,
-      export: document.getElementById('export').value
+      search: document.getElementById('search')?.value || '',
+      category: document.getElementById('category')?.value || '',
+      minPrice: document.getElementById('minPrice')?.value || '',
+      maxPrice: document.getElementById('maxPrice')?.value || '',
+      minRating: document.getElementById('minRating')?.value || '',
+      minReviews: document.getElementById('minReviews')?.value || '',
+      includeKeywords: document.getElementById('includeKeywords')?.value || '',
+      excludeKeywords: document.getElementById('excludeKeywords')?.value || '',
+      exactPhrase: document.getElementById('exactPhrase')?.value || '',
+      language: document.getElementById('language')?.value || '',
+      currency: document.getElementById('currency')?.value || '',
+      preset: document.getElementById('preset')?.value || '',
+      export: document.getElementById('export')?.value || ''
     };
   }
 
   function startSearch() {
     const TAG = 'echolover25-20';
-    let query = document.getElementById('search').value.trim();
-    const include = document.getElementById('includeKeywords').value.trim();
-    const exclude = document.getElementById('excludeKeywords').value.trim();
-    const phrase = document.getElementById('exactPhrase').value.trim();
+    let query = document.getElementById('search')?.value.trim() || '';
+    const include = document.getElementById('includeKeywords')?.value.trim() || '';
+    const exclude = document.getElementById('excludeKeywords')?.value.trim() || '';
+    const phrase = document.getElementById('exactPhrase')?.value.trim() || '';
 
     if (phrase) query += ` "${phrase}"`;
     if (include) query += ` ${include}`;
@@ -62,22 +62,22 @@
     const q = encodeURIComponent(query);
     let url = `https://www.amazon.com/s?k=${q}&tag=${TAG}`;
 
-    const category = document.getElementById('category').value;
+    const category = document.getElementById('category')?.value;
     if (category) url += `&i=${category}`;
 
-    const minPrice = document.getElementById('minPrice').value;
-    const maxPrice = document.getElementById('maxPrice').value;
+    const minPrice = document.getElementById('minPrice')?.value;
+    const maxPrice = document.getElementById('maxPrice')?.value;
     if (minPrice || maxPrice) {
       const minCents = Math.floor((+minPrice || 0) * 100);
       const maxCents = Math.floor((+maxPrice || 99999) * 100);
       url += `&rh=p_36%3A${minCents}-${maxCents}`;
     }
 
-    const minRating = document.getElementById('minRating').value;
+    const minRating = document.getElementById('minRating')?.value;
     if (minRating === '4') url += `&rh=p_72%3A2661618011`;
     if (minRating === '3') url += `&rh=p_72%3A2661619011`;
 
-    const minReviews = document.getElementById('minReviews').value;
+    const minReviews = document.getElementById('minReviews')?.value;
     if (minReviews) url += `&rh=p_n_feature_four_browse-bin%3A${minReviews}`;
 
     const sort = document.getElementById('sort');
@@ -85,15 +85,16 @@
       url += `&s=${sort.value}`;
     }
 
-    // Export Option (Simulated Output for Now)
-    const exportType = document.getElementById('export').value;
+    const exportType = document.getElementById('export')?.value;
     if (exportType) {
       const output = `Search Query: ${query}\nURL: ${url}`;
-      const blob = new Blob([output], { type: exportType === 'csv' ? 'text/csv' : 'application/pdf' });
+      const blob = new Blob([output], { type: exportType === 'csv' ? 'text/csv' : 'application/octet-stream' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
       a.download = `amazon_search.${exportType}`;
+      document.body.appendChild(a);
       a.click();
+      document.body.removeChild(a);
     } else {
       window.open(url, '_blank');
     }
