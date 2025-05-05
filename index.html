@@ -1,139 +1,101 @@
-<script>
-  function toggleTheme() {
-    document.body.classList.toggle('dark');
-  }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amazon Super Search</title>
+  <style>
+    body { font-family: sans-serif; padding: 1rem; background: #f9f9f9; color: #000; }
+    .container { max-width: 700px; margin: auto; background: #fff; padding: 1rem; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    label { display: block; margin-top: 1rem; font-weight: bold; }
+    input, select, button { width: 100%; padding: 0.5rem; margin-top: 0.3rem; }
+    #debugPanel { font-family: monospace; font-size: 12px; background: #111; color: #0f0; padding: 0.5rem; max-height: 120px; overflow-y: auto; position: fixed; bottom: 0; width: 100%; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Amazon Super Search</h1>
+    <label for="search">Search Query</label>
+    <input id="search" placeholder="e.g. wireless earbuds" />
 
-  function toggleAdvanced() {
-    const adv = document.getElementById('advancedSection'),
-          txt = document.getElementById('toggleText'),
-          arr = document.getElementById('toggleArrow'),
-          hidden = adv.classList.toggle('hidden');
-    txt.textContent = hidden ? 'Show Advanced Filters' : 'Hide Advanced Filters';
-    arr.textContent = hidden ? '⯈' : '⯆';
-  }
+    <label for="category">Category</label>
+    <select id="category">
+      <option value="">All</option>
+      <option value="electronics">Electronics</option>
+      <option value="books">Books</option>
+    </select>
 
-  function savePreset() {
-    const query = document.getElementById('search').value;
-    if (!query) return alert('Enter a search query first.');
-    const key = prompt('Name this preset:');
-    if (key) localStorage.setItem(`preset-${key}`, JSON.stringify(getCurrentSearch()));
-  }
+    <label for="minPrice">Min Price ($)</label>
+    <input id="minPrice" type="number" />
 
-  function loadPreset(presetId) {
-    if (!presetId) return;
-    const data = localStorage.getItem(`preset-${presetId}`);
-    if (!data) return alert('Preset not found.');
-    const values = JSON.parse(data);
-    for (const [id, val] of Object.entries(values)) {
-      const el = document.getElementById(id);
-      if (el) el.value = val;
-    }
-  }
+    <label for="maxPrice">Max Price ($)</label>
+    <input id="maxPrice" type="number" />
 
-  function getCurrentSearch() {
-    return {
-      search: document.getElementById('search')?.value || '',
-      category: document.getElementById('category')?.value || '',
-      minPrice: document.getElementById('minPrice')?.value || '',
-      maxPrice: document.getElementById('maxPrice')?.value || '',
-      minRating: document.getElementById('minRating')?.value || '',
-      minReviews: document.getElementById('minReviews')?.value || '',
-      includeKeywords: document.getElementById('includeKeywords')?.value || '',
-      excludeKeywords: document.getElementById('excludeKeywords')?.value || '',
-      exactPhrase: document.getElementById('exactPhrase')?.value || '',
-      language: document.getElementById('language')?.value || '',
-      currency: document.getElementById('currency')?.value || '',
-      preset: document.getElementById('preset')?.value || '',
-      export: document.getElementById('export')?.value || ''
-    };
-  }
+    <label for="minRating">Minimum Rating</label>
+    <select id="minRating">
+      <option value="">Any</option>
+      <option value="4">4★ & up</option>
+      <option value="3">3★ & up</option>
+    </select>
 
-  function startSearch() {
-    logDebug('🔍 Search triggered');
-    const requiredIds = ['search', 'category', 'minPrice', 'maxPrice', 'minRating', 'minReviews', 'includeKeywords', 'excludeKeywords', 'exactPhrase', 'language', 'currency', 'preset', 'export'];
-    for (const id of requiredIds) {
-      const el = document.getElementById(id);
-      if (!el) {
-        logDebug(`⚠️ Missing element: #${id}`);
+    <label for="export">Export Results</label>
+    <select id="export">
+      <option value="">None</option>
+      <option value="csv">CSV</option>
+      <option value="pdf">PDF</option>
+    </select>
+
+    <button onclick="startSearch()" style="margin-top:1rem;">🔍 Search</button>
+  </div>
+
+  <script>
+    function startSearch() {
+      const TAG = 'echolover25-20';
+      let query = document.getElementById('search')?.value.trim() || '';
+      const category = document.getElementById('category')?.value;
+      const minPrice = document.getElementById('minPrice')?.value;
+      const maxPrice = document.getElementById('maxPrice')?.value;
+      const minRating = document.getElementById('minRating')?.value;
+      const exportType = document.getElementById('export')?.value;
+
+      const q = encodeURIComponent(query);
+      let url = `https://www.amazon.com/s?k=${q}&tag=${TAG}`;
+
+      if (category) url += `&i=${category}`;
+      if (minPrice || maxPrice) {
+        const minCents = Math.floor((+minPrice || 0) * 100);
+        const maxCents = Math.floor((+maxPrice || 99999) * 100);
+        url += `&rh=p_36:${minCents}-${maxCents}`;
       }
-    }
-    }
-    const TAG = 'echolover25-20';
-    let query = document.getElementById('search')?.value.trim() || '';
-    const include = document.getElementById('includeKeywords')?.value.trim() || '';
-    const exclude = document.getElementById('excludeKeywords')?.value.trim() || '';
-    const phrase = document.getElementById('exactPhrase')?.value.trim() || '';
+      if (minRating === '4') url += `&rh=p_72:2661618011`;
+      if (minRating === '3') url += `&rh=p_72:2661619011`;
 
-    if (phrase) query += ` "${phrase}"`;
-    if (include) query += ` ${include}`;
-    if (exclude) query += ` -${exclude.split(',').join(' -')}`;
+      if (exportType) {
+        const output = `Search: ${query}\nURL: ${url}`;
+        const blob = new Blob([output], { type: exportType === 'csv' ? 'text/csv' : 'application/pdf' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `amazon_search.${exportType}`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } else {
+        window.open(url, '_blank');
+      }
 
-    const q = encodeURIComponent(query);
-    let url = `https://www.amazon.com/s?k=${q}&tag=${TAG}`;
-    logDebug(`🔗 Base URL: ${url}`);
-
-    const category = document.getElementById('category')?.value;
-    if (category) url += `&i=${category}`;
-
-    const minPrice = document.getElementById('minPrice')?.value;
-    const maxPrice = document.getElementById('maxPrice')?.value;
-    if (minPrice || maxPrice) {
-      logDebug(`💲 Price range: ${minPrice} - ${maxPrice}`);
-      const minCents = Math.floor((+minPrice || 0) * 100);
-      const maxCents = Math.floor((+maxPrice || 99999) * 100);
-      url += `&rh=p_36%3A${minCents}-${maxCents}`;
+      logDebug(`🔍 URL Generated: ${url}`);
     }
 
-    const minRating = document.getElementById('minRating')?.value;
-    if (minRating === '4') url += `&rh=p_72%3A2661618011`;
-    if (minRating === '3') url += `&rh=p_72%3A2661619011`;
-
-    const minReviews = document.getElementById('minReviews')?.value;
-    if (minReviews) url += `&rh=p_n_feature_four_browse-bin%3A${minReviews}`;
-
-    const sort = document.getElementById('sort');
-    if (sort && sort.value && sort.value !== 'relevance') {
-      url += `&s=${sort.value}`;
+    function logDebug(msg) {
+      let panel = document.getElementById('debugPanel');
+      if (!panel) {
+        panel = document.createElement('div');
+        panel.id = 'debugPanel';
+        document.body.appendChild(panel);
+      }
+      const time = new Date().toLocaleTimeString();
+      panel.innerHTML += `<div>[${time}] ${msg}</div>`;
     }
-
-    const exportType = document.getElementById('export')?.value;
-    if (exportType) {
-      logDebug(`📤 Exporting as: ${exportType}`);
-      const output = `Search Query: ${query}\nURL: ${url}`;
-      const blob = new Blob([output], { type: exportType === 'csv' ? 'text/csv' : 'application/octet-stream' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `amazon_search.${exportType}`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    } else {
-      logDebug('🌐 Opening Amazon URL in new tab');
-      window.open(url, '_blank');
-    }
-  }
-
-
-  // Debug panel setup
-  function logDebug(message) {
-    let panel = document.getElementById('debugPanel');
-    if (!panel) {
-      panel = document.createElement('div');
-      panel.id = 'debugPanel';
-      panel.style.position = 'fixed';
-      panel.style.bottom = '0';
-      panel.style.left = '0';
-      panel.style.right = '0';
-      panel.style.background = 'rgba(0,0,0,0.8)';
-      panel.style.color = '#0f0';
-      panel.style.padding = '10px';
-      panel.style.fontSize = '12px';
-      panel.style.fontFamily = 'monospace';
-      panel.style.maxHeight = '150px';
-      panel.style.overflowY = 'auto';
-      document.body.appendChild(panel);
-    }
-    const timestamp = new Date().toLocaleTimeString();
-    panel.innerHTML += `<div>[${timestamp}] ${message}</div>`;
-  }
-</script>
+  </script>
+</body>
+</html>
