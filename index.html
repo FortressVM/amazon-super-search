@@ -1,135 +1,173 @@
-<script>
-  const categories = [
-    { name: 'All Categories', value: '' },
-    { name: 'Books', value: 'stripbooks' },
-    { name: 'Electronics', value: 'electronics' },
-    { name: 'Clothing & Accessories', value: 'fashion' },
-    { name: 'Home & Kitchen', value: 'garden' },
-    { name: 'Beauty & Personal Care', value: 'beauty' },
-    { name: 'Toys & Games', value: 'toys-and-games' },
-    { name: 'Health & Personal Care', value: 'hpc' }
-  ];
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Amazon Super Search</title>
+  <style>
+    body { font-family: sans-serif; padding: 1rem; background: #f9f9f9; color: #000; }
+    .container { max-width: 900px; margin: auto; background: #fff; padding: 1rem; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    label { display: block; margin-top: 1rem; font-weight: bold; }
+    input[type="text"], select { width: 100%; padding: 0.5rem; margin-top: 0.25rem; }
+    .switch { display: flex; justify-content: space-between; align-items: center; margin: 0.5rem 0; }
+    button { margin: 0.5rem 0.25rem; padding: 0.5rem 1rem; background: orange; border: none; color: white; cursor: pointer; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Amazon Super Search</h1>
+    <label>Search Query <input id="search" type="text" placeholder="e.g. wireless mouse" /></label>
+    <label>Category <select id="category"></select></label>
+    <label>Minimum Rating <select id="minRating"></select></label>
 
-  const ratings = [
-    { name: 'Any Rating', value: '' },
-    { name: '4 stars & up', value: '4' },
-    { name: '3 stars & up', value: '3' }
-  ];
+    <div id="toggles">
+      <div class="switch"><span>Prime</span><input type="checkbox" id="prime"></div>
+      <div class="switch"><span>Free Shipping</span><input type="checkbox" id="freeShipping"></div>
+      <div class="switch"><span>Subscribe & Save</span><input type="checkbox" id="subscribeSave"></div>
+      <div class="switch"><span>Amazon Pantry</span><input type="checkbox" id="pantry"></div>
+      <div class="switch"><span>Video Review</span><input type="checkbox" id="videoReview"></div>
+      <div class="switch"><span>Coupons</span><input type="checkbox" id="coupons"></div>
+      <div class="switch"><span>Gift Wrap</span><input type="checkbox" id="giftWrap"></div>
+      <div class="switch"><span>Condition: New</span><input type="checkbox" id="conditionNew"></div>
+      <div class="switch"><span>Condition: Used</span><input type="checkbox" id="conditionUsed"></div>
+      <div class="switch"><span>Organic</span><input type="checkbox" id="organic"></div>
+      <div class="switch"><span>Cruelty-Free</span><input type="checkbox" id="crueltyFree"></div>
+      <div class="switch"><span>Gluten-Free</span><input type="checkbox" id="glutenFree"></div>
+    </div>
 
-  const toggles = [
-    'prime', 'freeShipping', 'subscribeSave', 'pantry', 'videoReview', 'coupons', 'giftWrap',
-    'conditionNew', 'conditionUsed', 'organic', 'crueltyFree', 'glutenFree'
-  ];
+    <button onclick="startSearch()">Search</button>
+    <button onclick="savePreset()">Save Preset</button>
+    <button onclick="restoreLastSearch()">Load Last</button>
+  </div>
 
-  const toggleMap = {
-    prime: 'p_85%3A2470955011',
-    freeShipping: 'p_76%3A2661625011',
-    videoReview: 'p_n_availability%3A1248812011',
-    coupons: 'p_n_feature_thirteen_browse-bin%3A618073011',
-    conditionNew: 'p_n_condition-type%3A6461716011',
-    conditionUsed: 'p_n_condition-type%3A6461718011',
-    // The following are placeholders for features not supported directly by Amazon URL
-    subscribeSave: '',
-    pantry: '',
-    giftWrap: '',
-    organic: '',
-    crueltyFree: '',
-    glutenFree: ''
-  };
+  <script>
+    const categories = [
+      { name: 'All Categories', value: '' },
+      { name: 'Books', value: 'stripbooks' },
+      { name: 'Electronics', value: 'electronics' },
+      { name: 'Clothing & Accessories', value: 'fashion' },
+      { name: 'Home & Kitchen', value: 'garden' },
+      { name: 'Beauty & Personal Care', value: 'beauty' },
+      { name: 'Toys & Games', value: 'toys-and-games' },
+      { name: 'Health & Personal Care', value: 'hpc' }
+    ];
 
-  window.onload = () => {
-    populateDropdown('category', categories);
-    populateDropdown('minRating', ratings);
-    restoreLastSearch();
-    attachClickTracking();
-  };
+    const ratings = [
+      { name: 'Any Rating', value: '' },
+      { name: '4 stars & up', value: '4' },
+      { name: '3 stars & up', value: '3' }
+    ];
 
-  function populateDropdown(id, list) {
-    const select = document.getElementById(id);
-    if (!select) return;
-    list.forEach(opt => {
-      const option = document.createElement('option');
-      option.textContent = opt.name;
-      option.value = opt.value;
-      select.appendChild(option);
-    });
-  }
+    const toggles = [
+      'prime', 'freeShipping', 'subscribeSave', 'pantry', 'videoReview', 'coupons', 'giftWrap',
+      'conditionNew', 'conditionUsed', 'organic', 'crueltyFree', 'glutenFree'
+    ];
 
-  function restoreLastSearch() {
-    const saved = localStorage.getItem('last-search');
-    if (saved) {
-      const data = JSON.parse(saved);
-      for (const [id, val] of Object.entries(data)) {
+    const toggleMap = {
+      prime: 'p_85%3A2470955011',
+      freeShipping: 'p_76%3A2661625011',
+      videoReview: 'p_n_availability%3A1248812011',
+      coupons: 'p_n_feature_thirteen_browse-bin%3A618073011',
+      conditionNew: 'p_n_condition-type%3A6461716011',
+      conditionUsed: 'p_n_condition-type%3A6461718011',
+      subscribeSave: '', pantry: '', giftWrap: '', organic: '', crueltyFree: '', glutenFree: ''
+    };
+
+    window.onload = () => {
+      populateDropdown('category', categories);
+      populateDropdown('minRating', ratings);
+      restoreLastSearch();
+      attachClickTracking();
+    };
+
+    function populateDropdown(id, list) {
+      const select = document.getElementById(id);
+      if (!select) return;
+      list.forEach(opt => {
+        const option = document.createElement('option');
+        option.textContent = opt.name;
+        option.value = opt.value;
+        select.appendChild(option);
+      });
+    }
+
+    function getCurrentSearch() {
+      const obj = {
+        search: document.getElementById('search')?.value || '',
+        category: document.getElementById('category')?.value || '',
+        minRating: document.getElementById('minRating')?.value || ''
+      };
+      toggles.forEach(id => {
         const el = document.getElementById(id);
-        if (el) {
-          if (el.type === 'checkbox') el.checked = val === true;
-          else el.value = val;
+        if (el) obj[id] = el.checked;
+      });
+      return obj;
+    }
+
+    function savePreset() {
+      const query = document.getElementById('search').value;
+      if (!query) return alert('Enter a search query first.');
+      const key = prompt('Name this preset:');
+      if (key) {
+        const data = getCurrentSearch();
+        localStorage.setItem(`preset-${key}`, JSON.stringify(data));
+        localStorage.setItem('last-search', JSON.stringify(data));
+      }
+    }
+
+    function restoreLastSearch() {
+      const saved = localStorage.getItem('last-search');
+      if (saved) {
+        const data = JSON.parse(saved);
+        for (const [id, val] of Object.entries(data)) {
+          const el = document.getElementById(id);
+          if (el) {
+            if (el.type === 'checkbox') el.checked = val === true;
+            else el.value = val;
+          }
         }
       }
     }
-  }
 
-  function attachClickTracking() {
-    document.querySelectorAll('button, select, input').forEach(el => {
-      el.addEventListener('click', () => {
-        console.log(`Clicked: ${el.id || el.name || el.tagName}`);
-      });
-    });
-  }
+    function startSearch() {
+      const TAG = 'echolover25-20';
+      const query = document.getElementById('search')?.value.trim();
+      if (!query) return alert('Search keywords are required.');
 
-  function savePreset() {
-    const query = document.getElementById('search').value;
-    if (!query) return alert('Enter a search query first.');
-    const key = prompt('Name this preset:');
-    if (key) {
-      const data = getCurrentSearch();
-      localStorage.setItem(`preset-${key}`, JSON.stringify(data));
-      localStorage.setItem('last-search', JSON.stringify(data));
-    }
-  }
+      const category = document.getElementById('category')?.value;
+      const rating = document.getElementById('minRating')?.value;
+      const filters = getCurrentSearch();
 
-  function getCurrentSearch() {
-    const obj = {
-      search: document.getElementById('search')?.value || '',
-      category: document.getElementById('category')?.value || '',
-      minRating: document.getElementById('minRating')?.value || ''
-    };
-    toggles.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) obj[id] = el.checked;
-    });
-    return obj;
-  }
+      localStorage.setItem('last-search', JSON.stringify(filters));
 
-  function startSearch() {
-    const TAG = 'echolover25-20';
-    const query = document.getElementById('search')?.value.trim();
-    if (!query) return alert('Search keywords are required.');
+      let q = encodeURIComponent(query);
+      let url = `https://www.amazon.com/s?k=${q}&tag=${TAG}`;
 
-    const category = document.getElementById('category')?.value;
-    const rating = document.getElementById('minRating')?.value;
-    const filters = getCurrentSearch();
+      if (category) url += `&i=${category}`;
+      if (rating === '4') url += `&rh=p_72%3A2661618011`;
+      else if (rating === '3') url += `&rh=p_72%3A2661619011`;
 
-    localStorage.setItem('last-search', JSON.stringify(filters));
-
-    let q = encodeURIComponent(query);
-    let url = `https://www.amazon.com/s?k=${q}&tag=${TAG}`;
-
-    if (category) url += `&i=${category}`;
-    if (rating === '4') url += `&rh=p_72%3A2661618011`;
-    else if (rating === '3') url += `&rh=p_72%3A2661619011`;
-
-    for (const [key, param] of Object.entries(toggleMap)) {
-      if (filters[key] && param) {
-        url += `&rh=${param}`;
+      for (const [key, param] of Object.entries(toggleMap)) {
+        if (filters[key] && param) {
+          url += `&rh=${param}`;
+        }
       }
+
+      logDebug(`🌐 Opening URL: ${url}`);
+      window.open(url, '_blank');
     }
 
-    logDebug(`🌐 Opening URL: ${url}`);
-    window.open(url, '_blank');
-  }
+    function attachClickTracking() {
+      document.querySelectorAll('button, select, input').forEach(el => {
+        el.addEventListener('click', () => {
+          console.log(`Clicked: ${el.id || el.name || el.tagName}`);
+        });
+      });
+    }
 
-  function logDebug(msg) {
-    console.log(msg);
-  }
-</script>
+    function logDebug(msg) {
+      console.log(msg);
+    }
+  </script>
+</body>
+</html>
