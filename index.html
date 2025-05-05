@@ -50,12 +50,14 @@
 
   function startSearch() {
     logDebug('🔍 Search triggered');
-    // Element checks to prevent blank screen
+    // Safe element check: warn if missing, but continue
     const requiredIds = ['search', 'category', 'minPrice', 'maxPrice', 'minRating', 'minReviews', 'includeKeywords', 'excludeKeywords', 'exactPhrase', 'language', 'currency', 'preset', 'export'];
     for (const id of requiredIds) {
-      if (!document.getElementById(id)) {
-        alert(`Missing input element with ID: ${id}`);
-        return;
+      const el = document.getElementById(id);
+      if (!el) {
+        logDebug(`⚠️ Missing element: #${id}`);
+      }
+    }
       }
     }
     const TAG = 'echolover25-20';
