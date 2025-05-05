@@ -21,6 +21,22 @@
     'conditionNew', 'conditionUsed', 'organic', 'crueltyFree', 'glutenFree'
   ];
 
+  const toggleMap = {
+    prime: 'p_85%3A2470955011',
+    freeShipping: 'p_76%3A2661625011',
+    videoReview: 'p_n_availability%3A1248812011',
+    coupons: 'p_n_feature_thirteen_browse-bin%3A618073011',
+    conditionNew: 'p_n_condition-type%3A6461716011',
+    conditionUsed: 'p_n_condition-type%3A6461718011',
+    // The following are placeholders for features not supported directly by Amazon URL
+    subscribeSave: '',
+    pantry: '',
+    giftWrap: '',
+    organic: '',
+    crueltyFree: '',
+    glutenFree: ''
+  };
+
   window.onload = () => {
     populateDropdown('category', categories);
     populateDropdown('minRating', ratings);
@@ -101,13 +117,13 @@
 
     if (category) url += `&i=${category}`;
     if (rating === '4') url += `&rh=p_72%3A2661618011`;
-    if (rating === '3') url += `&rh=p_72%3A2661619011`;
+    else if (rating === '3') url += `&rh=p_72%3A2661619011`;
 
-    toggles.forEach(id => {
-      if (filters[id]) {
-        url += `&${id}=true`;
+    for (const [key, param] of Object.entries(toggleMap)) {
+      if (filters[key] && param) {
+        url += `&rh=${param}`;
       }
-    });
+    }
 
     logDebug(`🌐 Opening URL: ${url}`);
     window.open(url, '_blank');
