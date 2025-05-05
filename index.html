@@ -71,10 +71,11 @@
     /* Discount slider */
     #discountValue { margin-top: -0.5rem; font-size: 0.9rem; }
 
-    /* Toggle switches */
+    /* Toggle switches - aligned in two-column grid */
     .toggle-row {
-      display: flex;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      column-gap: 1rem;
       align-items: center;
       margin-bottom: 0.5rem;
     }
@@ -174,9 +175,7 @@
     .referral .copy-link {
       display: flex; gap: 0.5rem; margin-top: 1rem;
     }
-    .referral .copy-link input {
-      flex: 1;
-    }
+    .referral .copy-link input { flex: 1; }
     .error-msg { color: red; font-size: 0.9rem; }
     .thanks-msg { color: green; font-size: 0.9rem; margin-top: 0.5rem; }
   </style>
