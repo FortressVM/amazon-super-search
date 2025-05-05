@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Amazon Super Search</title>
   <style>
     :root { --bg:#f9f9f9; --text:#000; --primary:orange; --card:#eee }
@@ -40,12 +40,44 @@
     <label for="search">Search Query</label>
     <input id="search" type="text" placeholder="e.g. wireless mouse">
 
+    <!-- Departments -->
     <div class="row">
       <div class="col">
         <label for="category">Department</label>
         <select id="category">
           <option value="">All Departments</option>
-          <!-- …complete Amazon browsable nodes here… -->
+          <option value="aps">All Departments (APS)</option>
+          <option value="amazon-devices">Amazon Devices & Accessories</option>
+          <option value="mobile-apps">Apps & Games</option>
+          <option value="arts-crafts">Arts, Crafts & Sewing</option>
+          <option value="automotive">Automotive</option>
+          <option value="baby">Baby</option>
+          <option value="beauty">Beauty</option>
+          <option value="stripbooks">Books</option>
+          <option value="electronics">Electronics</option>
+          <option value="fashion">Fashion</option>
+          <option value="clothing-women">Women’s Fashion</option>
+          <option value="clothing-men">Men’s Fashion</option>
+          <option value="clothing-girls">Girls’ Fashion</option>
+          <option value="clothing-boys">Boys’ Fashion</option>
+          <option value="clothing-baby">Baby Fashion</option>
+          <option value="gift-cards">Gift Cards</option>
+          <option value="grocery">Grocery & Gourmet Food</option>
+          <option value="health-personal-care">Health & Household</option>
+          <option value="home-garden">Home & Kitchen</option>
+          <option value="industrial-scientific">Industrial & Scientific</option>
+          <option value="jewelry">Jewelry</option>
+          <option value="kindle-store">Kindle Store</option>
+          <option value="luggage">Luggage & Travel Gear</option>
+          <option value="movies-tv">Movies & TV</option>
+          <option value="music">Music, CDs & Vinyl</option>
+          <option value="office-products">Office Products</option>
+          <option value="pet-supplies">Pet Supplies</option>
+          <option value="software">Software</option>
+          <option value="sports-outdoors">Sports & Outdoors</option>
+          <option value="tools">Tools & Home Improvement</option>
+          <option value="toys-and-games">Toys & Games</option>
+          <option value="videogames">Video Games</option>
         </select>
       </div>
       <div class="col">
@@ -58,6 +90,7 @@
       </div>
     </div>
 
+    <!-- Rating & Reviews -->
     <div class="row">
       <div class="col">
         <label for="minRating">Minimum Rating</label>
@@ -78,8 +111,9 @@
       <span id="toggleArrow">⯈</span>
     </div>
 
+    <!-- Advanced Filters -->
     <div id="advancedSection" class="hidden">
-      <!-- Common → -->
+      <!-- Prime, Shipping, Pantry, Subscribe -->
       <label class="switch"><span>Prime</span>
         <div class="switch-toggle">
           <span id="primeStatus" class="status-label">OFF</span>
@@ -92,7 +126,7 @@
           <input type="checkbox" id="freeShipping" onchange="updateStatus('freeShipping','freeShipStatus')">
         </div>
       </label>
-      <label class="switch"><span>Subscribe & Save</span>
+      <label class="switch"><span>Subscribe &amp; Save</span>
         <div class="switch-toggle">
           <span id="subSaveStatus" class="status-label">OFF</span>
           <input type="checkbox" id="subscribeSave" onchange="updateStatus('subscribeSave','subSaveStatus')">
@@ -105,7 +139,7 @@
         </div>
       </label>
 
-      <!-- Niche / Requested → -->
+      <!-- Video, Coupons, Gift-Wrap -->
       <label class="switch"><span>Video Review</span>
         <div class="switch-toggle">
           <span id="videoStatus" class="status-label">OFF</span>
@@ -118,12 +152,14 @@
           <input type="checkbox" id="hasCoupon" onchange="updateStatus('hasCoupon','couponStatus')">
         </div>
       </label>
-      <label class="switch"><span>Gift-wrap</span>
+      <label class="switch"><span>Gift-Wrap</span>
         <div class="switch-toggle">
           <span id="giftStatus" class="status-label">OFF</span>
           <input type="checkbox" id="giftWrap" onchange="updateStatus('giftWrap','giftStatus')">
         </div>
       </label>
+
+      <!-- Condition, Dietary -->
       <label class="switch"><span>Condition: New</span>
         <div class="switch-toggle">
           <span id="newStatus" class="status-label">OFF</span>
@@ -155,12 +191,13 @@
         </div>
       </label>
 
-      <!-- User-requested extras → -->
+      <!-- Brand & Seller -->
       <label for="brand">Brand</label>
       <input id="brand" type="text" placeholder="Nike, Samsung…">
       <label for="seller">Seller</label>
       <input id="seller" type="text" placeholder="e.g. Amazon.com">
 
+      <!-- Sort & Discount -->
       <div class="row">
         <div class="col">
           <label for="sort">Sort By</label>
@@ -195,8 +232,8 @@
             txt = document.getElementById('toggleText'),
             arr = document.getElementById('toggleArrow'),
             hidden = adv.classList.toggle('hidden');
-      txt.textContent = hidden?'Show Advanced Filters':'Hide Advanced Filters';
-      arr.textContent = hidden?'⯈':'⯆';
+      txt.textContent = hidden ? 'Show Advanced Filters' : 'Hide Advanced Filters';
+      arr.textContent = hidden ? '⯈' : '⯆';
     }
     function updateStatus(id, lbl){
       document.getElementById(lbl).textContent =
@@ -207,7 +244,8 @@
       'videoOnly','hasCoupon','giftWrap','conditionNew','conditionUsed',
       'organic','crueltyFree','glutenFree'
     ].forEach(id=>{
-      updateStatus(id, id.replace(/([A-Z].*)$/,'Status'));
+      const label = id.replace(/([A-Z].*)$/,'Status');
+      updateStatus(id,label);
     });
 
     function startSearch(){
@@ -216,25 +254,25 @@
       let url=`https://www.amazon.com/s?k=${q}&tag=${TAG}`;
       const params=[];
 
-      // department
+      // Dept
       const cat=document.getElementById('category').value;
       if(cat) url+=`&i=${cat}`;
 
-      // price
+      // Price
       const min=+document.getElementById('minPrice').value,
             max=+document.getElementById('maxPrice').value;
       if(min||max) params.push(`p_36:${min*100}-${max*100}`);
 
-      // rating
+      // Rating
       const r=document.getElementById('minRating').value;
       if(r==='4') params.push('p_72:2661618011');
       if(r==='3') params.push('p_72:2661619011');
 
-      // reviews
+      // Reviews
       const rev=document.getElementById('minReviews').value;
       if(rev) params.push(`p_n_feature_four_browse-bin:${rev}`);
 
-      // toggles map →
+      // Toggles
       const toggles={
         primeOnly:    'p_85:2470955011',
         freeShipping: 'p_76:1243479011',
@@ -250,17 +288,21 @@
         glutenFree:   'p_0:13101962011'
       };
       Object.keys(toggles).forEach(id=>{
-        if(document.getElementById(id).checked) params.push(toggles[id]);
+        if(document.getElementById(id).checked)
+          params.push(toggles[id]);
       });
 
-      // brand/seller
+      // Brand & Seller
       const brand=document.getElementById('brand').value.trim();
       if(brand) params.push(`p_89:${encodeURIComponent(brand)}`);
       const seller=document.getElementById('seller').value.trim();
       if(seller) params.push(`p_6:${encodeURIComponent(seller)}`);
 
-      if(params.length) url+=`&rh=${params.join(',')}`;
+      // rh=…
+      if(params.length)
+        url+=`&rh=${encodeURIComponent(params.join(','))}`;
 
+      // sort
       const sort=document.getElementById('sort').value;
       if(sort!=='relevance') url+=`&s=${sort}`;
 
