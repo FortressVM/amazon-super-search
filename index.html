@@ -103,18 +103,13 @@
     .toggle-row .slider::before {
       content: "OFF";
       position: absolute;
-      height: 22px;
-      width: 22px;
-      left: 3px;
-      bottom: 2px;
+      height: 22px; width: 22px;
+      left: 3px; bottom: 2px;
       background-color: white;
       border-radius: 50%;
       border: 1px solid #555;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 10px;
-      color: #000;
+      display: flex; justify-content: center; align-items: center;
+      font-size: 10px; color: #000;
       transition: 0.4s;
     }
     .toggle-row input:checked + .slider {
@@ -169,12 +164,9 @@
       gap: 12px;
       margin-bottom: 1rem;
     }
-
-    /* Share-button styles reused */
     .share-section .share-buttons a {
       display: inline-block;
-      width: 48px;
-      height: 48px;
+      width: 48px; height: 48px;
       background-size: cover;
       border-radius: 50%;
       box-shadow: 0 0 6px rgba(0,0,0,0.2);
@@ -313,7 +305,7 @@
           <label for="departmentSelect">Category</label>
           <select id="departmentSelect">
             <option>All Categories</option>
-            <!-- add your other departments here -->
+            <!-- add additional categories -->
           </select>
         </div>
         <div>
@@ -359,139 +351,4 @@
       <div class="row">
         <strong>Optional Filters</strong>
         <div class="toggle-row"><span>Prime</span><label><input id="fPrime" type="checkbox"><span class="slider"></span></label></div>
-        <div class="toggle-row"><span>Free Shipping</span><label><input id="fFreeShip" type="checkbox"><span class="slider"></span></label></div>
-        <div class="toggle-row"><span>Subscribe & Save</span><label><input id="fSubscribe" type="checkbox"><span class="slider"></span></label></div>
-        <div class="toggle-row"><span>Amazon Pantry</span><label><input id="fPantry" type="checkbox"><span class="slider"></span></label></div>
-        <div class="toggle-row"><span>Video Review</span><label><input id="fVideo" type="checkbox"><span class="slider"></span></label></div>
-        <div class="toggle-row"><span>Coupons</span><label><input id="fCoupons" type="checkbox"><span class="slider"></span></label></div>
-        <div class="toggle-row"><span>Gift Wrap</span><label><input id="fGift" type="checkbox"><span class="slider"></span></label></div>
-      </div>
-      <div class="row inline-group">
-        <button onclick="startSearch()">Search</button>
-        <button onclick="savePreset()">Save Preset</button>
-      </div>
-    </section>
-
-    <!-- 4. Weekly Featured Finds -->
-    <section id="featured">
-      <h2>Weekly Featured Finds</h2>
-      <div class="grid">
-        <div class="card"><strong>1.</strong> Noise-Cancelling Headphones</div>
-        <div class="card"><strong>2.</strong> Portable Projectors</div>
-        <div class="card"><strong>3.</strong> Smart Home Hubs</div>
-        <div class="card"><strong>4.</strong> Fitness Trackers</div>
-      </div>
-    </section>
-
-    <!-- 5. How-To Guides -->
-    <section id="guides">
-      <h2>How-To Guides</h2>
-      <ul>
-        <li><a href="#">Maximize Amazon Savings</a></li>
-        <li><a href="#">Spot Fake Reviews</a></li>
-        <li><a href="#">Subscribe & Save Tips</a></li>
-      </ul>
-    </section>
-
-    <!-- 6. Referral Program -->
-    <section class="referral">
-      <h2>Refer a Friend</h2>
-      <div class="share-buttons">
-        <a class="facebook"
-           href="https://www.facebook.com/sharer/sharer.php?u=https://amazonsupersearch.com/?ref=YOURCODE"
-           target="_blank"
-           title="Share on Facebook"></a>
-        <a class="twitter"
-           href="https://twitter.com/intent/tweet?url=https://amazonsupersearch.com/?ref=YOURCODE"
-           target="_blank"
-           title="Share on Twitter"></a>
-        <a class="email"
-           href="mailto:?subject=Check+this+out&body=Try+this+tool:+https://amazonsupersearch.com/?ref=YOURCODE"
-           title="Share via Email"></a>
-        <a class="sms"
-           href="sms:?&body=Check+this+out:+https://amazonsupersearch.com/?ref=YOURCODE"
-           title="Share via SMS"></a>
-      </div>
-      <div class="copy-link">
-        <input
-          id="refLink"
-          type="text"
-          readonly
-          value="https://amazonsupersearch.com/?ref=YOURCODE" />
-        <button onclick="copyReferral()">Copy Link</button>
-      </div>
-    </section>
-
-    <!-- 7. Community & 8. Feedback -->
-    <section id="community">
-      <h2>Community Q&A</h2>
-      <p><a href="#">Join our discussion forum</a> and swap tips with others.</p>
-    </section>
-    <section id="feedback" class="feedback">
-      <h2>Send Us Feedback</h2>
-      <textarea id="feedbackText" placeholder="What would make this tool better?"></textarea>
-      <button onclick="sendFeedback()">Send Feedback</button>
-    </section>
-
-    <!-- 9. Changelog -->
-    <section id="changelog">
-      <h2>What's New</h2>
-      <ul>
-        <li>v1.2.0: Full advanced filters restored + alerts & badges.</li>
-        <li>v1.1.0: Gamification & saved presets.</li>
-        <li>v1.0.0: Initial release of search tool.</li>
-      </ul>
-    </section>
-
-    <!-- 10. Social Sharing -->
-    <div class="share-section">
-      <h2>Spread The Love!</h2>
-      <div class="share-buttons">
-        <a class="facebook" href="https://facebook.com/sharer/sharer.php?u=https://amazonsupersearch.com" target="_blank"></a>
-        <a class="twitter"  href="https://twitter.com/intent/tweet?url=https://amazonsupersearch.com" target="_blank"></a>
-        <a class="email"    href="mailto:?subject=Check this out&body=https://amazonsupersearch.com"></a>
-        <a class="sms"      href="sms:?&body=Check this out:+https://amazonsupersearch.com"></a>
-      </div>
-    </div>
-
-  </div>
-
-  <script>
-    // PWA install prompt
-    let deferredPrompt;
-    const installBanner = document.getElementById('installBanner');
-    window.addEventListener('beforeinstallprompt', e => {
-      e.preventDefault();
-      deferredPrompt = e;
-      installBanner.style.display = 'block';
-    });
-    document.getElementById('installBtn').onclick = () => {
-      installBanner.style.display = 'none';
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then(() => deferredPrompt = null);
-    };
-
-    // Discount slider display
-    const range = document.getElementById('minDiscount'),
-          val   = document.getElementById('discountValue');
-    range.oninput = () => val.textContent = range.value + '%';
-
-    // Stub functions
-    function applyPreset() { alert('Preset applied!'); }
-    function savePreset()  { alert('Preset saved!'); }
-    function setKeywords(txt) { document.getElementById('searchInput').value = txt; }
-    function setAlert()     { alert('Alert set!'); }
-    function startSearch()  { alert('Searching...'); }
-    function copyReferral(){
-      const ref = document.getElementById('refLink');
-      ref.select(); navigator.clipboard.writeText(ref.value);
-      alert('Referral link copied!');
-    }
-    function sendFeedback(){
-      const text = document.getElementById('feedbackText').value;
-      if(!text) return alert('Please enter feedback.');
-      alert('Thanks for your feedback!');
-    }
-  </script>
-</body>
-</html>
+        <div class="toggle-r
