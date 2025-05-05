@@ -9,6 +9,7 @@
   <style>
     body { padding: 2rem; background: #f9f9f9; }
     .slider-label { display: flex; justify-content: space-between; }
+    small.coming-soon { color: #888; font-style: italic; margin-left: .5rem; }
   </style>
 </head>
 <body>
@@ -44,7 +45,7 @@
                 </div>
                 <div class="col-md-6">
                   <label class="form-label">% Off Discount ≥</label>
-                  <input type="range" class="form-range" min="10" max="90" step="5" name="percent-off" oninput="this.nextElementSibling.innerText = this.value+'%';">
+                  <input type="range" class="form-range" min="10" max="90" step="5" name="percent-off" oninput="this.nextElementSibling.innerText=this.value+'%';">
                   <div class="slider-label"><span>10%</span><span>90%</span></div>
                 </div>
               </div>
@@ -98,10 +99,22 @@
             <div class="accordion-body">
               <div class="form-check mb-2">
                 <input class="form-check-input" type="checkbox" name="enable-boolean" id="enableBoolean">
-                <label class="form-check-label" for="enableBoolean">Boolean Operators</label>
+                <label class="form-check-label" for="enableBoolean">Enable Boolean Operators</label>
               </div>
-              <input type="text" class="form-control mb-2" name="field-filters" placeholder="field-title:wireless">
-              <input type="text" class="form-control mb-2" name="direct-lookup" placeholder="ASIN/ISBN/UPC">
+              <div class="mb-2">
+                <label class="form-label">Field Filters</label>
+                <input type="text" class="form-control" name="field-filters" placeholder="e.g. field-brand:Sony">
+              </div>
+              <div class="mb-2">
+                <label class="form-label">ASIN / ISBN Direct Lookup</label>
+                <input type="text" class="form-control" name="direct-lookup" placeholder="Enter ASIN, ISBN or UPC">
+              </div>
+              <div class="mb-2">
+                <button type="button" class="btn btn-outline-secondary">URL Parameter Builder<small class="coming-soon">(coming soon)</small></button>
+              </div>
+              <div>
+                <button type="button" class="btn btn-outline-secondary">API Scratchpad<small class="coming-soon">(coming soon)</small></button>
+              </div>
             </div>
           </div>
         </div>
@@ -115,11 +128,16 @@
           </h2>
           <div id="collapseDeal" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
             <div class="accordion-body">
-              <input type="number" class="form-control mb-2" name="price-drop" placeholder="X% below 90-day avg">
-              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="coupon-only" id="couponOnly"><label class="form-check-label" for="couponOnly">Coupon Only</label></div>
-              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="warehouse-refurb" id="warehouseRefurb"><label class="form-check-label" for="warehouseRefurb">Warehouse/Refurb</label></div>
-              <button type="button" class="btn btn-outline-secondary mb-2">Show Lightning Deals</button>
-              <button type="button" class="btn btn-outline-secondary">Upcoming Deals</button>
+              <div class="mb-3">
+                <label class="form-label">Price Drop ≥ X% Below 90-Day Avg</label>
+                <input type="number" class="form-control" name="price-drop" placeholder="e.g. 20">
+              </div>
+              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="coupon-only" id="couponOnly"><label class="form-check-label" for="couponOnly">Coupon-Clippable Only</label></div>
+              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="warehouse-refurb" id="warehouseRefurb"><label class="form-check-label" for="warehouseRefurb">Warehouse / Open-Box</label></div>
+              <div class="mb-3">
+                <button type="button" class="btn btn-outline-secondary me-2">Show Lightning Deals<small class="coming-soon">(coming soon)</small></button>
+                <button type="button" class="btn btn-outline-secondary">Upcoming Deals Calendar<small class="coming-soon">(coming soon)</small></button>
+              </div>
             </div>
           </div>
         </div>
@@ -133,9 +151,9 @@
           </h2>
           <div id="collapseCompare" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
             <div class="accordion-body">
-              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="side-by-side" id="sideBySide"><label class="form-check-label" for="sideBySide">Side-by-Side Tables</label></div>
-              <button type="button" class="btn btn-outline-secondary mb-2">Price-History Charts</button>
-              <div class="form-check"><input class="form-check-input" type="checkbox" name="verified-only" id="verifiedOnly"><label class="form-check-label" for="verifiedOnly">Verified Purchase Only</label></div>
+              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="side-by-side" id="sideBySide"><label class="form-check-label" for="sideBySide">Side-by-Side Spec Tables</label></div>
+              <div class="mb-2"><button type="button" class="btn btn-outline-secondary">Show Price-History Charts<small class="coming-soon">(coming soon)</small></button></div>
+              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="verified-only" id="verifiedOnly"><label class="form-check-label" for="verifiedOnly">Verified-Purchase Only Reviews</label></div>
             </div>
           </div>
         </div>
@@ -150,8 +168,57 @@
           <div id="collapsePersonal" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
             <div class="accordion-body">
               <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="predictive-score" id="predictiveScore"><label class="form-check-label" for="predictiveScore">Buy-Now-or-Wait Score</label></div>
-              <input type="text" class="form-control mb-2" name="restock-forecast" placeholder="ASIN for restock forecast">
-              <div class="form-check"><input class="form-check-input" type="checkbox" name="emotion-feedback" id="emotionFeedback"><label class="form-check-label" for="emotionFeedback">Emotion Feedback Loop</label></div>
+              <div class="mb-2"><label class="form-label">Restock Forecasts</label><input type="text" class="form-control" name="restock-forecast" placeholder="ASIN…"></div>
+              <div class="form-check"><input class="form-check-input" type="checkbox" name="emotion-feedback" id="emotionFeedback"><label class="form-check-label" for="emotionFeedback">Emotion-Feedback Loop</label></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual & Voice Interfaces -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingVisual">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseVisual">
+              Visual & Voice Interfaces
+            </button>
+          </h2>
+          <div id="collapseVisual" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
+            <div class="accordion-body">
+              <div class="mb-2"><label class="form-label">Image-Based Search</label><input type="file" class="form-control" name="image-search"><small class="coming-soon">(coming soon)</small></div>
+              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="ar-preview" id="arPreview"><label class="form-check-label" for="arPreview">AR-Preview Links</label> <small class="coming-soon">(coming soon)</small></div>
+              <div class="mb-2"><label class="form-label">Natural-Language Query</label><input type="text" class="form-control" name="nl-query" placeholder="Describe what you need…"><small class="coming-soon">(coming soon)</small></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Niche & Lifestyle Filters -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingNiche">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNiche">
+              Niche & Lifestyle Filters
+            </button>
+          </h2>
+          <div id="collapseNiche" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
+            <div class="accordion-body">
+              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="sustainability" id="sustainability"><label class="form-check-label" for="sustainability">Sustainability & Ethical</label></div>
+              <div class="mb-2"><label class="form-label">Delivery Date (by…)</label><input type="date" class="form-control" name="delivery-by"><small class="coming-soon">(coming soon)</small></div>
+              <div class="mb-2"><label class="form-label">Global-Ship & Tax Estimator</label><input type="text" class="form-control" name="global-tax" placeholder="Your country code"><small class="coming-soon">(coming soon)</small></div>
+              <div class="form-check"><input class="form-check-input" type="checkbox" name="business-mode" id="businessMode"><label class="form-check-label" for="businessMode">Business / Wholesale Mode</label><small class="coming-soon">(coming soon)</small></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social & Collaborative -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingSocial">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSocial">
+              Social & Collaborative
+            </button>
+          </h2>
+          <div id="collapseSocial" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
+            <div class="accordion-body">
+              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="group-wish" id="groupWish"><label class="form-check-label" for="groupWish">Group-Wish Notifications</label><small class="coming-soon">(coming soon)</small></div>
+              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="user-bundles" id="userBundles"><label class="form-check-label" for="userBundles">User-Generated Bundles</label><small class="coming-soon">(coming soon)</small></div>
+              <div class="mb-2"><button type="button" class="btn btn-outline-secondary">Spread the Love! Copy Link</button><small class="coming-soon">(coming soon)</small></div>
             </div>
           </div>
         </div>
@@ -196,78 +263,44 @@
       }
 
       // Prime & stock
-      if (data.get('prime-only')) {
-        params.append('rh', (params.get('rh')||'') + ',p_85:');
-      }
-      if (data.get('in-stock')) {
-        params.append('rh', (params.get('rh')||'') + ',p_n_availability:1248879011');
-      }
+      if (data.get('prime-only')) params.append('rh', (params.get('rh')||'') + ',p_85:');
+      if (data.get('in-stock')) params.append('rh', (params.get('rh')||'') + ',p_n_availability:1248879011');
 
       // Rating
-      const ratingMap = {
-        '4 ★ & up':'2661618011',
-        '3 ★ & up':'2661619011',
-        '2 ★ & up':'2661620011',
-        '1 ★ & up':'2661621011'
-      };
-      if (ratingMap[data.get('min-rating')]) {
-        params.append('p_72', ratingMap[data.get('min-rating')]);
-      }
+      const ratingMap = { '4 ★ & up':'2661618011','3 ★ & up':'2661619011','2 ★ & up':'2661620011','1 ★ & up':'2661621011' };
+      if (ratingMap[data.get('min-rating')]) params.append('p_72', ratingMap[data.get('min-rating')]);
 
       // Sort
-      if (data.get('sort')) {
-        params.set('s', data.get('sort'));
-      }
+      if (data.get('sort')) params.set('s', data.get('sort'));
 
       // Power-user filters
-      if (data.get('enable-boolean')) {
-        params.set('bop', 'enable');
-      }
-      if (data.get('field-filters')) {
-        params.set('rh', (params.get('rh')||'') + ',' + data.get('field-filters'));
-      }
+      if (data.get('enable-boolean')) params.set('bop','enable');
+      if (data.get('field-filters')) params.set('rh',(params.get('rh')||'')+','+data.get('field-filters'));
 
       // Direct lookup
       if (data.get('direct-lookup')) {
-        window.open(
-          `https://www.amazon.com/dp/${encodeURIComponent(data.get('direct-lookup'))}/?tag=${data.get('tag')}`,
-          '_blank'
-        );
+        window.open(`https://www.amazon.com/dp/${encodeURIComponent(data.get('direct-lookup'))}/?tag=${data.get('tag')}`,'_blank');
         return;
       }
 
       // Deal-hunter
-      if (data.get('price-drop')) {
-        params.append('rh', (params.get('rh')||'') + ',p_n_pct-price-drop:' + data.get('price-drop'));
-      }
-      if (data.get('coupon-only')) {
-        params.append('rh', (params.get('rh')||'') + ',p_5:couponEligible');
-      }
-      if (data.get('warehouse-refurb')) {
-        params.append('rh', (params.get('rh')||'') + ',p_n_condition-type:1380442031');
-      }
+      if (data.get('price-drop')) params.append('rh',(params.get('rh')||'')+',p_n_pct-price-drop:'+data.get('price-drop'));
+      if (data.get('coupon-only')) params.append('rh',(params.get('rh')||'')+',p_5:couponEligible');
+      if (data.get('warehouse-refurb')) params.append('rh',(params.get('rh')||'')+',p_n_condition-type:1380442031');
 
       // Comparison & research
-      if (data.get('side-by-side')) {
-        params.set('compare', 'side-by-side');
-      }
-      if (data.get('verified-only')) {
-        params.set('reviewerType', 'avp_only_reviews');
-      }
+      if (data.get('side-by-side')) params.set('compare','side-by-side');
+      if (data.get('verified-only')) params.set('reviewerType','avp_only_reviews');
 
       // Personalization & AI
-      if (data.get('predictive-score')) {
-        params.set('predictive', '1');
-      }
-      if (data.get('restock-forecast')) {
-        params.set('restockASIN', data.get('restock-forecast'));
-      }
-      if (data.get('emotion-feedback')) {
-        params.set('emotion', '1');
-      }
+      if (data.get('predictive-score')) params.set('predictive','1');
+      if (data.get('restock-forecast')) params.set('restockASIN',data.get('restock-forecast'));
+      if (data.get('emotion-feedback')) params.set('emotion','1');
 
-      // Redirect to Amazon
-      window.open(`https://www.amazon.com/s?${params.toString()}`, '_blank');
+      // Extras label coming soon for unimplemented
+
+      // Redirect
+      window.open(`https://www.amazon.com/s?${params.toString()}`,'_blank');
     });
   </script>
 </body>
