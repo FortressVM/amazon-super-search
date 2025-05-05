@@ -1,138 +1,244 @@
-<script>
-  function toggleTheme() {
-    document.body.classList.toggle('dark');
-  }
-
-  function toggleAdvanced() {
-    const adv = document.getElementById('advancedSection'),
-          txt = document.getElementById('toggleText'),
-          arr = document.getElementById('toggleArrow'),
-          hidden = adv.classList.toggle('hidden');
-    txt.textContent = hidden ? 'Show Advanced Filters' : 'Hide Advanced Filters';
-    arr.textContent = hidden ? '⯈' : '⯆';
-  }
-
-  function savePreset() {
-    const query = document.getElementById('search').value;
-    if (!query) return alert('Enter a search query first.');
-    const key = prompt('Name this preset:');
-    if (key) localStorage.setItem(`preset-${key}`, JSON.stringify(getCurrentSearch()));
-  }
-
-  function loadPreset(presetId) {
-    if (!presetId) return;
-    const data = localStorage.getItem(`preset-${presetId}`);
-    if (!data) return alert('Preset not found.');
-    const values = JSON.parse(data);
-    for (const [id, val] of Object.entries(values)) {
-      const el = document.getElementById(id);
-      if (el) el.value = val;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amazon Super Search</title>
+  <style>
+    :root {
+      --bg: #f9f9f9;
+      --text: #000;
+      --primary: orange;
+      --card: #eee;
     }
-  }
+    body.dark {
+      --bg: #1c1c1c;
+      --text: #fff;
+      --card: #2b2b2b;
+    }
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 1rem;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: var(--card);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 { text-align: center; }
+    .row { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .row > div { flex: 1 1 200px; }
+    .hidden { display: none; }
+    button { background: var(--primary); color: #fff; border: none; padding: 0.6rem 1rem; cursor: pointer; border-radius: 5px; }
+    select, input { width: 100%; padding: 0.4rem; border-radius: 4px; border: 1px solid #ccc; }
+    .debug { font-size: 0.8rem; background: #111; color: #0f0; padding: 0.5rem; font-family: monospace; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Amazon Super Search</h1>
+    <div class="row">
+      <div><input id="search" placeholder="Search keywords" /></div>
+      <div>
+        <select id="category">
+          <option value="">All Categories</option>
+          <option value="stripbooks">Books</option>
+          <option value="electronics">Electronics</option>
+          <option value="fashion">Clothing</option>
+          <option value="garden">Home & Kitchen</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div><input id="minPrice" type="number" placeholder="Min Price ($)" /></div>
+      <div><input id="maxPrice" type="number" placeholder="Max Price ($)" /></div>
+      <div>
+        <select id="minRating">
+          <option value="">Min Rating</option>
+          <option value="4">4 stars & up</option>
+          <option value="3">3 stars & up</option>
+        </select>
+      </div>
+      <div><input id="minReviews" type="number" placeholder="Min Reviews" /></div>
+    </div>
 
-  function getCurrentSearch() {
-    return {
-      search: document.getElementById('search')?.value || '',
-      category: document.getElementById('category')?.value || '',
-      minPrice: document.getElementById('minPrice')?.value || '',
-      maxPrice: document.getElementById('maxPrice')?.value || '',
-      minRating: document.getElementById('minRating')?.value || '',
-      minReviews: document.getElementById('minReviews')?.value || '',
-      includeKeywords: document.getElementById('includeKeywords')?.value || '',
-      excludeKeywords: document.getElementById('excludeKeywords')?.value || '',
-      exactPhrase: document.getElementById('exactPhrase')?.value || '',
-      language: document.getElementById('language')?.value || '',
-      currency: document.getElementById('currency')?.value || '',
-      preset: document.getElementById('preset')?.value || '',
-      export: document.getElementById('export')?.value || ''
-    };
-  }
+    <button onclick="toggleAdvanced()"><span id="toggleArrow">⯈</span> <span id="toggleText">Show Advanced Filters</span></button>
 
-  function startSearch() {
-    logDebug('🔍 Search triggered');
+    <div id="advancedSection" class="hidden">
+      <div class="row">
+        <div><input id="includeKeywords" placeholder="Include keywords (comma-separated)" /></div>
+        <div><input id="excludeKeywords" placeholder="Exclude keywords (comma-separated)" /></div>
+        <div><input id="exactPhrase" placeholder="Exact phrase" /></div>
+      </div>
+      <div class="row">
+        <div><input id="language" placeholder="Language (optional)" /></div>
+        <div><input id="currency" placeholder="Currency (e.g., USD)" /></div>
+        <div><select id="sort">
+          <option value="relevance">Sort: Relevance</option>
+          <option value="price-asc-rank">Price: Low to High</option>
+          <option value="price-desc-rank">Price: High to Low</option>
+          <option value="review-rank">Avg. Customer Review</option>
+        </select></div>
+      </div>
+    </div>
 
-    const requiredIds = ['search', 'category', 'minPrice', 'maxPrice', 'minRating', 'minReviews', 'includeKeywords', 'excludeKeywords', 'exactPhrase', 'language', 'currency', 'preset', 'export'];
-    for (const id of requiredIds) {
-      const el = document.getElementById(id);
-      if (!el) {
-        logDebug(`⚠️ Missing element: #${id}`);
+    <div class="row">
+      <div>
+        <select id="preset">
+          <option value="">Load Preset</option>
+          <option value="last">Last Used</option>
+        </select>
+      </div>
+      <div>
+        <select id="export">
+          <option value="">Export Format</option>
+          <option value="csv">CSV</option>
+          <option value="pdf">PDF</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div><button onclick="startSearch()">Search</button></div>
+      <div><button onclick="savePreset()">Save Preset</button></div>
+      <div><button onclick="loadPreset('last')">Load Last</button></div>
+      <div><button onclick="toggleTheme()">Toggle Theme</button></div>
+    </div>
+  </div>
+
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+    }
+
+    function toggleAdvanced() {
+      const adv = document.getElementById('advancedSection'),
+            txt = document.getElementById('toggleText'),
+            arr = document.getElementById('toggleArrow'),
+            hidden = adv.classList.toggle('hidden');
+      txt.textContent = hidden ? 'Show Advanced Filters' : 'Hide Advanced Filters';
+      arr.textContent = hidden ? '⯈' : '⯆';
+    }
+
+    function savePreset() {
+      const query = document.getElementById('search').value;
+      if (!query) return alert('Enter a search query first.');
+      localStorage.setItem(`preset-last`, JSON.stringify(getCurrentSearch()));
+    }
+
+    function loadPreset(presetId) {
+      if (!presetId) return;
+      const data = localStorage.getItem(`preset-${presetId}`);
+      if (!data) return alert('Preset not found.');
+      const values = JSON.parse(data);
+      for (const [id, val] of Object.entries(values)) {
+        const el = document.getElementById(id);
+        if (el) el.value = val;
       }
     }
 
-    const TAG = 'echolover25-20';
-    let query = document.getElementById('search')?.value.trim() || '';
-    const include = document.getElementById('includeKeywords')?.value.trim() || '';
-    const exclude = document.getElementById('excludeKeywords')?.value.trim() || '';
-    const phrase = document.getElementById('exactPhrase')?.value.trim() || '';
-
-    if (phrase) query += ` "${phrase}"`;
-    if (include) query += ` ${include}`;
-    if (exclude) query += ` -${exclude.split(',').join(' -')}`;
-
-    const q = encodeURIComponent(query);
-    let url = `https://www.amazon.com/s?k=${q}&tag=${TAG}`;
-    logDebug(`🔗 Base URL: ${url}`);
-
-    const category = document.getElementById('category')?.value;
-    if (category) url += `&i=${category}`;
-
-    const minPrice = document.getElementById('minPrice')?.value;
-    const maxPrice = document.getElementById('maxPrice')?.value;
-    if (minPrice || maxPrice) {
-      logDebug(`💲 Price range: ${minPrice} - ${maxPrice}`);
-      const minCents = Math.floor((+minPrice || 0) * 100);
-      const maxCents = Math.floor((+maxPrice || 99999) * 100);
-      url += `&rh=p_36%3A${minCents}-${maxCents}`;
+    function getCurrentSearch() {
+      return {
+        search: document.getElementById('search')?.value || '',
+        category: document.getElementById('category')?.value || '',
+        minPrice: document.getElementById('minPrice')?.value || '',
+        maxPrice: document.getElementById('maxPrice')?.value || '',
+        minRating: document.getElementById('minRating')?.value || '',
+        minReviews: document.getElementById('minReviews')?.value || '',
+        includeKeywords: document.getElementById('includeKeywords')?.value || '',
+        excludeKeywords: document.getElementById('excludeKeywords')?.value || '',
+        exactPhrase: document.getElementById('exactPhrase')?.value || '',
+        language: document.getElementById('language')?.value || '',
+        currency: document.getElementById('currency')?.value || '',
+        preset: document.getElementById('preset')?.value || '',
+        export: document.getElementById('export')?.value || ''
+      };
     }
 
-    const minRating = document.getElementById('minRating')?.value;
-    if (minRating === '4') url += `&rh=p_72%3A2661618011`;
-    if (minRating === '3') url += `&rh=p_72%3A2661619011`;
+    function startSearch() {
+      logDebug('🔍 Search triggered');
 
-    const minReviews = document.getElementById('minReviews')?.value;
-    if (minReviews) url += `&rh=p_n_feature_four_browse-bin%3A${minReviews}`;
+      const TAG = 'echolover25-20';
+      let query = document.getElementById('search')?.value.trim() || '';
+      const include = document.getElementById('includeKeywords')?.value.trim() || '';
+      const exclude = document.getElementById('excludeKeywords')?.value.trim() || '';
+      const phrase = document.getElementById('exactPhrase')?.value.trim() || '';
 
-    const sort = document.getElementById('sort');
-    if (sort && sort.value && sort.value !== 'relevance') {
-      url += `&s=${sort.value}`;
+      if (phrase) query += ` "${phrase}"`;
+      if (include) query += ` ${include}`;
+      if (exclude) query += ` -${exclude.split(',').join(' -')}`;
+
+      const q = encodeURIComponent(query);
+      let url = `https://www.amazon.com/s?k=${q}&tag=${TAG}`;
+      logDebug(`🔗 Base URL: ${url}`);
+
+      const category = document.getElementById('category')?.value;
+      if (category) url += `&i=${category}`;
+
+      const minPrice = document.getElementById('minPrice')?.value;
+      const maxPrice = document.getElementById('maxPrice')?.value;
+      if (minPrice || maxPrice) {
+        const minCents = Math.floor((+minPrice || 0) * 100);
+        const maxCents = Math.floor((+maxPrice || 99999) * 100);
+        url += `&rh=p_36%3A${minCents}-${maxCents}`;
+      }
+
+      const minRating = document.getElementById('minRating')?.value;
+      if (minRating === '4') url += `&rh=p_72%3A2661618011`;
+      if (minRating === '3') url += `&rh=p_72%3A2661619011`;
+
+      const minReviews = document.getElementById('minReviews')?.value;
+      if (minReviews) url += `&rh=p_n_feature_four_browse-bin%3A${minReviews}`;
+
+      const sort = document.getElementById('sort');
+      if (sort && sort.value && sort.value !== 'relevance') {
+        url += `&s=${sort.value}`;
+      }
+
+      const exportType = document.getElementById('export')?.value;
+      if (exportType) {
+        logDebug(`📤 Exporting as: ${exportType}`);
+        const output = `Search Query: ${query}\nURL: ${url}`;
+        const blob = new Blob([output], { type: exportType === 'csv' ? 'text/csv' : 'application/octet-stream' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `amazon_search.${exportType}`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } else {
+        logDebug('🌐 Opening Amazon URL in new tab');
+        window.open(url, '_blank');
+      }
     }
 
-    const exportType = document.getElementById('export')?.value;
-    if (exportType) {
-      logDebug(`📤 Exporting as: ${exportType}`);
-      const output = `Search Query: ${query}\nURL: ${url}`;
-      const blob = new Blob([output], { type: exportType === 'csv' ? 'text/csv' : 'application/octet-stream' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `amazon_search.${exportType}`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    } else {
-      logDebug('🌐 Opening Amazon URL in new tab');
-      window.open(url, '_blank');
+    function logDebug(message) {
+      let panel = document.getElementById('debugPanel');
+      if (!panel) {
+        panel = document.createElement('div');
+        panel.id = 'debugPanel';
+        panel.style.position = 'fixed';
+        panel.style.bottom = '0';
+        panel.style.left = '0';
+        panel.style.right = '0';
+        panel.style.background = 'rgba(0,0,0,0.8)';
+        panel.style.color = '#0f0';
+        panel.style.padding = '10px';
+        panel.style.fontSize = '12px';
+        panel.style.fontFamily = 'monospace';
+        panel.style.maxHeight = '150px';
+        panel.style.overflowY = 'auto';
+        document.body.appendChild(panel);
+      }
+      const timestamp = new Date().toLocaleTimeString();
+      panel.innerHTML += `<div>[${timestamp}] ${message}</div>`;
     }
-  }
-
-  function logDebug(message) {
-    let panel = document.getElementById('debugPanel');
-    if (!panel) {
-      panel = document.createElement('div');
-      panel.id = 'debugPanel';
-      panel.style.position = 'fixed';
-      panel.style.bottom = '0';
-      panel.style.left = '0';
-      panel.style.right = '0';
-      panel.style.background = 'rgba(0,0,0,0.8)';
-      panel.style.color = '#0f0';
-      panel.style.padding = '10px';
-      panel.style.fontSize = '12px';
-      panel.style.fontFamily = 'monospace';
-      panel.style.maxHeight = '150px';
-      panel.style.overflowY = 'auto';
-      document.body.appendChild(panel);
-    }
-    const timestamp = new Date().toLocaleTimeString();
-    panel.innerHTML += `<div>[${timestamp}] ${message}</div>`;
-  }
-</script>
+  </script>
+</body>
+</html>
