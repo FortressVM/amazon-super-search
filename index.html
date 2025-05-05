@@ -1,173 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Amazon Super Search</title>
   <style>
-    body { font-family: sans-serif; padding: 1rem; background: #f9f9f9; color: #000; }
-    .container { max-width: 900px; margin: auto; background: #fff; padding: 1rem; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    label { display: block; margin-top: 1rem; font-weight: bold; }
-    input[type="text"], select { width: 100%; padding: 0.5rem; margin-top: 0.25rem; }
-    .switch { display: flex; justify-content: space-between; align-items: center; margin: 0.5rem 0; }
-    button { margin: 0.5rem 0.25rem; padding: 0.5rem 1rem; background: orange; border: none; color: white; cursor: pointer; border-radius: 5px; }
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      background: #f9f9f9;
+      color: #000;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
+    .row {
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 0.25rem;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    button {
+      background: orange;
+      border: none;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .inline-group {
+      display: flex;
+      gap: 1rem;
+    }
+    .inline-group > * {
+      flex: 1;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Amazon Super Search</h1>
-    <label>Search Query <input id="search" type="text" placeholder="e.g. wireless mouse" /></label>
-    <label>Category <select id="category"></select></label>
-    <label>Minimum Rating <select id="minRating"></select></label>
-
-    <div id="toggles">
-      <div class="switch"><span>Prime</span><input type="checkbox" id="prime"></div>
-      <div class="switch"><span>Free Shipping</span><input type="checkbox" id="freeShipping"></div>
-      <div class="switch"><span>Subscribe & Save</span><input type="checkbox" id="subscribeSave"></div>
-      <div class="switch"><span>Amazon Pantry</span><input type="checkbox" id="pantry"></div>
-      <div class="switch"><span>Video Review</span><input type="checkbox" id="videoReview"></div>
-      <div class="switch"><span>Coupons</span><input type="checkbox" id="coupons"></div>
-      <div class="switch"><span>Gift Wrap</span><input type="checkbox" id="giftWrap"></div>
-      <div class="switch"><span>Condition: New</span><input type="checkbox" id="conditionNew"></div>
-      <div class="switch"><span>Condition: Used</span><input type="checkbox" id="conditionUsed"></div>
-      <div class="switch"><span>Organic</span><input type="checkbox" id="organic"></div>
-      <div class="switch"><span>Cruelty-Free</span><input type="checkbox" id="crueltyFree"></div>
-      <div class="switch"><span>Gluten-Free</span><input type="checkbox" id="glutenFree"></div>
+<div class="container">
+  <h1>Amazon Super Search</h1>
+  <div class="row">
+    <label for="search">Search Keywords</label>
+    <input type="text" id="search" placeholder="e.g. wireless headphones">
+  </div>
+  <div class="inline-group row">
+    <div>
+      <label for="category">Category</label>
+      <select id="category"></select>
     </div>
-
+    <div>
+      <label for="minRating">Min Rating</label>
+      <select id="minRating"></select>
+    </div>
+  </div>
+  <div class="inline-group row">
+    <div>
+      <label for="minPrice">Min Price ($)</label>
+      <input type="number" id="minPrice" min="0">
+    </div>
+    <div>
+      <label for="maxPrice">Max Price ($)</label>
+      <input type="number" id="maxPrice" min="0">
+    </div>
+  </div>
+  <div class="row">
+    <label for="minReviews">Min # of Reviews</label>
+    <input type="number" id="minReviews" min="0">
+  </div>
+  <div class="row">
+    <label for="sort">Sort By</label>
+    <select id="sort">
+      <option value="relevance">Relevance</option>
+      <option value="price-asc-rank">Price: Low to High</option>
+      <option value="price-desc-rank">Price: High to Low</option>
+      <option value="review-rank">Avg. Customer Review</option>
+      <option value="date-desc-rank">Newest Arrivals</option>
+    </select>
+  </div>
+  <div class="row">
+    <label for="discount">Min Discount (%)</label>
+    <input type="range" id="discount" min="0" max="90" step="5" oninput="document.getElementById('discountValue').textContent = this.value + '%'">
+    <span id="discountValue">0%</span>
+  </div>
+  <div class="row inline-group">
     <button onclick="startSearch()">Search</button>
     <button onclick="savePreset()">Save Preset</button>
-    <button onclick="restoreLastSearch()">Load Last</button>
   </div>
+</div>
+<script>
+  const categories = [
+    { name: 'All Categories', value: '' },
+    { name: 'Books', value: 'stripbooks' },
+    { name: 'Electronics', value: 'electronics' },
+    { name: 'Clothing & Accessories', value: 'fashion' },
+    { name: 'Home & Kitchen', value: 'garden' },
+    { name: 'Beauty & Personal Care', value: 'beauty' },
+    { name: 'Toys & Games', value: 'toys-and-games' },
+    { name: 'Health & Personal Care', value: 'hpc' }
+  ];
 
-  <script>
-    const categories = [
-      { name: 'All Categories', value: '' },
-      { name: 'Books', value: 'stripbooks' },
-      { name: 'Electronics', value: 'electronics' },
-      { name: 'Clothing & Accessories', value: 'fashion' },
-      { name: 'Home & Kitchen', value: 'garden' },
-      { name: 'Beauty & Personal Care', value: 'beauty' },
-      { name: 'Toys & Games', value: 'toys-and-games' },
-      { name: 'Health & Personal Care', value: 'hpc' }
-    ];
+  const ratings = [
+    { name: 'Any Rating', value: '' },
+    { name: '4 stars & up', value: '4' },
+    { name: '3 stars & up', value: '3' }
+  ];
 
-    const ratings = [
-      { name: 'Any Rating', value: '' },
-      { name: '4 stars & up', value: '4' },
-      { name: '3 stars & up', value: '3' }
-    ];
+  window.onload = () => {
+    populateDropdown('category', categories);
+    populateDropdown('minRating', ratings);
+    restoreLastSearch();
+    attachClickTracking();
+  };
 
-    const toggles = [
-      'prime', 'freeShipping', 'subscribeSave', 'pantry', 'videoReview', 'coupons', 'giftWrap',
-      'conditionNew', 'conditionUsed', 'organic', 'crueltyFree', 'glutenFree'
-    ];
+  function populateDropdown(id, list) {
+    const select = document.getElementById(id);
+    list.forEach(opt => {
+      const option = document.createElement('option');
+      option.textContent = opt.name;
+      option.value = opt.value;
+      select.appendChild(option);
+    });
+  }
 
-    const toggleMap = {
-      prime: 'p_85%3A2470955011',
-      freeShipping: 'p_76%3A2661625011',
-      videoReview: 'p_n_availability%3A1248812011',
-      coupons: 'p_n_feature_thirteen_browse-bin%3A618073011',
-      conditionNew: 'p_n_condition-type%3A6461716011',
-      conditionUsed: 'p_n_condition-type%3A6461718011',
-      subscribeSave: '', pantry: '', giftWrap: '', organic: '', crueltyFree: '', glutenFree: ''
-    };
-
-    window.onload = () => {
-      populateDropdown('category', categories);
-      populateDropdown('minRating', ratings);
-      restoreLastSearch();
-      attachClickTracking();
-    };
-
-    function populateDropdown(id, list) {
-      const select = document.getElementById(id);
-      if (!select) return;
-      list.forEach(opt => {
-        const option = document.createElement('option');
-        option.textContent = opt.name;
-        option.value = opt.value;
-        select.appendChild(option);
-      });
-    }
-
-    function getCurrentSearch() {
-      const obj = {
-        search: document.getElementById('search')?.value || '',
-        category: document.getElementById('category')?.value || '',
-        minRating: document.getElementById('minRating')?.value || ''
-      };
-      toggles.forEach(id => {
+  function restoreLastSearch() {
+    const saved = localStorage.getItem('last-search');
+    if (saved) {
+      const data = JSON.parse(saved);
+      for (const [id, val] of Object.entries(data)) {
         const el = document.getElementById(id);
-        if (el) obj[id] = el.checked;
+        if (el) el.value = val;
+      }
+    }
+  }
+
+  function attachClickTracking() {
+    document.querySelectorAll('button, select, input').forEach(el => {
+      el.addEventListener('click', () => {
+        console.log(`Clicked: ${el.id || el.name || el.tagName}`);
       });
-      return obj;
+    });
+  }
+
+  function savePreset() {
+    const key = prompt('Name this preset:');
+    if (key) {
+      const data = getCurrentSearch();
+      localStorage.setItem(`preset-${key}`, JSON.stringify(data));
+      localStorage.setItem('last-search', JSON.stringify(data));
+    }
+  }
+
+  function getCurrentSearch() {
+    const ids = ['search','category','minRating','minPrice','maxPrice','minReviews','sort','discount'];
+    const obj = {};
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) obj[id] = el.value;
+    });
+    return obj;
+  }
+
+  function startSearch() {
+    const TAG = 'echolover25-20';
+    const q = encodeURIComponent(document.getElementById('search').value.trim());
+    let url = `https://www.amazon.com/s?k=${q}&tag=${TAG}`;
+
+    const category = document.getElementById('category')?.value;
+    const rating = document.getElementById('minRating')?.value;
+    const minPrice = document.getElementById('minPrice')?.value;
+    const maxPrice = document.getElementById('maxPrice')?.value;
+    const sort = document.getElementById('sort')?.value;
+    const minReviews = document.getElementById('minReviews')?.value;
+
+    if (category) url += `&i=${category}`;
+    if (rating === '4') url += `&rh=p_72%3A2661618011`;
+    else if (rating === '3') url += `&rh=p_72%3A2661619011`;
+
+    if (minPrice || maxPrice) {
+      const minCents = Math.floor((+minPrice || 0) * 100);
+      const maxCents = Math.floor((+maxPrice || 99999) * 100);
+      url += `&rh=p_36%3A${minCents}-${maxCents}`;
     }
 
-    function savePreset() {
-      const query = document.getElementById('search').value;
-      if (!query) return alert('Enter a search query first.');
-      const key = prompt('Name this preset:');
-      if (key) {
-        const data = getCurrentSearch();
-        localStorage.setItem(`preset-${key}`, JSON.stringify(data));
-        localStorage.setItem('last-search', JSON.stringify(data));
-      }
-    }
+    if (minReviews) url += `&rh=p_n_feature_four_browse-bin%3A${minReviews}`;
+    if (sort && sort !== 'relevance') url += `&s=${sort}`;
 
-    function restoreLastSearch() {
-      const saved = localStorage.getItem('last-search');
-      if (saved) {
-        const data = JSON.parse(saved);
-        for (const [id, val] of Object.entries(data)) {
-          const el = document.getElementById(id);
-          if (el) {
-            if (el.type === 'checkbox') el.checked = val === true;
-            else el.value = val;
-          }
-        }
-      }
-    }
+    logDebug(`🌐 Opening URL: ${url}`);
+    window.open(url, '_blank');
+  }
 
-    function startSearch() {
-      const TAG = 'echolover25-20';
-      const query = document.getElementById('search')?.value.trim();
-      if (!query) return alert('Search keywords are required.');
-
-      const category = document.getElementById('category')?.value;
-      const rating = document.getElementById('minRating')?.value;
-      const filters = getCurrentSearch();
-
-      localStorage.setItem('last-search', JSON.stringify(filters));
-
-      let q = encodeURIComponent(query);
-      let url = `https://www.amazon.com/s?k=${q}&tag=${TAG}`;
-
-      if (category) url += `&i=${category}`;
-      if (rating === '4') url += `&rh=p_72%3A2661618011`;
-      else if (rating === '3') url += `&rh=p_72%3A2661619011`;
-
-      for (const [key, param] of Object.entries(toggleMap)) {
-        if (filters[key] && param) {
-          url += `&rh=${param}`;
-        }
-      }
-
-      logDebug(`🌐 Opening URL: ${url}`);
-      window.open(url, '_blank');
-    }
-
-    function attachClickTracking() {
-      document.querySelectorAll('button, select, input').forEach(el => {
-        el.addEventListener('click', () => {
-          console.log(`Clicked: ${el.id || el.name || el.tagName}`);
-        });
-      });
-    }
-
-    function logDebug(msg) {
-      console.log(msg);
-    }
-  </script>
+  function logDebug(msg) {
+    console.log(msg);
+  }
+</script>
 </body>
 </html>
