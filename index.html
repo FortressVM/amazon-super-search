@@ -4,9 +4,209 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Amazon Super Search</title>
-  <link rel="manifest" href="manifest.json">
   <style>
-    /* … all your existing CSS … */
+    /* ---------------- Global ---------------- */
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      background: #f9f9f9;
+      color: #000;
+    }
+    header {
+      background: #053E5E;
+      color: #fff;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    nav a {
+      color: #fff;
+      margin-left: 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .points-badges {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .points {
+      font-size: 0.9rem;
+    }
+    .badges img {
+      width: 24px;
+      height: 24px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
+    .container h2 {
+      margin-top: 2rem;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 0.5rem;
+      color: #053E5E;
+    }
+    .container h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .row {
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 0.25rem;
+    }
+    input, select, button, textarea {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      background: orange;
+      border: none;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .inline-group {
+      display: flex;
+      gap: 1rem;
+    }
+    .inline-group > * {
+      flex: 1;
+    }
+    #discountValue {
+      margin-top: -0.5rem;
+      font-size: 0.9rem;
+    }
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .toggle-row input[type="checkbox"] {
+      display: none;
+    }
+    .toggle-row .slider {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 28px;
+      background-color: #ccc;
+      border-radius: 28px;
+      border: 2px solid #888;
+      transition: 0.4s;
+      box-shadow: inset 0 0 2px rgba(0,0,0,0.3);
+    }
+    .toggle-row .slider::before {
+      content: "OFF";
+      position: absolute;
+      height: 22px;
+      width: 22px;
+      left: 3px;
+      bottom: 2px;
+      background-color: white;
+      border-radius: 50%;
+      border: 1px solid #555;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 10px;
+      color: #000;
+      transition: 0.4s;
+    }
+    .toggle-row input:checked + .slider {
+      background-color: orange;
+      border-color: #e67e00;
+      box-shadow: 0 0 8px orange;
+    }
+    .toggle-row input:checked + .slider::before {
+      transform: translateX(28px);
+      content: "ON";
+      color: white;
+      background-color: #b35b00;
+      border-color: #b35b00;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .card {
+      background: #fafafa;
+      padding: 1rem;
+      border-radius: 6px;
+    }
+    .referral {
+      background: #f9f9f9;
+      padding: 1rem;
+      border: 1px dashed #888;
+      border-radius: 6px;
+      margin-top: 2rem;
+    }
+    .referral .share-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 1rem;
+    }
+    .share-buttons a {
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+      background-size: cover;
+      border-radius: 50%;
+      box-shadow: 0 0 6px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+    }
+    .share-buttons a:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 12px rgba(255,140,0,0.7);
+    }
+    .facebook { background-image: url('https://cdn-icons-png.flaticon.com/512/733/733547.png'); }
+    .twitter  { background-image: url('https://cdn-icons-png.flaticon.com/512/733/733579.png'); }
+    .email    { background-image: url('https://cdn-icons-png.flaticon.com/512/732/732200.png'); }
+    .sms      { background-image: url('https://cdn-icons-png.flaticon.com/512/1042/1042338.png'); }
+    .copy-link {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .copy-link input {
+      width: 70%;
+      padding: 0.4rem;
+      font-size: 0.95rem;
+      border-radius: 5px;
+      border: 1px solid #aaa;
+    }
+    .copy-link button {
+      background: #ff9900;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .feedback textarea { height: 100px; }
+    .feedback button { width: auto; }
+    .changelog ul { padding-left: 1.25rem; }
   </style>
 </head>
 <body>
@@ -16,7 +216,7 @@
     <h1>Amazon Super Search</h1>
     <nav>
       <a href="#dashboard">Dashboard</a>
-      <a href="#search">Search</a>               <!-- ← added -->
+      <a href="#search">Search</a>
       <a href="#featured">Weekly Finds</a>
       <a href="#guides">Guides</a>
       <a href="#community">Community</a>
@@ -31,48 +231,66 @@
     </div>
   </header>
 
-  <!-- PWA Install Banner -->
-  <div id="installBanner">…</div>
-
   <div class="container">
 
-    <!-- 1. Dashboard & Presets -->
+    <!-- 1. Dashboard -->
     <section id="dashboard">
+      <h2>Your Dashboard & Presets</h2>
       <!-- … -->
     </section>
 
-    <!-- 2. Alerts -->
-    <section id="alerts">
-      <!-- … -->
-    </section>
+    <!-- 2. Search (includes Alerts + Form) -->
+    <section id="search">
+      <h2>Price-Drop & Deal Alerts</h2>
+      <!-- alert form -->
+      <div class="row">
+        <label for="alertKeywords">Alert me when:</label>
+        <input id="alertKeywords" type="text" placeholder="e.g. noise cancelling headphones">
+      </div>
+      <div class="row">
+        <label for="alertPrice">Drops below $</label>
+        <input id="alertPrice" type="number" placeholder="100">
+      </div>
+      <div class="row">
+        <button onclick="setAlert()">Set Alert</button>
+      </div>
 
-    <!-- 3. Search Form -->
-    <section id="search">                         <!-- ← ensure this ID matches -->
       <h2>Search</h2>
-      <!-- … all your search fields … -->
+      <!-- your search form fields -->
+      <div class="row">
+        <label for="searchInput">Search Keywords</label>
+        <input id="searchInput" type="text" placeholder="e.g. wireless headphones">
+      </div>
+      <!-- … rest of inline-group, toggles, etc. … -->
     </section>
 
-    <!-- 4. Weekly Featured Finds -->
+    <!-- 3. Weekly Featured Finds -->
     <section id="featured">
-      <!-- … -->
+      <h2>Weekly Featured Finds</h2>
+      <div class="grid">
+        <!-- … -->
+      </div>
     </section>
 
-    <!-- 5. How-To Guides -->
+    <!-- 4. How-To Guides -->
     <section id="guides">
+      <h2>How-To Guides</h2>
       <!-- … -->
     </section>
 
-    <!-- 6. Community Q&A -->
+    <!-- 5. Community Q&A -->
     <section id="community">
+      <h2>Community Q&A</h2>
       <!-- … -->
     </section>
 
-    <!-- 7. Feedback -->
+    <!-- 6. Feedback -->
     <section id="feedback" class="feedback">
+      <h2>Send Us Feedback</h2>
       <!-- … -->
     </section>
 
-    <!-- (other sections: referral, changelog, social share…) -->
+    <!-- Referral, Changelog, Social Share can go here too… -->
 
   </div>
 
@@ -91,7 +309,7 @@
       sections.forEach(sec => {
         const el = document.getElementById(sec);
         if (!el) return;
-        el.style.display = (sec === id) ? 'block' : 'none';
+        el.style.display = sec === id ? 'block' : 'none';
       });
     }
 
@@ -106,11 +324,11 @@
     });
 
     window.addEventListener('DOMContentLoaded', () => {
-      showSection('search');  // show Search by default
+      showSection('search');  // show the Search view by default
     });
   </script>
 
-  <!-- your existing other scripts (PWA prompt, copyReferral, etc.) -->
+  <!-- your other scripts (copyReferral, PWA prompt, etc.) -->
 
 </body>
 </html>
