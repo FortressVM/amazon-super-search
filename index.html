@@ -19,6 +19,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
     header h1 { margin: 0; font-size: 1.5rem; }
     nav a {
@@ -177,11 +180,19 @@
     .referral .copy-link input {
       flex: 1;
     }
+
+    /* Coming soon */
+    #coming-soon {
+      margin-top: 2rem;
+      text-align: center;
+      color: #888;
+      font-size: 0.85em;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Header & Nav -->
+  <!-- Header & Nav always at top -->
   <header>
     <h1>Amazon Super Search</h1>
     <nav>
@@ -215,9 +226,9 @@
           <label for="departmentSelect">Category</label>
           <select id="departmentSelect">
             <option>All Categories</option>
-            <option value="electronics">Electronics</option>
-            <option value="beauty">Beauty</option>
-            <!-- …add other department codes… -->
+            <option>Electronics</option>
+            <option>Home & Kitchen</option>
+            <!-- etc. -->
           </select>
         </div>
         <div>
@@ -240,6 +251,10 @@
         </div>
       </div>
       <div class="row">
+        <label for="minReviews">Min # of Reviews</label>
+        <input id="minReviews" type="number">
+      </div>
+      <div class="row">
         <label for="sortSelect">Sort By</label>
         <select id="sortSelect">
           <option>Relevance</option>
@@ -256,6 +271,7 @@
         <input id="minDiscount" type="range" min="0" max="100" value="0">
         <div id="discountValue">0%</div>
       </div>
+
       <div class="row">
         <strong>Optional Filters</strong>
         <div class="toggle-row">
@@ -287,19 +303,14 @@
           <label><input id="fGift" type="checkbox"><span class="slider"></span></label>
         </div>
       </div>
+
       <div class="row inline-group">
         <button onclick="runSearch()">Search</button>
         <button onclick="savePreset()">Save Preset</button>
       </div>
     </section>
 
-    <!-- 2. Dashboard & Presets -->
-    <section id="dashboard">
-      <h2>Your Dashboard & Presets</h2>
-      <!-- …dashboard UI… -->
-    </section>
-
-    <!-- 3. Alerts -->
+    <!-- 2. Alerts (functional) -->
     <section class="alerts">
       <h2>Price-Drop & Deal Alerts</h2>
       <div class="row">
@@ -313,14 +324,37 @@
       <button onclick="setAlert()">Set Alert</button>
     </section>
 
+    <!-- 3. Dashboard & Presets -->
+    <section id="dashboard">
+      <h2>Your Dashboard & Presets</h2>
+      <div class="row">
+        <label>Saved Presets:</label>
+        <select id="presetSelect">
+          <option>– Select a preset –</option>
+          <option>Electronics Deals</option>
+          <option>Under $20 Finds</option>
+        </select>
+        <button onclick="applyPreset()">Apply</button>
+        <button onclick="savePreset()">Save Current Preset</button>
+      </div>
+      <div>
+        <label>Recommended Searches:</label>
+        <ul>
+          <li><a href="#" onclick="setKeywords('wireless earbuds')">Wireless Earbuds</a></li>
+          <li><a href="#" onclick="setKeywords('gaming laptops')">Gaming Laptops</a></li>
+          <li><a href="#" onclick="setKeywords('kitchen gadgets')">Kitchen Gadgets</a></li>
+        </ul>
+      </div>
+    </section>
+
     <!-- 4. Weekly Featured Finds -->
     <section id="featured">
       <h2>Weekly Featured Finds</h2>
       <div class="grid">
-        <div class="card">1. Noise-Cancelling Headphones</div>
-        <div class="card">2. Portable Projectors</div>
-        <div class="card">3. Smart Home Hubs</div>
-        <div class="card">4. Fitness Trackers</div>
+        <div class="card"><strong>1.</strong> Noise-Cancelling Headphones</div>
+        <div class="card"><strong>2.</strong> Portable Projectors</div>
+        <div class="card"><strong>3.</strong> Smart Home Hubs</div>
+        <div class="card"><strong>4.</strong> Fitness Trackers</div>
       </div>
     </section>
 
@@ -340,14 +374,14 @@
       <p><a href="#">Join our discussion forum</a> and swap tips with others.</p>
     </section>
 
-    <!-- 7. Feedback -->
+    <!-- 7. Send Us Feedback -->
     <section id="feedback">
       <h2>Send Us Feedback</h2>
       <textarea id="feedbackText" placeholder="What would make this tool better?"></textarea>
       <button onclick="sendFeedback()">Send Feedback</button>
     </section>
 
-    <!-- 8. What's New / Changelog -->
+    <!-- 8. What’s New / Changelog -->
     <section id="changelog">
       <h2>What's New</h2>
       <ul>
@@ -363,8 +397,8 @@
       <div class="share-buttons">
         <a class="facebook" href="https://facebook.com/sharer/sharer.php?u=https://amazonsupersearch.com" target="_blank"></a>
         <a class="twitter"  href="https://twitter.com/intent/tweet?url=https://amazonsupersearch.com" target="_blank"></a>
-        <a class="email"    href="mailto:?subject=Check this out&body=https://amazonsupersearch.com"></a>
-        <a class="sms"      href="sms:?&body=Check this out: https://amazonsupersearch.com"></a>
+        <a class="email"    href="mailto:?subject=Check%20this%20out&body=https://amazonsupersearch.com"></a>
+        <a class="sms"      href="sms:?&body=Check%20this%20out:%20https://amazonsupersearch.com"></a>
       </div>
     </div>
 
@@ -374,7 +408,7 @@
       <div class="share-buttons">
         <a class="facebook" href="https://facebook.com/sharer/sharer.php?u=https://amazonsupersearch.com" target="_blank"></a>
         <a class="twitter"  href="https://twitter.com/intent/tweet?url=https://amazonsupersearch.com" target="_blank"></a>
-        <a class="email"    href="mailto:?subject=Try this tool&body=Check+out+Amazon+Super+Search:+https://amazonsupersearch.com"></a>
+        <a class="email"    href="mailto:?subject=Try%20this%20out&body=Check+out+Amazon+Super+Search:+https://amazonsupersearch.com"></a>
         <a class="sms"      href="sms:?&body=Try+this+Amazon+tool:+https://amazonsupersearch.com"></a>
       </div>
       <div class="copy-link">
@@ -383,97 +417,99 @@
       </div>
     </section>
 
-    <!-- 11. Coming Soon footer -->
+    <!-- 11. Coming Soon -->
     <section id="coming-soon">
-      <h2 style="color:#888; font-size:0.85em; text-align:center;">
-        More features coming soon!
-      </h2>
+      More features coming soon!
     </section>
 
   </div>
 
   <script>
-    // update discount slider UI
-    const rng  = document.getElementById('minDiscount'),
-          disp = document.getElementById('discountValue');
-    if (rng && disp) rng.oninput = () => disp.textContent = rng.value + '%';
+    // Live update for discount slider
+    const rng = document.getElementById('minDiscount'),
+          val = document.getElementById('discountValue');
+    if (rng && val) rng.oninput = () => val.textContent = rng.value + '%';
 
     function runSearch() {
-      const tag = 'echolover25-20';
-      const enc = encodeURIComponent;
-      const q   = document.getElementById('searchInput').value.trim();
-      if (!q) return alert('Please enter keywords');
-
-      const params = [
-        'k=' + enc(q),
-        'tag=' + enc(tag)
-      ];
-
-      // category
-      const cat = document.getElementById('departmentSelect').value;
-      if (cat && cat !== 'All Categories') {
-        params.push('i=' + enc(cat));
-      }
-
-      // price
-      const minP = document.getElementById('minPrice').value;
-      if (minP) params.push('low-price=' + enc(minP));
-      const maxP = document.getElementById('maxPrice').value;
-      if (maxP) params.push('high-price=' + enc(maxP));
-
-      // discount
-      const disc = document.getElementById('minDiscount').value;
-      if (+disc > 0) params.push('pct-off-min=' + enc(disc));
-
-      // sorting
+      const affiliateTag = 'echolover25-20';
+      const q       = encodeURIComponent(document.getElementById('searchInput').value.trim());
+      const minP    = parseFloat(document.getElementById('minPrice').value) || 0;
+      const maxP    = parseFloat(document.getElementById('maxPrice').value) || 0;
+      const minR    = parseInt  (document.getElementById('minReviews').value) || 0;
       const sortVal = document.getElementById('sortSelect').value;
+      const rating  = document.getElementById('ratingSelect').value;
+      const discount= parseInt(document.getElementById('minDiscount').value) || 0;
+      const prime      = document.getElementById('fPrime').checked;
+      const freeShip   = document.getElementById('fFreeShip').checked;
+      const subsSave   = document.getElementById('fSubscribe').checked;
+      const pantry     = document.getElementById('fPantry').checked;
+      const video      = document.getElementById('fVideo').checked;
+      const coupons    = document.getElementById('fCoupons').checked;
+      const gift       = document.getElementById('fGift').checked;
+
+      let params = [];
+
+      // Price (in cents)
+      if (minP || maxP) {
+        const lo = Math.round(minP * 100),
+              hi = Math.round(maxP * 100);
+        params.push(`rh=p_36%3A${lo}-${hi}`);
+      }
+
+      // Rating filter
+      if (rating.includes('★')) {
+        const stars = rating.match(/\d/)[0];
+        const code = stars === '4'
+          ? '1248879011'
+          : stars === '3'
+          ? '1248878011'
+          : '';
+        if (code) params.push(`rh=p_72%3A${code}`);
+      }
+
+      // Discount %
+      if (discount) {
+        params.push(`rh=p_n_feature_seven_browse-bin%3A${discount}`);
+      }
+
+      // Toggles
+      if (prime)    params.push(`rh=p_85%3A2470955011`);
+      if (freeShip) params.push(`rh=p_n_free_shipping_eligible%3A1`);
+      if (subsSave) params.push(`rh=p_n_subscription_benefits_two_browse-bin%3A2470958011`);
+      if (pantry)   params.push(`rh=p_n_feature_eleven_browse-bin%3A3541431011`);
+      if (video)    params.push(`rh=p_n_feature_twenty_six_browse-bin%3A9075428011`);
+      if (coupons)  params.push(`rh=p_n_feature_four_browse-bin%3A9696694011`);
+      if (gift)     params.push(`rh=p_n_feature_five_browse-bin%3A2985394011`);
+
+      // Sort mapping
       const sortMap = {
-        'Relevance': '',
-        'Price: Low to High': 'price-asc-rank',
-        'Price: High to Low': 'price-desc-rank',
+        'Relevance':            'relevanceblender',
+        'Price: Low to High':   'price-asc-rank',
+        'Price: High to Low':   'price-desc-rank',
         'Avg. Customer Review': 'review-rank',
-        'Newest Arrivals': 'date-desc-rank',
-        'Discount: High to Low': 'discount-desc-rank',
-        'Number of Reviews': 'review-count-rank'
+        'Newest Arrivals':      'date-desc-rank',
+        'Discount: High to Low':'discount-rank',
+        'Number of Reviews':    'review-count-rank'
       };
-      if (sortMap[sortVal]) {
-        params.push('s=' + enc(sortMap[sortVal]));
-      }
+      const s = sortMap[sortVal] || sortMap['Relevance'];
 
-      // rh filters
-      const rh = [];
-      const ratingVal = document.getElementById('ratingSelect').value;
-      const ratingMap = {
-        '4 ★ & up': 'p_72:1248879011',
-        '3 ★ & up': 'p_72:1248878011'
-      };
-      if (ratingMap[ratingVal]) rh.push(ratingMap[ratingVal]);
-
-      if (document.getElementById('fPrime').checked)      rh.push('p_85:2470955011');
-      if (document.getElementById('fFreeShip').checked)  rh.push('p_76:419159031');
-      if (document.getElementById('fSubscribe').checked) rh.push('p_n_feature_three_browse-subscribe-and-save:12007139011');
-      if (document.getElementById('fPantry').checked)    rh.push('p_n_feature_four_browse-bin:4260858011');
-      if (document.getElementById('fVideo').checked)     rh.push('p_n_feature_fourteen_video:2521349011');
-      if (document.getElementById('fCoupons').checked)   rh.push('p_n_feature_eight_coupon:21384497011');
-      if (document.getElementById('fGift').checked)      rh.push('p_n_feature_six_gift_wrap:5528499011');
-
-      if (rh.length) {
-        params.push('rh=' + enc(rh.join(',')));
-      }
-
-      const url = 'https://www.amazon.com/s?' + params.join('&');
+      // Assemble URL
+      const base = `https://www.amazon.com/s?k=${q}&tag=${affiliateTag}`;
+      const rh   = params.length ? `&${params.join('&')}` : '';
+      const url  = `${base}${rh}&s=${s}`;
       window.location.href = url;
     }
 
     function savePreset()   { alert('Preset saved!'); }
     function applyPreset()  { alert('Preset applied!'); }
+    function setKeywords(t) { document.getElementById('searchInput').value = t; }
     function setAlert()     { alert('Alert set!'); }
-    function sendFeedback() {
-      const t = document.getElementById('feedbackText').value;
-      if (!t) return alert('Please enter feedback');
+    function sendFeedback(){ 
+      const t = document.getElementById('feedbackText').value.trim();
+      if(!t) return alert('Please enter feedback');
       alert('Thanks for your feedback!');
     }
-    function copyReferral() {
+    function copyReferral(){
       const ref = document.getElementById('refLink'),
             ta  = document.createElement('textarea');
       ta.value = ref.value;
@@ -484,6 +520,5 @@
       alert('Link copied!');
     }
   </script>
-
 </body>
 </html>
