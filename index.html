@@ -5,50 +5,255 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Amazon Super Search</title>
   <style>
-    /* … your existing CSS above … */
-    body { font-family: sans-serif; margin:0; background:#f9f9f9; color:#000 }
-    header { background:#053E5E; color:#fff; padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between }
-    header h1 { margin:0; font-size:1.5rem }
-    nav a { color:#fff; margin-left:1rem; text-decoration:none; font-weight:bold }
-    .points-badges { display:flex; align-items:center; gap:1rem }
-    .points { font-size:.9rem }
-    .badges img { width:24px; height:24px }
-    .container { max-width:800px; margin:2rem auto; background:#fff; padding:2rem; border-radius:8px; box-shadow:0 0 12px rgba(0,0,0,.1) }
-    .container h2 { margin-top:2rem; border-bottom:2px solid #eee; padding-bottom:.5rem; color:#053E5E }
-    .row { margin-bottom:1rem }
-    label { display:block; font-weight:bold; margin-bottom:.25rem }
-    input, select, button, textarea { width:100%; padding:.5rem; margin-bottom:.5rem; border:1px solid #ccc; border-radius:4px; box-sizing:border-box }
-    button { background:orange; border:none; color:#fff; font-weight:bold; cursor:pointer }
-    .inline-group { display:flex; gap:1rem }
-    .inline-group > * { flex:1 }
-    #discountValue { margin-top:-.5rem; font-size:.9rem }
-    .toggle-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:.5rem }
-    .toggle-row input[type="checkbox"] { display:none }
-    .toggle-row .slider { position:relative; display:inline-block; width:60px; height:28px; background:#ccc; border-radius:28px; border:2px solid #888; box-shadow:inset 0 0 2px rgba(0,0,0,.3); transition:.4s }
-    .toggle-row .slider::before { content:"OFF"; position:absolute; height:22px; width:22px; left:3px; bottom:2px; background:#fff; border-radius:50%; border:1px solid #555; display:flex; justify-content:center; align-items:center; font-size:10px; color:#000; transition:.4s }
-    .toggle-row input:checked + .slider { background:orange; border-color:#e67e00; box-shadow:0 0 8px orange }
-    .toggle-row input:checked + .slider::before { transform:translateX(28px); content:"ON"; background:#b35b00; border-color:#b35b00; color:#fff }
-    .grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1rem }
-    .card { background:#fafafa; padding:1rem; border-radius:6px }
-    .share-buttons { display:flex; justify-content:center; gap:12px; margin-bottom:1rem }
-    .share-buttons a { display:inline-block; width:48px; height:48px; background-size:cover; border-radius:50%; box-shadow:0 0 6px rgba(0,0,0,.2); transition:transform .3s }
-    .share-buttons a:hover { transform:scale(1.2); box-shadow:0 0 12px rgba(255,140,0,.7) }
-    .facebook { background-image:url('https://cdn-icons-png.flaticon.com/512/733/733547.png') }
-    .twitter  { background-image:url('https://cdn-icons-png.flaticon.com/512/733/733579.png') }
-    .email    { background-image:url('https://cdn-icons-png.flaticon.com/512/732/732200.png') }
-    .sms      { background-image:url('https://cdn-icons-png.flaticon.com/512/1042/1042338.png') }
-    .copy-link { display:flex; justify-content:center; gap:.5rem }
-    .copy-link input { width:70%; padding:.4rem; font-size:.95rem; border:1px solid #aaa; border-radius:5px }
-    .copy-link button { background:#ff9900; color:#fff; padding:.5rem 1rem; border:none; border-radius:4px; cursor:pointer }
-    .feedback textarea { height:100px }
-    .feedback button { width:auto }
-    .changelog ul { padding-left:1.25rem }
-    .referral { background:#f9f9f9; padding:1rem; border:1px dashed #888; border-radius:6px; margin-top:2rem }
+    /* ---------------- Global ---------------- */
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      background: #f9f9f9;
+      color: #000;
+      padding-top: 60px; /* reserve for fixed header */
+    }
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: #053E5E;
+      color: #fff;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      box-sizing: border-box;
+      z-index: 1000;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    header nav a {
+      color: #fff;
+      margin-left: 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .points-badges {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .points {
+      font-size: 0.9rem;
+    }
+    .badges img {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* ---------------- Container ---------------- */
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
+    .container h2 {
+      margin-top: 2rem;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 0.5rem;
+      color: #053E5E;
+    }
+
+    /* ---------------- Search Form ---------------- */
+    .container h2#search-title {
+      margin-top: 0;
+    }
+    .row {
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 0.25rem;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      background: orange;
+      border: none;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .inline-group {
+      display: flex;
+      gap: 1rem;
+    }
+    .inline-group > * {
+      flex: 1;
+    }
+    /* range slider */
+    #discountValue {
+      margin-top: -0.5rem;
+      font-size: 0.9rem;
+    }
+    /* toggles */
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .toggle-row input[type="checkbox"] {
+      display: none;
+    }
+    .toggle-row .slider {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 28px;
+      background-color: #ccc;
+      border-radius: 28px;
+      border: 2px solid #888;
+      box-shadow: inset 0 0 2px rgba(0,0,0,0.3);
+      transition: 0.4s;
+    }
+    .toggle-row .slider::before {
+      content: "OFF";
+      position: absolute;
+      height: 22px; width: 22px;
+      left: 3px; bottom: 2px;
+      background-color: #fff;
+      border-radius: 50%;
+      border: 1px solid #555;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 10px;
+      color: #000;
+      transition: 0.4s;
+    }
+    .toggle-row input:checked + .slider {
+      background-color: orange;
+      border-color: #e67e00;
+      box-shadow: 0 0 8px orange;
+    }
+    .toggle-row input:checked + .slider::before {
+      transform: translateX(28px);
+      content: "ON";
+      background-color: #b35b00;
+      border-color: #b35b00;
+      color: #fff;
+    }
+
+    /* ---------------- Alerts Panel ---------------- */
+    .alerts {
+      background: #f0f8ff;
+      padding: 1rem;
+      border-radius: 6px;
+      margin-top: 1rem;
+    }
+
+    /* ---------------- Presets ---------------- */
+    .presets select, .presets button {
+      display: inline-block;
+      width: auto;
+      margin-right: 0.5rem;
+    }
+
+    /* ---------------- Grid & Cards ---------------- */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .card {
+      background: #fafafa;
+      padding: 1rem;
+      border-radius: 6px;
+    }
+
+    /* ---------------- Share Buttons ---------------- */
+    .share-section {
+      margin-top: 2rem;
+      text-align: center;
+    }
+    .share-section .share-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+    .share-section .share-buttons a {
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+      background-size: cover;
+      border-radius: 50%;
+      box-shadow: 0 0 6px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+    }
+    .share-section .share-buttons a:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 12px rgba(255,140,0,0.7);
+    }
+    .facebook { background-image: url('https://cdn-icons-png.flaticon.com/512/733/733547.png'); }
+    .twitter  { background-image: url('https://cdn-icons-png.flaticon.com/512/733/733579.png'); }
+    .email    { background-image: url('https://cdn-icons-png.flaticon.com/512/732/732200.png'); }
+    .sms      { background-image: url('https://cdn-icons-png.flaticon.com/512/1042/1042338.png'); }
+
+    /* ---------------- Referral ---------------- */
+    .referral {
+      background: #f9f9f9;
+      padding: 1rem;
+      border: 1px dashed #888;
+      border-radius: 6px;
+      margin-top: 2rem;
+    }
+    .copy-link {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    /* ---------------- Feedback ---------------- */
+    .feedback textarea { height: 100px; }
+    .feedback button { width: auto; }
+
+    /* ---------------- Changelog ---------------- */
+    .changelog ul { padding-left: 1.25rem; }
+
+    /* ---------------- PWA Install Banner ---------------- */
+    #installBanner {
+      display: none;
+      background: #053E5E;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+      position: fixed;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    #installBanner button { margin-left: 1rem; }
+
   </style>
 </head>
 <body>
 
-  <!-- Header & Navigation -->
+  <!-- Fixed Header -->
   <header>
     <h1>Amazon Super Search</h1>
     <nav>
@@ -68,21 +273,28 @@
     </div>
   </header>
 
-  <div class="container">
+  <!-- PWA Install Prompt -->
+  <div id="installBanner">
+    Install our app for fast access!
+    <button id="installBtn">Install</button>
+  </div>
 
-    <!-- 1. Search (top) -->
+  <div class="container">
+    <!-- 1. Search -->
     <section id="search">
-      <h2>Search</h2>
+      <h2 id="search-title">Search</h2>
+
       <div class="row">
         <label for="searchInput">Search Keywords</label>
         <input id="searchInput" type="text" placeholder="e.g. wireless headphones">
       </div>
+
       <div class="row inline-group">
         <div>
           <label for="departmentSelect">Category</label>
           <select id="departmentSelect">
             <option>All Categories</option>
-            <!-- add more if needed -->
+            <!-- …other categories… -->
           </select>
         </div>
         <div>
@@ -94,6 +306,7 @@
           </select>
         </div>
       </div>
+
       <div class="row inline-group">
         <div>
           <label for="minPrice">Min Price ($)</label>
@@ -104,10 +317,12 @@
           <input id="maxPrice" type="number">
         </div>
       </div>
+
       <div class="row">
         <label for="minReviews">Min # of Reviews</label>
         <input id="minReviews" type="number">
       </div>
+
       <div class="row">
         <label for="sortSelect">Sort By</label>
         <select id="sortSelect">
@@ -120,96 +335,202 @@
           <option>Number of Reviews</option>
         </select>
       </div>
+
       <div class="row">
         <label for="minDiscount">Min Discount (%)</label>
         <input id="minDiscount" type="range" min="0" max="100" value="0">
         <div id="discountValue">0%</div>
       </div>
+
       <div class="row">
         <strong>Optional Filters</strong>
-        <div class="toggle-row"><span>Prime</span><label><input id="fPrime" type="checkbox"><span class="slider"></span></label></div>
+        <div class="toggle-row"><span>Prime</span><label><input id="fPrime"   type="checkbox"><span class="slider"></span></label></div>
         <div class="toggle-row"><span>Free Shipping</span><label><input id="fFreeShip" type="checkbox"><span class="slider"></span></label></div>
-        <div class="toggle-row"><span>Subscribe &amp; Save</span><label><input id="fSubscribe" type="checkbox"><span class="slider"></span></label></div>
-        <div class="toggle-row"><span>Amazon Pantry</span><label><input id="fPantry" type="checkbox"><span class="slider"></span></label></div>
-        <div class="toggle-row"><span>Video Review</span><label><input id="fVideo" type="checkbox"><span class="slider"></span></label></div>
-        <div class="toggle-row"><span>Coupons</span><label><input id="fCoupons" type="checkbox"><span class="slider"></span></label></div>
-        <div class="toggle-row"><span>Gift Wrap</span><label><input id="fGift" type="checkbox"><span class="slider"></span></label></div>
+        <div class="toggle-row"><span>Subscribe & Save</span><label><input id="fSubscribe" type="checkbox"><span class="slider"></span></label></div>
+        <div class="toggle-row"><span>Amazon Pantry</span><label><input id="fPantry"    type="checkbox"><span class="slider"></span></label></div>
+        <div class="toggle-row"><span>Video Review</span><label><input id="fVideo"     type="checkbox"><span class="slider"></span></label></div>
+        <div class="toggle-row"><span>Coupons</span><label><input id="fCoupons"   type="checkbox"><span class="slider"></span></label></div>
+        <div class="toggle-row"><span>Gift Wrap</span><label><input id="fGift"      type="checkbox"><span class="slider"></span></label></div>
       </div>
+
       <div class="row inline-group">
         <button onclick="startSearch()">Search</button>
         <button onclick="savePreset()">Save Preset</button>
       </div>
     </section>
 
-    <!-- other sections… -->
     <!-- 2. Dashboard & Presets -->
-    <section id="dashboard"><h2>Your Dashboard & Presets</h2></section>
-    <!-- 3. Weekly Featured Finds -->
-    <section id="featured"><h2>Weekly Featured Finds</h2></section>
-    <!-- 4. How-To Guides -->
-    <section id="guides"><h2>How-To Guides</h2></section>
-    <!-- 5. Community Q&A -->
-    <section id="community"><h2>Community Q&A</h2></section>
-    <!-- 6. Feedback -->
-    <section id="feedback"><h2>Send Us Feedback</h2></section>
-    <!-- 7. Referral Program -->
-    <section class="referral"><h2>Refer a Friend</h2></section>
+    <section id="dashboard">
+      <h2>Your Dashboard & Presets</h2>
+      <div class="presets">
+        <label>Saved Presets:</label>
+        <select id="presetSelect">
+          <option>– Select a preset –</option>
+          <option>Electronics Deals</option>
+          <option>Under $20 Finds</option>
+        </select>
+        <button onclick="applyPreset()">Apply</button>
+        <button onclick="savePreset()">Save Current Preset</button>
+      </div>
+      <label>Recommended Searches:</label>
+      <ul>
+        <li><a href="#" onclick="setKeywords('wireless earbuds')">Wireless Earbuds</a></li>
+        <li><a href="#" onclick="setKeywords('gaming laptops')">Gaming Laptops</a></li>
+        <li><a href="#" onclick="setKeywords('kitchen gadgets')">Kitchen Gadgets</a></li>
+      </ul>
+    </section>
+
+    <!-- 3. Price-Drop & Deal Alerts -->
+    <section class="alerts">
+      <h2>Price-Drop & Deal Alerts</h2>
+      <label for="alertKeywords">Alert me when:</label>
+      <input id="alertKeywords" type="text" placeholder="e.g. noise cancelling headphones">
+      <label for="alertPrice">Drops below $</label>
+      <input id="alertPrice" type="number" placeholder="100">
+      <button onclick="setAlert()">Set Alert</button>
+    </section>
+
+    <!-- 4. Weekly Featured Finds -->
+    <section id="featured">
+      <h2>Weekly Featured Finds</h2>
+      <div class="grid">
+        <div class="card"><strong>1.</strong> Noise-Cancelling Headphones</div>
+        <div class="card"><strong>2.</strong> Portable Projectors</div>
+        <div class="card"><strong>3.</strong> Smart Home Hubs</div>
+        <div class="card"><strong>4.</strong> Fitness Trackers</div>
+      </div>
+    </section>
+
+    <!-- 5. How-To Guides -->
+    <section id="guides">
+      <h2>How-To Guides</h2>
+      <ul>
+        <li><a href="#">Maximize Amazon Savings</a></li>
+        <li><a href="#">Spot Fake Reviews</a></li>
+        <li><a href="#">Subscribe & Save Tips</a></li>
+      </ul>
+    </section>
+
+    <!-- 6. Community Q&A -->
+    <section id="community">
+      <h2>Community Q&A</h2>
+      <p><a href="#">Join our discussion forum</a> and swap tips with others.</p>
+    </section>
+
+    <!-- 7. Feedback -->
+    <section id="feedback" class="feedback">
+      <h2>Send Us Feedback</h2>
+      <textarea id="feedbackText" placeholder="What would make this tool better?"></textarea>
+      <button onclick="sendFeedback()">Send Feedback</button>
+    </section>
+
     <!-- 8. Changelog -->
-    <section class="changelog"><h2>What's New</h2></section>
+    <section class="changelog">
+      <h2>What's New</h2>
+      <ul>
+        <li>v1.2.0: Full advanced filters restored + alerts & badges.</li>
+        <li>v1.1.0: Gamification & saved presets.</li>
+        <li>v1.0.0: Initial release of search tool.</li>
+      </ul>
+    </section>
+
     <!-- 9. Social Share -->
-    <div class="share-section"><h2>Spread The Love!</h2></div>
-    <!-- 10. Alerts (coming soon) -->
-    <section id="alerts">
-      <h2>
-        Price-Drop &amp; Deal Alerts
-        <span style="color:#888; font-size:0.85em;">(coming soon)</span>
-      </h2>
-      <div class="row">
-        <label>Alert me when:</label>
-        <input type="text" disabled placeholder="…"/>
+    <div class="share-section">
+      <h2>Spread The Love!</h2>
+      <div class="share-buttons">
+        <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://amazonsupersearch.com" target="_blank"></a>
+        <a class="twitter"  href="https://twitter.com/intent/tweet?url=https://amazonsupersearch.com" target="_blank"></a>
+        <a class="email"    href="mailto:?subject=Check this out&body=https://amazonsupersearch.com"></a>
+        <a class="sms"      href="sms:?&body=Check this out:+https://amazonsupersearch.com"></a>
       </div>
-      <div class="row">
-        <label>Drops below $</label>
-        <input type="number" disabled/>
+    </div>
+
+    <!-- 10. Referral Program -->
+    <section class="referral">
+      <h2>Refer a Friend</h2>
+      <div class="share-buttons">
+        <a class="facebook"
+           href="https://www.facebook.com/sharer/sharer.php?u=https://amazonsupersearch.com/?ref=YOURCODE"
+           target="_blank"></a>
+        <a class="twitter"
+           href="https://twitter.com/intent/tweet?url=https://amazonsupersearch.com/?ref=YOURCODE"
+           target="_blank"></a>
+        <a class="email"
+           href="mailto:?subject=Check+this+out&body=Try this tool:+https://amazonsupersearch.com/?ref=YOURCODE"></a>
+        <a class="sms"
+           href="sms:?&body=Check+this+out:+https://amazonsupersearch.com/?ref=YOURCODE"></a>
       </div>
-      <div class="row">
-        <button disabled>Set Alert</button>
+      <div class="copy-link">
+        <input id="refLink" type="text" readonly value="https://amazonsupersearch.com/?ref=YOURCODE">
+        <button onclick="copyReferral()">Copy Link</button>
       </div>
     </section>
   </div>
 
   <script>
-    // Discount slider label
+    // Discount slider text
     const rng = document.getElementById('minDiscount'),
           val = document.getElementById('discountValue');
-    if (rng && val) rng.oninput = () => val.textContent = rng.value + '%';
+    if(rng && val) rng.oninput = () => val.textContent = rng.value + '%';
 
-    // Affiliate-enabled search
-    function startSearch(){
-      const q = document.getElementById('searchInput').value.trim();
-      if(!q) return alert('Please enter some search keywords.');
-
-      // build Amazon search URL
-      let url = 'https://www.amazon.com/s?k=' + encodeURIComponent(q);
-
-      // add price filters if present
-      const minP = document.getElementById('minPrice').value;
-      const maxP = document.getElementById('maxPrice').value;
-      if(minP) url += '&rh=p_36%3A' + (minP*100) + '-';
-      if(maxP) url += (maxP*100);
-
-      // affiliate tag
-      const TAG = 'yourtag-20';  // ← replace with your affiliate tag
-      url += '&tag=' + encodeURIComponent(TAG);
-
-      // open in new tab
-      window.open(url, '_blank');
+    // Section toggling (optional)
+    const sections = ['search','dashboard','alerts','featured','guides','community','feedback'];
+    function showSection(id){
+      sections.forEach(s=>{
+        const el = document.getElementById(s) || document.querySelector(`.${s}`);
+        if(!el) return;
+        el.style.display = (s===id|| (s==='alerts'&&id==='alerts')) ? 'block' : 'none';
+      });
     }
+    document.querySelectorAll('header nav a').forEach(a=>{
+      const tgt = a.getAttribute('href').slice(1);
+      a.addEventListener('click', e=>{
+        e.preventDefault();
+        showSection(tgt);
+      });
+    });
+    window.addEventListener('DOMContentLoaded', ()=> showSection('search'));
 
+    // Stubs
+    function startSearch(){
+      // redirect to Amazon with affiliate code
+      const q = encodeURIComponent(document.getElementById('searchInput').value||'');
+      const url = `https://www.amazon.com/s?k=${q}&tag=YOURAFFILIATEID`;
+      window.open(url,'_blank');
+    }
     function savePreset(){ alert('Preset saved!'); }
     function applyPreset(){ alert('Preset applied!'); }
+    function setAlert(){ alert('Alert set!'); }
     function setKeywords(q){ document.getElementById('searchInput').value = q; }
-    function sendFeedback(){ alert('Thanks for your feedback!'); }
+    function sendFeedback(){
+      const txt = document.getElementById('feedbackText').value;
+      if(!txt) return alert('Please enter feedback');
+      alert('Thanks for your feedback!');
+    }
+    function copyReferral(){
+      const ref = document.getElementById('refLink'),
+            ta  = document.createElement('textarea');
+      ta.value = ref.value;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      alert('Referral link copied!');
+    }
+
+    // PWA prompt
+    let deferredPrompt;
+    const installBanner = document.getElementById('installBanner');
+    window.addEventListener('beforeinstallprompt', e=>{
+      e.preventDefault();
+      deferredPrompt = e;
+      installBanner.style.display = 'block';
+    });
+    document.getElementById('installBtn').onclick = ()=>{
+      installBanner.style.display='none';
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(()=>deferredPrompt=null);
+    };
   </script>
 </body>
 </html>
