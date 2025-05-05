@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Amazon Super Search</n></title>
+  <title>Amazon Super Search</title>
   <!-- Bootstrap CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet" />
   <style>
@@ -60,8 +60,8 @@
                 <!-- Discount Slider -->
                 <div class="col-12 col-md-6">
                   <label class="form-label">% Off Discount ≥</label>
-                  <input type="range" class="form-range" min="10" max="90" step="5" name="percent-off" oninput="this.nextElementSibling.innerText=this.value+'%';">
-                  <div class="slider-label"><span>10%</span><span>90%</span></div>
+                  <input type="range" class="form-range" min="0" max="90" step="5" value="0" name="percent-off" oninput="this.nextElementSibling.innerText=this.value+'%';">
+                  <div class="slider-label"><span>0%</span><span>90%</span></div>
                 </div>
               </div>
               <div class="row g-3 mt-3">
@@ -237,6 +237,33 @@
         <button type="submit" class="btn btn-primary btn-lg w-100 w-md-auto">Search Amazon</button>
       </div>
     </form>
+
+      <!-- Help Section -->
+      <section id="help" class="mt-5">
+        <h2 class="h4">Help &amp; Usage Guide</h2>
+        <p>This guide explains every control on the Amazon Super Search page:</p>
+        <ul>
+          <li><strong>Search Keywords:</strong> Enter any terms (e.g., "wireless headphones").</li>
+          <li><strong>Price Range:</strong> Specify minimum and maximum prices (supports cents).</li>
+          <li><strong>% Off Discount:</strong> Slide to filter items by minimum discount percentage.</li>
+          <li><strong>Prime Only:</strong> Show only Amazon Prime–eligible products.</li>
+          <li><strong>In Stock:</strong> Show only items that are available to ship immediately.</li>
+          <li><strong>Customer Review:</strong> Select minimum star rating (1★–4★).</li>
+          <li><strong>Sort By:</strong> Choose how results are ordered (price, recency, discount).</li>
+          <li><strong>Enable Boolean Operators:</strong> Toggle to allow AND/OR/NOT in keywords.</li>
+          <li><strong>Field Filters:</strong> Restrict to fields (e.g., <code>field-brand:Sony</code>).</li>
+          <li><strong>ASIN/ISBN Direct Lookup:</strong> Jump straight to a product page by its ASIN/ISBN.</li>
+          <li><strong>Price Drop:</strong> Filter items at least X% below their 90‑day average price.</li>
+          <li><strong>Coupon‑Clippable Only:</strong> Show items with an available Amazon coupon.</li>
+          <li><strong>Warehouse / Open‑Box:</strong> Include Amazon Warehouse or open‑box deals.</li>
+          <li><strong>Side‑by‑Side Spec Tables:</strong> Compare specifications of up to two products.</li>
+          <li><strong>Verified‑Purchase Only Reviews:</strong> Show reviews verified by Amazon.</li>
+          <li><strong>Buy‑Now‑or‑Wait Score:</strong> AI‑driven recommendation on purchase timing.</li>
+          <li><strong>Restock Forecasts:</strong> Enter an ASIN to see estimated restock date.</li>
+          <li><strong>Emotion‑Feedback Loop:</strong> Provide purchase emotion insights.</li>
+        </ul>
+        <p>Controls labeled <em>(coming soon)</em> require additional API integrations.</p>
+      </section>
   </div>
 
   <!-- Bootstrap JS Bundle -->
