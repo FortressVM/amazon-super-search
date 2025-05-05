@@ -2,201 +2,300 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Amazon Super Search</title>
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
   <style>
-    :root { --bg:#f9f9f9; --text:#000; --primary:orange; --card:#eee; --border:#ccc }
-    body.dark { --bg:#1c1c1c; --text:#fff; --card:#2b2b2b }
-    body { margin:0; font-family:sans-serif; background:var(--bg); color:var(--text); padding:1rem }
-    .container { max-width:960px; margin:2rem auto; background:var(--bg); padding:2rem; border-radius:10px; box-shadow:0 0 12px rgba(0,0,0,0.1); position:relative }
-    h1, h2 { text-align:center; margin-top:0 }
-    label { display:block; font-weight:bold; margin-top:1rem }
-    input, select, button, textarea, output { width:100%; padding:0.8rem; margin-top:0.5rem; border:1px solid var(--border); border-radius:5px; box-sizing:border-box }
-    textarea { resize:vertical; min-height:80px }
-    .row { display:flex; gap:1rem; flex-wrap:wrap; margin-top:1rem }
-    .col { flex:1; min-width:150px }
-    .toggle { cursor:pointer; color:var(--primary); text-align:right; margin-top:1rem; font-weight:bold }
-    .section, .advanced { margin-top:2rem; padding:1rem; background:var(--card); border-radius:6px }
-    .hidden { display:none }
-    .checkboxes label { display:flex; justify-content:space-between; align-items:center; padding:0.75rem 1rem; background:var(--bg); border:1px solid var(--border); border-radius:6px; margin-bottom:0.75rem }
-    .checkboxes input { -webkit-appearance:none; width:40px; height:22px; background:#ccc; border-radius:20px; position:relative; cursor:pointer; transition:.3s }
-    .checkboxes input::before { content:''; position:absolute; width:18px; height:18px; background:#fff; border-radius:50%; top:2px; left:2px; transition:.3s }
-    .checkboxes input:checked { background:var(--primary) }
-    .checkboxes input:checked::before { transform:translateX(18px) }
-    .dark-toggle { text-align:center; margin-top:1rem }
-    .dark-toggle button { background:var(--primary); color:#000; border:none; padding:0.6rem 1.2rem; border-radius:6px; cursor:pointer }
-    .trust-badge { position:absolute; top:10px; right:10px; background:gold; color:black; padding:5px 12px; border-radius:20px; font-size:.85rem }
-    .share-section { margin-top:2rem; text-align:center }
-    .share-buttons { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-top:1rem }
-    .share-buttons a { width:40px; height:40px; background-size:cover; border-radius:50%; box-shadow:0 0 6px rgba(0,0,0,0.2); transition:transform .3s }
-    .share-buttons a:hover { transform:scale(1.2) }
-    .copy-link { display:flex; justify-content:center; align-items:center; margin-top:1rem; gap:0.5rem }
-    @media(max-width:600px){ .row{ flex-direction:column } }
+    body { padding: 2rem; background: #f9f9f9; }
+    .card-header { cursor: pointer; }
+    .slider-label { display: flex; justify-content: space-between; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="trust-badge">🛡️ Verified Secure</div>
-    <h1>Amazon Super Search</h1>
-    <div class="dark-toggle"><button onclick="toggleTheme()">🌓 Toggle Dark Mode</button></div>
 
-    <!-- Basic Search -->
-    <label for="search">Search Keywords</label>
-    <input id="search" type="text" placeholder="e.g. wireless headphones">
+  <div class="container bg-white p-4 rounded shadow-sm">
+    <h1 class="mb-4 text-center">Amazon Super Search</h1>
+    <form id="amazon-search-form">
+      <!-- Keywords -->
+      <div class="mb-3">
+        <label class="form-label">Search Keywords</label>
+        <input type="text" class="form-control" placeholder="e.g. wireless headphones" name="q">
+      </div>
 
-    <div class="row">
-      <div class="col">
-        <label for="category">Department</label>
-        <select id="category">
-          <option value="">All Departments</option>
-          <option value="aps">All Departments (APS)</option>
-          <option value="amazon-devices">Amazon Devices & Accessories</option>
-          <option value="mobile-apps">Apps & Games</option>
-          <option value="arts-crafts">Arts, Crafts & Sewing</option>
-          <option value="automotive">Automotive</option>
-          <option value="baby">Baby</option>
-          <option value="beauty">Beauty</option>
-          <option value="stripbooks">Books</option>
-          <option value="electronics">Electronics</option>
-          <option value="fashion">Fashion</option>
-          <option value="clothing-women">Women’s Fashion</option>
-          <option value="clothing-men">Men’s Fashion</option>
-          <option value="clothing-girls">Girls’ Fashion</option>
-          <option value="clothing-boys">Boys’ Fashion</option>
-          <option value="clothing-baby">Baby Fashion</option>
-          <option value="gift-cards">Gift Cards</option>
-          <option value="grocery">Grocery & Gourmet Food</option>
-          <option value="health-personal-care">Health & Household</option>
-          <option value="home-garden">Home & Kitchen</option>
-          <option value="industrial-scientific">Industrial & Scientific</option>
-          <option value="jewelry">Jewelry</option>
-          <option value="kindle-store">Kindle Store</option>
-          <option value="luggage">Luggage & Travel Gear</option>
-          <option value="movies-tv">Movies & TV</option>
-          <option value="music">Music, CDs & Vinyl</option>
-          <option value="office-products">Office Products</option>
-          <option value="pet-supplies">Pet Supplies</option>
-          <option value="software">Software</option>
-          <option value="sports-outdoors">Sports & Outdoors</option>
-          <option value="tools">Tools & Home Improvement</option>
-          <option value="toys-and-games">Toys & Games</option>
-          <option value="videogames">Video Games</option>
-        </select>
+      <!-- Core Filters -->
+      <div class="accordion mb-3" id="accordionCore">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingCore">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCore">
+              Core Filters & Sorters
+            </button>
+          </h2>
+          <div id="collapseCore" class="accordion-collapse collapse show" data-bs-parent="#accordionCore">
+            <div class="accordion-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Price Range ($)</label>
+                  <div class="d-flex">
+                    <input type="number" class="form-control me-2" name="min-price" placeholder="Min">
+                    <input type="number" class="form-control" name="max-price" placeholder="Max">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">% Off Discount ≥</label>
+                  <input type="range" class="form-range" min="0" max="90" step="5" name="percent-off" oninput="this.nextElementSibling.innerText=this.value+'%';">
+                  <div class="slider-label"><span>0%</span><span>90%</span></div>
+                  <small>Selected: <span>0%</span></small>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="prime-only" id="primeOnly">
+                    <label class="form-check-label" for="primeOnly">Prime Only</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="in-stock" id="inStock">
+                    <label class="form-check-label" for="inStock">In Stock / Ships Today</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Customer Review</label>
+                  <select class="form-select" name="min-rating">
+                    <option value="">Any</option>
+                    <option>4 ★ & up</option>
+                    <option>3 ★ & up</option>
+                    <option>2 ★ & up</option>
+                    <option>1 ★ & up</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Sort By</label>
+                  <select class="form-select" name="sort">
+                    <option>Relevance</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                    <option>Newest Arrivals</option>
+                    <option>Greatest Discount</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col">
-        <label for="logic">Boolean Logic</label>
-        <select id="logic">
-          <option value="and">AND</option>
-          <option value="or">OR</option>
-          <option value="not">NOT</option>
-        </select>
-      </div>
-    </div>
 
-    <!-- Power User Features -->
-    <div class="section">
-      <h2>Power User Features</h2>
-      <label for="exclude">Exclude Keywords</label>
-      <input id="exclude" type="text" placeholder="e.g. cheap, used">
-      <label for="synonyms">Synonyms & Alternatives</label>
-      <textarea id="synonyms" placeholder="e.g. running shoes; sneakers"></textarea>
-      <div class="row">
-        <div class="col">
-          <label><input type="checkbox" id="priceAlert"> Price Drop Alerts</label>
-        </div>
-        <div class="col">
-          <label for="alertEmail">Alert Email</label>
-          <input id="alertEmail" type="email" placeholder="you@example.com">
-        </div>
-      </div>
-      <label for="regex">Custom Regex Filter</label>
-      <input id="regex" type="text" placeholder="e.g. ^Samsung.*S10">
-    </div>
+      <!-- Advanced Panels -->
+      <div class="accordion" id="accordionAdvanced">
 
-    <!-- Advanced Filters -->
-    <div class="toggle" onclick="toggleAdvanced()"><span id="toggleText">Show Advanced Filters</span> <span id="toggleArrow">⯈</span></div>
-    <div id="advancedSection" class="advanced hidden">
-      <div class="checkboxes">
-        <label>Prime Eligible <input type="checkbox" id="primeOnly"></label>
-        <label>Free Shipping <input type="checkbox" id="freeShipping"></label>
-        <label>Subscribe & Save <input type="checkbox" id="subscribeSave"></label>
-        <label>Amazon Pantry <input type="checkbox" id="amazonPantry"></label>
-        <label>Video Review <input type="checkbox" id="videoOnly"></label>
-        <label>Coupons <input type="checkbox" id="hasCoupon"></label>
-        <label>Gift Wrap <input type="checkbox" id="giftWrap"></label>
-        <label>New Condition <input type="checkbox" id="conditionNew"></label>
-        <label>Used Condition <input type="checkbox" id="conditionUsed"></label>
-        <label>Organic <input type="checkbox" id="organic"></label>
-        <label>Cruelty-Free <input type="checkbox" id="crueltyFree"></label>
-        <label>Gluten-Free <input type="checkbox" id="glutenFree"></label>
-      </div>
-      <div class="row">
-        <div class="col">
-          <label for="brand">Brand</label>
-          <input id="brand" type="text" placeholder="e.g. Nike, Samsung…">
+        <!-- Power-User Tools -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingPower">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapsePower">
+              Power-User Tools
+            </button>
+          </h2>
+          <div id="collapsePower" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
+            <div class="accordion-body">
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" name="enable-boolean" id="enableBoolean">
+                <label class="form-check-label" for="enableBoolean">
+                  Enable Boolean Operators (AND/OR/NOT / exact-match)
+                </label>
+              </div>
+              <div class="mb-2">
+                <label class="form-label">Field Filters (e.g. field-title:wireless)</label>
+                <input type="text" class="form-control" name="field-filters" placeholder="e.g. field-brand:Sony">
+              </div>
+              <div class="mb-2">
+                <label class="form-label">ASIN / ISBN Direct Lookup</label>
+                <input type="text" class="form-control" name="direct-lookup" placeholder="Enter ASIN, ISBN or UPC">
+              </div>
+              <div class="mb-2">
+                <button type="button" class="btn btn-outline-secondary">Open URL Parameter Builder</button>
+              </div>
+              <div>
+                <button type="button" class="btn btn-outline-secondary">API Scratchpad</button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col">
-          <label for="seller">Seller</label>
-          <input id="seller" type="text" placeholder="e.g. Amazon.com…">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <label for="discount">Min Discount (%)</label>
-          <input id="discount" type="range" min="0" max="90" step="5" oninput="this.nextElementSibling.value=this.value+'%'">
-          <output>0%</output>
-        </div>
-        <div class="col">
-          <label for="material">Material</label>
-          <input id="material" type="text" placeholder="e.g. leather, cotton">
-        </div>
-        <div class="col">
-          <label for="dimensions">Dimensions</label>
-          <input id="dimensions" type="text" placeholder="e.g. 10x5x2 or 1.5lb">
-        </div>
-      </div>
-    </div>
 
-    <!-- Share -->
-    <div class="share-section">
-      <h2>Spread The Love! Share With A Friend!</h2>
-      <div class="share-buttons">
-        <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=<YOUR_URL>" target="_blank"></a>
-        <a class="twitter" href="https://twitter.com/intent/tweet?url=<YOUR_URL>" target="_blank"></a>
-        <a class="email" href="mailto:?subject=Check this out&body=<YOUR_URL>"></a>
-        <a class="sms" href="sms:?&body=<YOUR_URL>"></a>
-      </div>
-      <div class="copy-link">
-        <input id="copyField" type="text" value="<YOUR_URL>" readonly>
-        <button id="copyButton" onclick="navigator.clipboard.writeText(copyField.value).then(()=>alert('Copied!'))">Copy Link</button>
-      </div>
-    </div>
+        <!-- Deal-Hunter Goodies -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingDeal">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseDeal">
+              Deal-Hunter Goodies
+            </button>
+          </h2>
+          <div id="collapseDeal" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
+            <div class="accordion-body">
+              <div class="mb-3">
+                <label class="form-label">Price Drop ≥ X% Below 90-Day Avg</label>
+                <input type="number" class="form-control" name="price-drop" placeholder="e.g. 20">
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" name="coupon-only" id="couponOnly">
+                <label class="form-check-label" for="couponOnly">Coupon-Clippable Only</label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" name="warehouse-refurb" id="warehouseRefurb">
+                <label class="form-check-label" for="warehouseRefurb">Warehouse / Open-Box</label>
+              </div>
+              <div class="mb-3">
+                <button type="button" class="btn btn-outline-secondary me-2">Show Lightning Deals</button>
+                <button type="button" class="btn btn-outline-secondary">Upcoming Deals Calendar</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
-    <button onclick="startSearch()" style="margin-top:1.5rem; background:var(--primary); color:#fff;">🔍 Search Amazon</button>
+        <!-- Comparison & Research -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingCompare">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseCompare">
+              Comparison & Research Aids
+            </button>
+          </h2>
+          <div id="collapseCompare" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
+            <div class="accordion-body">
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" name="side-by-side" id="sideBySide">
+                <label class="form-check-label" for="sideBySide">Side-by-Side Spec Tables</label>
+              </div>
+              <div class="mb-2">
+                <button type="button" class="btn btn-outline-secondary">Show Price-History Charts</button>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" name="verified-only" id="verifiedOnly">
+                <label class="form-check-label" for="verifiedOnly">Verified-Purchase Only Reviews</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Personalization & AI -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingPersonal">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapsePersonal">
+              Personalization & AI-Driven
+            </button>
+          </h2>
+          <div id="collapsePersonal" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
+            <div class="accordion-body">
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" name="predictive-score" id="predictiveScore">
+                <label class="form-check-label" for="predictiveScore">Buy-Now-or-Wait Score</label>
+              </div>
+              <div class="mb-2">
+                <label class="form-label">Restock Forecasts</label>
+                <input type="text" class="form-control" name="restock-forecast" placeholder="ASIN…">
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="emotion-feedback" id="emotionFeedback">
+                <label class="form-check-label" for="emotionFeedback">Emotion-Feedback Loop</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual & Voice Interfaces -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingVisual">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseVisual">
+              Visual & Voice Interfaces
+            </button>
+          </h2>
+          <div id="collapseVisual" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
+            <div class="accordion-body">
+              <div class="mb-2">
+                <label class="form-label">Image-Based Search</label>
+                <input type="file" class="form-control" name="image-search">
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" name="ar-preview" id="arPreview">
+                <label class="form-check-label" for="arPreview">AR-Preview Links</label>
+              </div>
+              <div class="mb-2">
+                <label class="form-label">Natural-Language Query</label>
+                <input type="text" class="form-control" name="nl-query" placeholder="Describe what you need…">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Niche & Lifestyle -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingNiche">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseNiche">
+              Niche & Lifestyle Filters
+            </button>
+          </h2>
+          <div id="collapseNiche" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
+            <div class="accordion-body">
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" name="sustainability" id="sustainability">
+                <label class="form-check-label" for="sustainability">Sustainability & Ethical</label>
+              </div>
+              <div class="mb-2">
+                <label class="form-label">Delivery Date (by…)</label>
+                <input type="date" class="form-control" name="delivery-by">
+              </div>
+              <div class="mb-2">
+                <label class="form-label">Global-Ship & Tax Estimator</label>
+                <input type="text" class="form-control" name="global-tax" placeholder="Your country code">
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="business-mode" id="businessMode">
+                <label class="form-check-label" for="businessMode">Business / Wholesale Mode</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social & Collaborative -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingSocial">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseSocial">
+              Social & Collaborative
+            </button>
+          </h2>
+          <div id="collapseSocial" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
+            <div class="accordion-body">
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" name="group-wish" id="groupWish">
+                <label class="form-check-label" for="groupWish">Group-Wish Notifications</label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" name="user-bundles" id="userBundles">
+                <label class="form-check-label" for="userBundles">User-Generated Bundles</label>
+              </div>
+              <div class="mb-2">
+                <button type="button" class="btn btn-outline-secondary">Spread the Love! Copy Link</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Submit -->
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary btn-lg">Search Amazon</button>
+      </div>
+    </form>
   </div>
 
-  <script>
-    function toggleTheme(){ document.body.classList.toggle('dark'); }
-    function toggleAdvanced(){ const adv=document.getElementById('advancedSection'), txt=document.getElementById('toggleText'), arr=document.getElementById('toggleArrow'), hidden=adv.classList.toggle('hidden'); txt.textContent=hidden?'Show Advanced Filters':'Hide Advanced Filters'; arr.textContent=hidden?'⯈':'⯆'; }
-    function startSearch(){
-      const TAG='echolover25-20';
-      let query=document.getElementById('search').value.trim();
-      const logic=document.getElementById('logic').value;
-      const exclude=document.getElementById('exclude').value.trim().split(',').map(s=>s.trim()).filter(Boolean);
-      const syn=document.getElementById('synonyms').value.trim().split(/[;,]+/).map(s=>s.trim()).filter(Boolean);
-      if(logic==='not' && exclude.length) query += ' -' + exclude.join(' -');
-      else if(logic==='or' && syn.length) query += ' OR ' + syn.join(' OR ');
-      const q=encodeURIComponent(query);
-      let url=`https://www.amazon.com/s?k=${q}&tag=${TAG}`;
-      const filters=[];
-      const addFilter=(id, code)=>{ if(document.getElementById(id).checked) filters.push(code); };
-      addFilter('primeOnly','p_85:2470955011'); addFilter('freeShipping','p_76:1243479011'); addFilter('subscribeSave','p_0:1260869011'); addFilter('amazonPantry','p_0:13254164011'); addFilter('videoOnly','p_n_feature_three_browse-bin:13301517011'); addFilter('hasCoupon','p_89:2661601011'); addFilter('giftWrap','p_0:11740569011'); addFilter('conditionNew','p_n_condition-type:2695042031'); addFilter('conditionUsed','p_n_condition-type:2619523011'); addFilter('organic','p_0:13184880011'); addFilter('crueltyFree','p_0:13184870011'); addFilter('glutenFree','p_0:13101962011');
-      const brand=document.getElementById('brand').value.trim(); if(brand) filters.push(`p_89:${encodeURIComponent(brand)}`);
-      const seller=document.getElementById('seller').value.trim(); if(seller) filters.push(`p_6:${encodeURIComponent(seller)}`);
-      const discount=document.getElementById('discount').value; if(discount!=='0') filters.push(`p_n_pct-off-with-tax:26616180011-${discount}`);
-      if(filters.length) url+=`&rh=${encodeURIComponent(filters.join(','))}`;
-      window.open(url,'_blank');
-    }
-  </script>
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+  <!--
+    Add your JS here to:
+    1. Read the form values
+    2. Build the Amazon URL or API payload
+    3. Redirect or fetch results
+  -->
 </body>
 </html>
