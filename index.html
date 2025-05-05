@@ -238,6 +238,30 @@
       </div>
     </form>
 
+            <!-- Share With Friends -->
+      <section id="share" class="mb-5">
+        <h2 class="h4">Share With Friends</h2>
+        <p>Spread the word about Amazon Super Search:</p>
+        <div class="d-flex flex-wrap gap-2 mb-2">
+          <!-- Facebook Share -->
+          <a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(window.location.href),'_blank','noopener'); return false;" class="btn btn-primary">Share on Facebook</a>
+          <!-- Twitter Share -->
+          <a href="#" onclick="window.open('https://twitter.com/intent/tweet?url='+encodeURIComponent(window.location.href)+'&text='+encodeURIComponent('Check out this Amazon Super Search!'),'_blank','noopener'); return false;" class="btn btn-info">Share on Twitter</a>
+          <!-- Email Share -->
+          <a href="mailto:?subject=Amazon Super Search&body=Check%20this%20out:%20" + encodeURIComponent(window.location.href) class="btn btn-secondary">Share via Email</a>
+          <!-- SMS Share -->
+          <a href="#" onclick="window.open('sms:?&body='+encodeURIComponent('Check out this Amazon Super Search: '+window.location.href)); return false;" class="btn btn-success">Share via SMS</a>
+        </div>
+        <label class="form-label">Copy Link</label>
+        <div class="input-group">
+          <input type="text" class="form-control" id="shareLink" value="" readonly>
+          <button class="btn btn-outline-secondary" type="button" onclick="navigator.clipboard.writeText(window.location.href)">Copy URL</button>
+        </div>
+        <script>
+          document.getElementById('shareLink').value = window.location.href;
+        </script>
+      </section>
+
       <!-- Help Section -->
       <section id="help" class="mt-5">
         <h2 class="h4">Help &amp; Usage Guide</h2>
