@@ -83,49 +83,43 @@
     <label for="search">Search Query</label>
     <input id="search" type="text" placeholder="e.g. red girls hiking boots (use AND, OR, NOT)">
 
-    <label for="category">Department</label>
-    <select id="category">
-      <option value="">All Departments</option>
-      <option value="digital-music">Amazon Music</option>
-      <option value="instant-video">Amazon Video</option>
-      <option value="appliances">Appliances</option>
-      <option value="mobile-apps">Apps &amp; Games</option>
-      <option value="arts-crafts">Arts &amp; Crafts</option>
-      <option value="automotive">Automotive</option>
-      <option value="baby-products">Baby</option>
-      <option value="beauty">Beauty &amp; Personal Care</option>
-      <option value="stripbooks">Books</option>
-      <option value="popular">CDs &amp; Vinyl</option>
-      <option value="collectibles">Collectibles</option>
-      <option value="computers">Computers</option>
-      <option value="electronics">Electronics</option>
-      <option value="fashion-womens">Women's Fashion</option>
-      <option value="fashion-mens">Men's Fashion</option>
-      <option value="fashion-girls">Girls' Fashion</option>
-      <option value="fashion-boys">Boys' Fashion</option>
-      <option value="fashion-baby">Baby Fashion</option>
-      <option value="gift-cards">Gift Cards</option>
-      <option value="grocery">Grocery &amp; Gourmet Food</option>
-      <option value="handmade">Handmade</option>
-      <option value="healthpersonalcare">Health &amp; Household</option>
-      <option value="hpc">Home &amp; Kitchen</option>
-      <option value="industrial">Industrial &amp; Scientific</option>
-      <option value="jewelry">Jewelry</option>
-      <option value="kitchen">Kitchen &amp; Dining</option>
-      <option value="lawn-and-garden">Patio, Lawn &amp; Garden</option>
-      <option value="luggage">Luggage &amp; Travel Gear</option>
-      <option value="movies-tv">Movies &amp; TV</option>
-      <option value="music">Musical Instruments</option>
-      <option value="office-products">Office Products</option>
-      <option value="pet-supplies">Pet Supplies</option>
-      <option value="software">Software</option>
-      <option value="sports">Sports &amp; Outdoors</option>
-      <option value="tools">Tools &amp; Home Improvement</option>
-      <option value="toys-and-games">Toys &amp; Games</option>
-      <option value="videogames">Video Games</option>
-    </select>
-
     <div class="row">
+      <div class="col">
+        <label for="category">Department</label>
+        <select id="category">
+          <option value="">All Departments</option>
+          <option value="aps">All Departments (APS)</option>
+          <option value="apparel">Apparel</option>
+          <option value="automotive">Automotive</option>
+          <option value="baby">Baby</option>
+          <option value="beauty">Beauty</option>
+          <option value="books">Books</option>
+          <option value="classical">Classical</option>
+          <option value="collectibles">Collectibles</option>
+          <option value="electronics">Electronics</option>
+          <option value="giftcards">Gift Cards</option>
+          <option value="grocery">Grocery</option>
+          <option value="healthpersonalcare">Health & Personal Care</option>
+          <option value="hobbies">Hobbies</option>
+          <option value="homegarden">Home & Garden</option>
+          <option value="industrial">Industrial & Scientific</option>
+          <option value="jukebox">Jukebox</option>
+          <option value="kitchen">Kitchen</option>
+          <option value="lawnandgarden">Lawn & Garden</option>
+          <option value="luxurybeauty">Luxury Beauty</option>
+          <option value="magazine">Magazine Subscriptions</option>
+          <option value="movies">Movies & TV</option>
+          <option value="music">Music</option>
+          <option value="musicalinstruments">Musical Instruments</option>
+          <option value="officeproducts">Office Products</option>
+          <option value="pets">Pet Supplies</option>
+          <option value="software">Software</option>
+          <option value="sporting">Sports & Outdoors</option>
+          <option value="tools">Tools & Home Improvement</option>
+          <option value="toys">Toys & Games</option>
+          <option value="videogames">Video Games</option>
+        </select>
+      </div>
       <div class="col">
         <label for="minPrice">Min Price ($)</label>
         <input id="minPrice" type="number" step="0.01">
@@ -141,8 +135,8 @@
         <label for="minRating">Minimum Rating</label>
         <select id="minRating">
           <option value="">Any</option>
-          <option value="4">4 Stars &amp; Up</option>
-          <option value="3">3 Stars &amp; Up</option>
+          <option value="4">4 Stars & Up</option>
+          <option value="3">3 Stars & Up</option>
         </select>
       </div>
       <div class="col">
@@ -155,6 +149,7 @@
       <span id="toggleText">Show Advanced Filters</span> <span id="toggleArrow">⯈</span>
     </div>
     <div id="advancedSection" class="hidden">
+      <!-- example advanced toggles -->
       <label class="switch">
         <span>Prime Eligible</span>
         <div class="switch-toggle">
@@ -162,7 +157,14 @@
           <input type="checkbox" id="primeOnly" onchange="updateStatus('primeOnly','primeStatus')"><span>On</span>
         </div>
       </label>
-      <!-- add other switches here... -->
+      <label class="switch">
+        <span>Has Video Review</span>
+        <div class="switch-toggle">
+          <span id="videoStatus" class="status-label">Currently OFF</span>
+          <input type="checkbox" id="videoOnly" onchange="updateStatus('videoOnly','videoStatus')"><span>On</span>
+        </div>
+      </label>
+      <!-- …add any more switches here… -->
       <div class="row">
         <div class="col">
           <label for="sort">Sort By</label>
@@ -185,7 +187,9 @@
   </div>
 
   <script>
-    function toggleTheme(){ document.body.classList.toggle('dark'); }
+    function toggleTheme(){
+      document.body.classList.toggle('dark');
+    }
     function toggleAdvanced(){
       const adv = document.getElementById('advancedSection'),
             txt = document.getElementById('toggleText'),
@@ -198,47 +202,52 @@
       document.getElementById(lbl).textContent =
         document.getElementById(id).checked?'Currently ON':'Currently OFF';
     }
-    window.onload = ()=>['primeOnly'].forEach(id=>
-      updateStatus(id,id.replace(/(Only|Free)$/,'Status'))
-    );
-
+    window.onload = ()=>{
+      ['primeOnly','videoOnly'].forEach(id=>
+        updateStatus(id,id.replace(/Only$/,'Status'))
+      );
+    };
     function startSearch(){
-      const TAG        = 'echolover25-20',
-            q          = encodeURIComponent(document.getElementById('search').value.trim()),
-            dept       = document.getElementById('category').value,
-            min        = document.getElementById('minPrice').value,
-            max        = document.getElementById('maxPrice').value,
-            rating     = document.getElementById('minRating').value,
-            reviews    = document.getElementById('minReviews').value,
-            sort       = document.getElementById('sort').value,
-            primeOnly  = document.getElementById('primeOnly').checked,
-            filters    = [];
+      const TAG = 'echolover25-20',
+            q   = encodeURIComponent(document.getElementById('search').value.trim()),
+            cat = document.getElementById('category').value,
+            min = document.getElementById('minPrice').value,
+            max = document.getElementById('maxPrice').value,
+            rate= document.getElementById('minRating').value,
+            sort= document.getElementById('sort').value,
+            prime= document.getElementById('primeOnly').checked,
+            params = [];
+
+      // text query + affiliate tag
+      let url = `https://www.amazon.com/s?k=${q}&tag=${TAG}`;
+
+      // department
+      if(cat) url += `&i=${encodeURIComponent(cat)}`;
 
       // price filter
       if(min||max){
-        const low = min?Math.floor(min*100):0,
-              high= max?Math.floor(max*100):99999999;
-        filters.push(`p_36:${low}-${high}`);
+        const low  = min?Math.floor(min*100):0,
+              high = max?Math.floor(max*100):99999999;
+        params.push(`p_36:${low}-${high}`);
       }
-      // rating filter
-      if(rating==='4') filters.push('p_72:2661618011');
-      if(rating==='3') filters.push('p_72:2661619011');
-      // prime filter
-      if(primeOnly) filters.push('p_85:2470955011');
-      // min reviews
-      if(reviews) filters.push(`p_n_feature_eight_browse-bin:${reviews}`);
 
-      // build base URL 
-      let url = `https://www.amazon.com/s?k=${q}&tag=${TAG}`;
-      if(dept)  url += `&i=${dept}`;
-      if(filters.length) url += `&rh=${filters.join(',')}`;
+      // rating filter
+      if(rate==='4') params.push('p_72:2661618011');
+      if(rate==='3') params.push('p_72:2661619011');
+
+      // prime filter
+      if(prime) params.push('p_85:2470955011');
+
+      if(params.length) url += `&rh=${params.join(',')}`;
+
+      // sorting
       if(sort && sort!=='relevance'){
-        const sortMap = {
+        const map = {
           'price-asc':'price-asc-rank',
           'price-desc':'price-desc-rank',
           'rating-desc':'review-rank'
         };
-        url += `&s=${sortMap[sort]||''}`;
+        url += `&s=${map[sort]||sort}`;
       }
 
       window.open(url,'_blank');
