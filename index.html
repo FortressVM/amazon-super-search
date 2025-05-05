@@ -46,6 +46,41 @@
     .inline-group > * {
       flex: 1;
     }
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .toggle-row input[type="checkbox"] {
+      display: none;
+    }
+    .toggle-row .slider {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 20px;
+      background-color: #ccc;
+      border-radius: 34px;
+      transition: 0.4s;
+    }
+    .toggle-row .slider::before {
+      content: "";
+      position: absolute;
+      height: 16px;
+      width: 16px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      border-radius: 50%;
+      transition: 0.4s;
+    }
+    .toggle-row input[type="checkbox"]:checked + .slider {
+      background-color: orange;
+    }
+    .toggle-row input[type="checkbox"]:checked + .slider::before {
+      transform: translateX(20px);
+    }
   </style>
 </head>
 <body>
@@ -94,6 +129,16 @@
     <input type="range" id="discount" min="0" max="90" step="5" oninput="document.getElementById('discountValue').textContent = this.value + '%'">
     <span id="discountValue">0%</span>
   </div>
+  <div class="row">
+    <label>Optional Filters</label>
+    <div class="toggle-row"><label>Prime <input type="checkbox" id="filter-prime"><span class="slider"></span></label></div>
+    <div class="toggle-row"><label>Free Shipping <input type="checkbox" id="filter-shipping"><span class="slider"></span></label></div>
+    <div class="toggle-row"><label>Subscribe & Save <input type="checkbox" id="filter-subscribe"><span class="slider"></span></label></div>
+    <div class="toggle-row"><label>Amazon Pantry <input type="checkbox" id="filter-pantry"><span class="slider"></span></label></div>
+    <div class="toggle-row"><label>Video Review <input type="checkbox" id="filter-video"><span class="slider"></span></label></div>
+    <div class="toggle-row"><label>Coupons <input type="checkbox" id="filter-coupons"><span class="slider"></span></label></div>
+    <div class="toggle-row"><label>Gift Wrap <input type="checkbox" id="filter-giftwrap"><span class="slider"></span></label></div>
+  </div>
   <div class="row inline-group">
     <button onclick="startSearch()">Search</button>
     <button onclick="savePreset()">Save Preset</button>
@@ -140,7 +185,10 @@
       const data = JSON.parse(saved);
       for (const [id, val] of Object.entries(data)) {
         const el = document.getElementById(id);
-        if (el) el.value = val;
+        if (el) {
+          if (el.type === 'checkbox') el.checked = val;
+          else el.value = val;
+        }
       }
     }
   }
@@ -163,11 +211,12 @@
   }
 
   function getCurrentSearch() {
-    const ids = ['search','category','minRating','minPrice','maxPrice','minReviews','sort','discount'];
+    const ids = ['search','category','minRating','minPrice','maxPrice','minReviews','sort','discount',
+      'filter-prime','filter-shipping','filter-subscribe','filter-pantry','filter-video','filter-coupons','filter-giftwrap'];
     const obj = {};
     ids.forEach(id => {
       const el = document.getElementById(id);
-      if (el) obj[id] = el.value;
+      if (el) obj[id] = el.type === 'checkbox' ? el.checked : el.value;
     });
     return obj;
   }
@@ -197,12 +246,7 @@
     if (minReviews) url += `&rh=p_n_feature_four_browse-bin%3A${minReviews}`;
     if (sort && sort !== 'relevance') url += `&s=${sort}`;
 
-    logDebug(`🌐 Opening URL: ${url}`);
     window.open(url, '_blank');
-  }
-
-  function logDebug(msg) {
-    console.log(msg);
   }
 </script>
 </body>
