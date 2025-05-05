@@ -147,7 +147,52 @@
 <body>
 <div class="container">
   <h1>Amazon Super Search</h1>
-  <!-- Existing form content... -->
+  <div class="row">
+    <label>Search Keywords</label>
+    <input type="text" placeholder="e.g. wireless headphones">
+  </div>
+  <div class="row inline-group">
+    <div>
+      <label>Category</label>
+      <select><option>All Categories</option></select>
+    </div>
+    <div>
+      <label>Min Rating</label>
+      <select><option>Any Rating</option></select>
+    </div>
+  </div>
+  <div class="row inline-group">
+    <div><label>Min Price ($)</label><input type="number"></div>
+    <div><label>Max Price ($)</label><input type="number"></div>
+  </div>
+  <div class="row"><label>Min # of Reviews</label><input type="number"></div>
+  <div class="row">
+    <label>Sort By</label>
+    <select>
+      <option>Relevance</option>
+      <option>Price: Low to High</option>
+      <option>Price: High to Low</option>
+      <option>Avg. Customer Review</option>
+      <option>Newest Arrivals</option>
+      <option>Discount: High to Low</option>
+      <option>Number of Reviews</option>
+    </select>
+  </div>
+  <div class="row">
+    <label>Min Discount (%)</label>
+    <input type="range" min="0" max="100" value="0">
+    <div>0%</div>
+  </div>
+  <div class="row">
+    <strong>Optional Filters</strong>
+    <div class="toggle-row"><span>Prime</span><label><input type="checkbox"><span class="slider"></span></label></div>
+    <div class="toggle-row"><span>Free Shipping</span><label><input type="checkbox"><span class="slider"></span></label></div>
+    <div class="toggle-row"><span>Subscribe & Save</span><label><input type="checkbox"><span class="slider"></span></label></div>
+    <div class="toggle-row"><span>Amazon Pantry</span><label><input type="checkbox"><span class="slider"></span></label></div>
+    <div class="toggle-row"><span>Video Review</span><label><input type="checkbox"><span class="slider"></span></label></div>
+    <div class="toggle-row"><span>Coupons</span><label><input type="checkbox"><span class="slider"></span></label></div>
+    <div class="toggle-row"><span>Gift Wrap</span><label><input type="checkbox"><span class="slider"></span></label></div>
+  </div>
   <div class="row inline-group">
     <button onclick="startSearch()">Search</button>
     <button onclick="savePreset()">Save Preset</button>
