@@ -122,6 +122,7 @@
       <span id="toggleText">Show Advanced Filters</span> <span id="toggleArrow">⯈</span>
     </div>
     <div id="advancedSection" class="hidden">
+      <!-- Prime -->
       <label class="switch">
         <span>Prime Eligible</span>
         <div class="switch-toggle">
@@ -129,6 +130,7 @@
           <input type="checkbox" id="primeOnly" onchange="updateStatus('primeOnly','primeStatus')"><span>On</span>
         </div>
       </label>
+      <!-- Video -->
       <label class="switch">
         <span>Has Video Review</span>
         <div class="switch-toggle">
@@ -136,6 +138,7 @@
           <input type="checkbox" id="videoOnly" onchange="updateStatus('videoOnly','videoStatus')"><span>On</span>
         </div>
       </label>
+      <!-- Organic -->
       <label class="switch">
         <span>Organic</span>
         <div class="switch-toggle">
@@ -143,6 +146,7 @@
           <input type="checkbox" id="organic" onchange="updateStatus('organic','organicStatus')"><span>On</span>
         </div>
       </label>
+      <!-- Cruelty-Free -->
       <label class="switch">
         <span>Cruelty-Free</span>
         <div class="switch-toggle">
@@ -150,6 +154,7 @@
           <input type="checkbox" id="crueltyFree" onchange="updateStatus('crueltyFree','crueltyStatus')"><span>On</span>
         </div>
       </label>
+      <!-- Gluten-Free -->
       <label class="switch">
         <span>Gluten-Free</span>
         <div class="switch-toggle">
@@ -157,7 +162,69 @@
           <input type="checkbox" id="glutenFree" onchange="updateStatus('glutenFree','glutenStatus')"><span>On</span>
         </div>
       </label>
-
+      <!-- Free Shipping -->
+      <label class="switch">
+        <span>Free Shipping</span>
+        <div class="switch-toggle">
+          <span id="freeShipStatus" class="status-label">Currently OFF</span>
+          <input type="checkbox" id="freeShipping" onchange="updateStatus('freeShipping','freeShipStatus')"><span>On</span>
+        </div>
+      </label>
+      <!-- Subscribe & Save -->
+      <label class="switch">
+        <span>Subscribe & Save</span>
+        <div class="switch-toggle">
+          <span id="subSaveStatus" class="status-label">Currently OFF</span>
+          <input type="checkbox" id="subscribeSave" onchange="updateStatus('subscribeSave','subSaveStatus')"><span>On</span>
+        </div>
+      </label>
+      <!-- Amazon Pantry -->
+      <label class="switch">
+        <span>Amazon Pantry</span>
+        <div class="switch-toggle">
+          <span id="pantryStatus" class="status-label">Currently OFF</span>
+          <input type="checkbox" id="amazonPantry" onchange="updateStatus('amazonPantry','pantryStatus')"><span>On</span>
+        </div>
+      </label>
+      <!-- Condition: New -->
+      <label class="switch">
+        <span>Condition: New</span>
+        <div class="switch-toggle">
+          <span id="newStatus" class="status-label">Currently OFF</span>
+          <input type="checkbox" id="conditionNew" onchange="updateStatus('conditionNew','newStatus')"><span>On</span>
+        </div>
+      </label>
+      <!-- Condition: Used -->
+      <label class="switch">
+        <span>Condition: Used</span>
+        <div class="switch-toggle">
+          <span id="usedStatus" class="status-label">Currently OFF</span>
+          <input type="checkbox" id="conditionUsed" onchange="updateStatus('conditionUsed','usedStatus')"><span>On</span>
+        </div>
+      </label>
+      <!-- Gift-wrap Available -->
+      <label class="switch">
+        <span>Gift-wrap Available</span>
+        <div class="switch-toggle">
+          <span id="giftStatus" class="status-label">Currently OFF</span>
+          <input type="checkbox" id="giftWrap" onchange="updateStatus('giftWrap','giftStatus')"><span>On</span>
+        </div>
+      </label>
+      <!-- Coupons -->
+      <label class="switch">
+        <span>Coupons</span>
+        <div class="switch-toggle">
+          <span id="couponStatus" class="status-label">Currently OFF</span>
+          <input type="checkbox" id="hasCoupon" onchange="updateStatus('hasCoupon','couponStatus')"><span>On</span>
+        </div>
+      </label>
+      <!-- Brand -->
+      <label for="brand">Brand</label>
+      <input id="brand" type="text" placeholder="e.g. Nike, Samsung">
+      <!-- Seller -->
+      <label for="seller">Seller</label>
+      <input id="seller" type="text" placeholder="e.g. Amazon.com">
+      <!-- Sort & Discount -->
       <div class="row">
         <div class="col">
           <label for="sort">Sort By</label>
@@ -166,6 +233,7 @@
             <option value="price-asc">Price: Low to High</option>
             <option value="price-desc">Price: High to Low</option>
             <option value="rating-desc">Rating: High to Low</option>
+            <option value="date-desc">Newest Arrivals</option>
           </select>
         </div>
         <div class="col">
@@ -193,23 +261,53 @@
       document.getElementById(lbl).textContent =
         document.getElementById(id).checked?'Currently ON':'Currently OFF';
     }
-    window.onload = ()=>['primeOnly','videoOnly','organic','crueltyFree','glutenFree']
-      .forEach(id=>updateStatus(id,id.replace(/(Only|Free)$/,'Status')));
+    window.onload = ()=>{
+      ['primeOnly','videoOnly','organic','crueltyFree','glutenFree',
+       'freeShipping','subscribeSave','amazonPantry',
+       'conditionNew','conditionUsed','giftWrap','hasCoupon'
+      ].forEach(id=>
+        updateStatus(id, id.endsWith('Status')? id : id + 'Status')
+      );
+    };
     function startSearch(){
       const TAG='echolover25-20',
             q=encodeURIComponent(document.getElementById('search').value.trim()),
-            filters=[],
+            params=[],
+            cat=document.getElementById('category').value,
             min=document.getElementById('minPrice').value,
             max=document.getElementById('maxPrice').value;
+      let url=`https://www.amazon.com/s?k=${q}&tag=${TAG}`;
+      if(cat) url+=`&i=${encodeURIComponent(cat)}`;
       if(min||max){
         const low=min?Math.floor(min*100):0,
               high=max?Math.floor(max*100):99999999;
-        filters.push(`p_36:${low}-${high}`);
+        params.push(`p_36:${low}-${high}`);
       }
-      if(document.getElementById('minRating').value==='4') filters.push('p_72:2661618011');
-      if(document.getElementById('primeOnly').checked) filters.push('p_85:2470955011');
-      let url=`https://www.amazon.com/s?k=${q}&tag=${TAG}`;
-      if(filters.length) url+=`&rh=${filters.join(',')}`;
+      ['minRating'].forEach(_=>{
+        const r=document.getElementById('minRating').value;
+        if(r==='4') params.push('p_72:2661618011');
+        if(r==='3') params.push('p_72:2661619011');
+      });
+      const toggles = {
+        primeOnly:'p_85:2470955011',
+        freeShipping:'p_76:1243479011',
+        subscribeSave:'p_0:1260869011',
+        amazonPantry:'p_0:13254164011',
+        conditionNew:'p_n_condition-type:2695042031',
+        conditionUsed:'p_n_condition-type:2695042031|2619523011',
+        giftWrap:'p_0:11740569011',
+        hasCoupon:'p_89:2661601011'
+      };
+      for(let id in toggles){
+        if(document.getElementById(id).checked) params.push(toggles[id]);
+      }
+      const brand=document.getElementById('brand').value.trim();
+      if(brand) params.push(`p_89:${encodeURIComponent(brand)}`);
+      const seller=document.getElementById('seller').value.trim();
+      if(seller) params.push(`p_6:${encodeURIComponent(seller)}`);
+      if(params.length) url+=`&rh=${params.join(',')}`;
+      const sort=document.getElementById('sort').value;
+      if(sort!=='relevance') url+=`&s=${sort}`;
       window.open(url,'_blank');
     }
   </script>
