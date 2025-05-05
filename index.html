@@ -16,6 +16,11 @@
     { name: '3 stars & up', value: '3' }
   ];
 
+  const toggles = [
+    'prime', 'freeShipping', 'subscribeSave', 'pantry', 'videoReview', 'coupons', 'giftWrap',
+    'conditionNew', 'conditionUsed', 'organic', 'crueltyFree', 'glutenFree'
+  ];
+
   window.onload = () => {
     populateDropdown('category', categories);
     populateDropdown('minRating', ratings);
@@ -40,7 +45,10 @@
       const data = JSON.parse(saved);
       for (const [id, val] of Object.entries(data)) {
         const el = document.getElementById(id);
-        if (el) el.value = val;
+        if (el) {
+          if (el.type === 'checkbox') el.checked = val === true;
+          else el.value = val;
+        }
       }
     }
   }
@@ -64,6 +72,19 @@
     }
   }
 
+  function getCurrentSearch() {
+    const obj = {
+      search: document.getElementById('search')?.value || '',
+      category: document.getElementById('category')?.value || '',
+      minRating: document.getElementById('minRating')?.value || ''
+    };
+    toggles.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) obj[id] = el.checked;
+    });
+    return obj;
+  }
+
   function startSearch() {
     const query = document.getElementById('search')?.value.trim();
     if (!query) return alert('Search keywords are required.');
@@ -72,5 +93,7 @@
     // ... existing logic continues ...
   }
 
-  // Keep rest of your script untouched...
+  function logDebug(msg) {
+    console.log(msg);
+  }
 </script>
