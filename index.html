@@ -49,6 +49,15 @@
   }
 
   function startSearch() {
+    logDebug('🔍 Search triggered');
+    // Element checks to prevent blank screen
+    const requiredIds = ['search', 'category', 'minPrice', 'maxPrice', 'minRating', 'minReviews', 'includeKeywords', 'excludeKeywords', 'exactPhrase', 'language', 'currency', 'preset', 'export'];
+    for (const id of requiredIds) {
+      if (!document.getElementById(id)) {
+        alert(`Missing input element with ID: ${id}`);
+        return;
+      }
+    }
     const TAG = 'echolover25-20';
     let query = document.getElementById('search')?.value.trim() || '';
     const include = document.getElementById('includeKeywords')?.value.trim() || '';
@@ -61,6 +70,7 @@
 
     const q = encodeURIComponent(query);
     let url = `https://www.amazon.com/s?k=${q}&tag=${TAG}`;
+    logDebug(`🔗 Base URL: ${url}`);
 
     const category = document.getElementById('category')?.value;
     if (category) url += `&i=${category}`;
@@ -68,6 +78,7 @@
     const minPrice = document.getElementById('minPrice')?.value;
     const maxPrice = document.getElementById('maxPrice')?.value;
     if (minPrice || maxPrice) {
+      logDebug(`💲 Price range: ${minPrice} - ${maxPrice}`);
       const minCents = Math.floor((+minPrice || 0) * 100);
       const maxCents = Math.floor((+maxPrice || 99999) * 100);
       url += `&rh=p_36%3A${minCents}-${maxCents}`;
@@ -87,6 +98,7 @@
 
     const exportType = document.getElementById('export')?.value;
     if (exportType) {
+      logDebug(`📤 Exporting as: ${exportType}`);
       const output = `Search Query: ${query}\nURL: ${url}`;
       const blob = new Blob([output], { type: exportType === 'csv' ? 'text/csv' : 'application/octet-stream' });
       const a = document.createElement('a');
@@ -96,7 +108,32 @@
       a.click();
       document.body.removeChild(a);
     } else {
+      logDebug('🌐 Opening Amazon URL in new tab');
       window.open(url, '_blank');
     }
+  }
+
+
+  // Debug panel setup
+  function logDebug(message) {
+    let panel = document.getElementById('debugPanel');
+    if (!panel) {
+      panel = document.createElement('div');
+      panel.id = 'debugPanel';
+      panel.style.position = 'fixed';
+      panel.style.bottom = '0';
+      panel.style.left = '0';
+      panel.style.right = '0';
+      panel.style.background = 'rgba(0,0,0,0.8)';
+      panel.style.color = '#0f0';
+      panel.style.padding = '10px';
+      panel.style.fontSize = '12px';
+      panel.style.fontFamily = 'monospace';
+      panel.style.maxHeight = '150px';
+      panel.style.overflowY = 'auto';
+      document.body.appendChild(panel);
+    }
+    const timestamp = new Date().toLocaleTimeString();
+    panel.innerHTML += `<div>[${timestamp}] ${message}</div>`;
   }
 </script>
