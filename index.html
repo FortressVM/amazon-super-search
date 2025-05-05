@@ -244,13 +244,13 @@
         <p>Spread the word about Amazon Super Search:</p>
         <div class="d-flex flex-wrap gap-2 mb-2">
           <!-- Facebook Share -->
-          <a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(window.location.href),'_blank','noopener'); return false;" class="btn btn-primary">Share on Facebook</a>
+          <a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent('https://amazonsupersearch.blogspot.com/')),'_blank','noopener'); return false;" class="btn btn-primary">Share on Facebook</a>
           <!-- Twitter Share -->
-          <a href="#" onclick="window.open('https://twitter.com/intent/tweet?url='+encodeURIComponent(window.location.href)+'&text='+encodeURIComponent('Check out this Amazon Super Search!'),'_blank','noopener'); return false;" class="btn btn-info">Share on Twitter</a>
+          <a href="#" onclick="window.open('https://twitter.com/intent/tweet?url='+encodeURIComponent('https://amazonsupersearch.blogspot.com/')+' &text='+encodeURIComponent('Check out this Amazon Super Search!'))+'&text='+encodeURIComponent('Check out this Amazon Super Search!'),'_blank','noopener'); return false;" class="btn btn-info">Share on Twitter</a>
           <!-- Email Share -->
-          <a href="mailto:?subject=Amazon Super Search&body=Check%20this%20out:%20" + encodeURIComponent(window.location.href) class="btn btn-secondary">Share via Email</a>
+          <a href="mailto:?subject=Amazon Super Search&body=Check%20this%20out:%20https://amazonsupersearch.blogspot.com/" class="btn btn-secondary">Share via Email</a>
           <!-- SMS Share -->
-          <a href="#" onclick="window.open('sms:?&body='+encodeURIComponent('Check out this Amazon Super Search: '+window.location.href)); return false;" class="btn btn-success">Share via SMS</a>
+          <a href="#" onclick="window.open('sms:?&body='+encodeURIComponent('Check out this Amazon Super Search: https://amazonsupersearch.blogspot.com/'))); return false;" class="btn btn-success">Share via SMS</a>
         </div>
         <label class="form-label">Copy Link</label>
         <div class="input-group">
@@ -258,7 +258,7 @@
           <button class="btn btn-outline-secondary" type="button" onclick="navigator.clipboard.writeText(window.location.href)">Copy URL</button>
         </div>
         <script>
-          document.getElementById('shareLink').value = window.location.href;
+          document.getElementById('shareLink').value = 'https://amazonsupersearch.blogspot.com/';
         </script>
       </section>
 
