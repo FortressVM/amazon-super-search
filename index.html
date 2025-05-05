@@ -42,6 +42,7 @@
       width: 24px;
       height: 24px;
     }
+
     .container {
       max-width: 800px;
       margin: 2rem auto;
@@ -56,10 +57,8 @@
       padding-bottom: 0.5rem;
       color: #053E5E;
     }
-    .container h1 {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
+
+    /* ---------------- Forms ---------------- */
     .row {
       margin-bottom: 1rem;
     }
@@ -90,10 +89,14 @@
     .inline-group > * {
       flex: 1;
     }
+
+    /* discount slider label */
     #discountValue {
       margin-top: -0.5rem;
       font-size: 0.9rem;
     }
+
+    /* toggles */
     .toggle-row {
       display: flex;
       justify-content: space-between;
@@ -121,7 +124,7 @@
       width: 22px;
       left: 3px;
       bottom: 2px;
-      background-color: white;
+      background: white;
       border-radius: 50%;
       border: 1px solid #555;
       display: flex;
@@ -143,6 +146,8 @@
       background-color: #b35b00;
       border-color: #b35b00;
     }
+
+    /* ---------------- Grids & Cards ---------------- */
     .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -154,6 +159,8 @@
       padding: 1rem;
       border-radius: 6px;
     }
+
+    /* ---------------- Referral ---------------- */
     .referral {
       background: #f9f9f9;
       padding: 1rem;
@@ -184,6 +191,8 @@
     .twitter  { background-image: url('https://cdn-icons-png.flaticon.com/512/733/733579.png'); }
     .email    { background-image: url('https://cdn-icons-png.flaticon.com/512/732/732200.png'); }
     .sms      { background-image: url('https://cdn-icons-png.flaticon.com/512/1042/1042338.png'); }
+
+    /* ---------------- Copy‐Link ---------------- */
     .copy-link {
       display: flex;
       justify-content: center;
@@ -204,9 +213,19 @@
       border-radius: 4px;
       cursor: pointer;
     }
-    .feedback textarea { height: 100px; }
-    .feedback button { width: auto; }
-    .changelog ul { padding-left: 1.25rem; }
+
+    /* ---------------- Feedback ---------------- */
+    .feedback textarea {
+      height: 100px;
+    }
+    .feedback button {
+      width: auto;
+    }
+
+    /* ---------------- Changelog ---------------- */
+    .changelog ul {
+      padding-left: 1.25rem;
+    }
   </style>
 </head>
 <body>
@@ -233,86 +252,200 @@
 
   <div class="container">
 
-    <!-- 1. Dashboard -->
+    <!-- 1. Dashboard & Presets -->
     <section id="dashboard">
       <h2>Your Dashboard & Presets</h2>
-      <!-- … -->
+      <div class="presets">
+        <label>Saved Presets:</label>
+        <select id="presetSelect">
+          <option>– Select a preset –</option>
+          <option>Electronics Deals</option>
+          <option>Under $20 Finds</option>
+        </select>
+        <button onclick="applyPreset()">Apply</button>
+        <button onclick="savePreset()">Save Current Preset</button>
+      </div>
+      <div>
+        <label>Recommended Searches:</label>
+        <ul>
+          <li><a href="#" onclick="setKeywords('wireless earbuds')">Wireless Earbuds</a></li>
+          <li><a href="#" onclick="setKeywords('gaming laptops')">Gaming Laptops</a></li>
+          <li><a href="#" onclick="setKeywords('kitchen gadgets')">Kitchen Gadgets</a></li>
+        </ul>
+      </div>
     </section>
 
-    <!-- 2. Search (includes Alerts + Form) -->
+    <!-- 2+3. Alerts & Search -->
     <section id="search">
       <h2>Price-Drop & Deal Alerts</h2>
-      <!-- alert form -->
       <div class="row">
         <label for="alertKeywords">Alert me when:</label>
         <input id="alertKeywords" type="text" placeholder="e.g. noise cancelling headphones">
       </div>
       <div class="row">
         <label for="alertPrice">Drops below $</label>
-        <input id="alertPrice" type="number" placeholder="100">
+        <input id="alertPrice" type="number" value="100">
       </div>
       <div class="row">
         <button onclick="setAlert()">Set Alert</button>
       </div>
 
       <h2>Search</h2>
-      <!-- your search form fields -->
       <div class="row">
         <label for="searchInput">Search Keywords</label>
         <input id="searchInput" type="text" placeholder="e.g. wireless headphones">
       </div>
-      <!-- … rest of inline-group, toggles, etc. … -->
-    </section>
-
-    <!-- 3. Weekly Featured Finds -->
-    <section id="featured">
-      <h2>Weekly Featured Finds</h2>
-      <div class="grid">
-        <!-- … -->
+      <div class="row inline-group">
+        <div>
+          <label for="departmentSelect">Category</label>
+          <select id="departmentSelect">
+            <option>All Categories</option>
+          </select>
+        </div>
+        <div>
+          <label for="ratingSelect">Min Rating</label>
+          <select id="ratingSelect">
+            <option>Any Rating</option>
+          </select>
+        </div>
+      </div>
+      <div class="row inline-group">
+        <div>
+          <label for="minPrice">Min Price ($)</label>
+          <input id="minPrice" type="number">
+        </div>
+        <div>
+          <label for="maxPrice">Max Price ($)</label>
+          <input id="maxPrice" type="number">
+        </div>
+      </div>
+      <div class="row">
+        <label for="minReviews">Min # of Reviews</label>
+        <input id="minReviews" type="number">
+      </div>
+      <div class="row">
+        <label for="sortSelect">Sort By</label>
+        <select id="sortSelect">
+          <option>Relevance</option>
+          <option>Price: Low to High</option>
+          <option>Price: High to Low</option>
+          <option>Avg. Customer Review</option>
+          <option>Newest Arrivals</option>
+          <option>Discount: High to Low</option>
+          <option>Number of Reviews</option>
+        </select>
+      </div>
+      <div class="row">
+        <label for="minDiscount">Min Discount (%)</label>
+        <input id="minDiscount" type="range" min="0" max="100" value="0">
+        <div id="discountValue">0%</div>
+      </div>
+      <div class="row">
+        <strong>Optional Filters</strong>
+        <div class="toggle-row"><span>Prime</span><label><input id="fPrime" type="checkbox"><span class="slider"></span></label></div>
+        <div class="toggle-row"><span>Free Shipping</span><label><input id="fFreeShip" type="checkbox"><span class="slider"></span></label></div>
+        <div class="toggle-row"><span>Subscribe &amp; Save</span><label><input id="fSubscribe" type="checkbox"><span class="slider"></span></label></div>
+        <div class="toggle-row"><span>Amazon Pantry</span><label><input id="fPantry" type="checkbox"><span class="slider"></span></label></div>
+        <div class="toggle-row"><span>Video Review</span><label><input id="fVideo" type="checkbox"><span class="slider"></span></label></div>
+        <div class="toggle-row"><span>Coupons</span><label><input id="fCoupons" type="checkbox"><span class="slider"></span></label></div>
+        <div class="toggle-row"><span>Gift Wrap</span><label><input id="fGift" type="checkbox"><span class="slider"></span></label></div>
+      </div>
+      <div class="row inline-group">
+        <button onclick="startSearch()">Search</button>
+        <button onclick="savePreset()">Save Preset</button>
       </div>
     </section>
 
-    <!-- 4. How-To Guides -->
+    <!-- 4. Weekly Featured Finds -->
+    <section id="featured">
+      <h2>Weekly Featured Finds</h2>
+      <div class="grid">
+        <div class="card"><strong>1.</strong> Noise-Cancelling Headphones</div>
+        <div class="card"><strong>2.</strong> Portable Projectors</div>
+        <div class="card"><strong>3.</strong> Smart Home Hubs</div>
+        <div class="card"><strong>4.</strong> Fitness Trackers</div>
+      </div>
+    </section>
+
+    <!-- 5. How-To Guides -->
     <section id="guides">
       <h2>How-To Guides</h2>
-      <!-- … -->
+      <ul>
+        <li><a href="#">Maximize Amazon Savings</a></li>
+        <li><a href="#">Spot Fake Reviews</a></li>
+        <li><a href="#">Subscribe &amp; Save Tips</a></li>
+      </ul>
     </section>
 
-    <!-- 5. Community Q&A -->
+    <!-- 6. Community Q&A -->
     <section id="community">
       <h2>Community Q&A</h2>
-      <!-- … -->
+      <p><a href="#">Join our discussion forum</a> and swap tips with others.</p>
     </section>
 
-    <!-- 6. Feedback -->
+    <!-- 7. Feedback -->
     <section id="feedback" class="feedback">
       <h2>Send Us Feedback</h2>
-      <!-- … -->
+      <textarea id="feedbackText" placeholder="What would make this tool better?"></textarea>
+      <button onclick="sendFeedback()">Send Feedback</button>
     </section>
 
-    <!-- Referral, Changelog, Social Share can go here too… -->
+    <!-- Referral Program -->
+    <section class="referral">
+      <h2>Refer a Friend</h2>
+      <div class="share-buttons">
+        <a class="facebook"
+           href="https://www.facebook.com/sharer/sharer.php?u=https://amazonsupersearch.com/?ref=YOURCODE"
+           target="_blank" title="Share on Facebook"></a>
+        <a class="twitter"
+           href="https://twitter.com/intent/tweet?url=https://amazonsupersearch.com/?ref=YOURCODE"
+           target="_blank" title="Share on Twitter"></a>
+        <a class="email"
+           href="mailto:?subject=Check+this+out&body=Try+this+tool:+https://amazonsupersearch.com/?ref=YOURCODE"
+           title="Share via Email"></a>
+        <a class="sms"
+           href="sms:?&body=Check+this+out:+https://amazonsupersearch.com/?ref=YOURCODE"
+           title="Share via SMS"></a>
+      </div>
+      <div class="copy-link">
+        <input id="refLink" type="text" readonly value="https://amazonsupersearch.com/?ref=YOURCODE">
+        <button onclick="copyReferral()">Copy Link</button>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section class="changelog">
+      <h2>What's New</h2>
+      <ul>
+        <li>v1.2.0: Full advanced filters restored + alerts & badges.</li>
+        <li>v1.1.0: Gamification & saved presets.</li>
+        <li>v1.0.0: Initial release of search tool.</li>
+      </ul>
+    </section>
+
+    <!-- Social Share -->
+    <div class="share-section">
+      <h2>Spread The Love!</h2>
+      <div class="share-buttons">
+        <a class="facebook" href="https://facebook.com/sharer/sharer.php?u=https://amazonsupersearch.com" target="_blank"></a>
+        <a class="twitter"  href="https://twitter.com/intent/tweet?url=https://amazonsupersearch.com" target="_blank"></a>
+        <a class="email"    href="mailto:?subject=Check this out&body=https://amazonsupersearch.com"></a>
+        <a class="sms"      href="sms:?&body=Check this out:+https://amazonsupersearch.com"></a>
+      </div>
+    </div>
 
   </div>
 
   <!-- Section‐toggling script -->
   <script>
-    const sections = [
-      'dashboard',
-      'search',
-      'featured',
-      'guides',
-      'community',
-      'feedback'
-    ];
-
+    const sections = ['dashboard','search','featured','guides','community','feedback'];
     function showSection(id) {
       sections.forEach(sec => {
         const el = document.getElementById(sec);
         if (!el) return;
-        el.style.display = sec === id ? 'block' : 'none';
+        el.style.display = sec===id ? 'block' : 'none';
       });
     }
-
     document.querySelectorAll('header nav a').forEach(a => {
       const target = a.getAttribute('href').slice(1);
       if (sections.includes(target)) {
@@ -322,13 +455,45 @@
         });
       }
     });
-
-    window.addEventListener('DOMContentLoaded', () => {
-      showSection('search');  // show the Search view by default
-    });
+    window.addEventListener('DOMContentLoaded', () => showSection('search'));
   </script>
 
-  <!-- your other scripts (copyReferral, PWA prompt, etc.) -->
+  <!-- Support scripts -->
+  <script>
+    function applyPreset()  { alert('Preset applied!'); }
+    function savePreset()   { alert('Preset saved!'); }
+    function setKeywords(t) { document.getElementById('searchInput').value = t; }
+    function setAlert()     { alert('Alert set!'); }
+    function startSearch()  { alert('Searching...'); }
+    function copyReferral() {
+      const ref = document.getElementById('refLink'),
+            ta  = document.createElement('textarea');
+      ta.value = ref.value;
+      ta.style.position = 'fixed'; ta.style.top=0; ta.style.left=0;
+      ta.style.width='1px'; ta.style.height='1px'; ta.style.border='none';
+      ta.style.padding='0'; ta.style.outline='none'; ta.style.boxShadow='none';
+      ta.style.background='transparent';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        alert('Referral link copied!');
+      } catch {
+        alert('Unable to copy.');
+      }
+      document.body.removeChild(ta);
+      window.getSelection().removeAllRanges();
+    }
+    function sendFeedback() {
+      const txt = document.getElementById('feedbackText').value;
+      if (!txt) return alert('Please enter feedback.');
+      alert('Thanks for your feedback!');
+    }
+    // Discount slider live update
+    const rng = document.getElementById('minDiscount'),
+          val = document.getElementById('discountValue');
+    if (rng && val) rng.oninput = () => val.textContent = rng.value + '%';
+  </script>
 
 </body>
 </html>
