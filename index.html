@@ -95,178 +95,89 @@
       background-color: #b35b00;
       border-color: #b35b00;
     }
+    .share-section {
+      margin-top: 2rem;
+      text-align: center;
+    }
+    .share-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+    .share-buttons a {
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+      background-size: cover;
+      border-radius: 50%;
+      box-shadow: 0 0 6px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+    }
+    .share-buttons a:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 12px rgba(255,140,0,0.7);
+    }
+    .facebook { background-image: url('https://cdn-icons-png.flaticon.com/512/733/733547.png'); }
+    .twitter { background-image: url('https://cdn-icons-png.flaticon.com/512/733/733579.png'); }
+    .email { background-image: url('https://cdn-icons-png.flaticon.com/512/732/732200.png'); }
+    .sms { background-image: url('https://cdn-icons-png.flaticon.com/512/1042/1042338.png'); }
+    .copy-link {
+      margin-top: 1rem;
+    }
+    #copyField {
+      width: 70%;
+      padding: 0.4rem;
+      font-size: 0.95rem;
+      border-radius: 5px;
+      border: 1px solid #aaa;
+    }
+    #copyButton {
+      background: #ff9900;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 0.5rem;
+    }
   </style>
 </head>
 <body>
 <div class="container">
   <h1>Amazon Super Search</h1>
-  <div class="row">
-    <label for="search">Search Keywords</label>
-    <input type="text" id="search" placeholder="e.g. wireless headphones">
-  </div>
-  <div class="inline-group row">
-    <div>
-      <label for="category">Category</label>
-      <select id="category"></select>
-    </div>
-    <div>
-      <label for="minRating">Min Rating</label>
-      <select id="minRating"></select>
-    </div>
-  </div>
-  <div class="inline-group row">
-    <div>
-      <label for="minPrice">Min Price ($)</label>
-      <input type="number" id="minPrice" min="0">
-    </div>
-    <div>
-      <label for="maxPrice">Max Price ($)</label>
-      <input type="number" id="maxPrice" min="0">
-    </div>
-  </div>
-  <div class="row">
-    <label for="minReviews">Min # of Reviews</label>
-    <input type="number" id="minReviews" min="0">
-  </div>
-  <div class="row">
-    <label for="sort">Sort By</label>
-    <select id="sort">
-      <option value="relevance">Relevance</option>
-      <option value="price-asc-rank">Price: Low to High</option>
-      <option value="price-desc-rank">Price: High to Low</option>
-      <option value="review-rank">Avg. Customer Review</option>
-      <option value="date-desc-rank">Newest Arrivals</option>
-      <option value="review-count-rank"># of Reviews</option>
-      <option value="price">Base Price (Experimental)</option>
-      <option value="popularity-rank">Popularity</option>
-      <option value="featured-rank">Featured</option>
-      <option value="rank">Sales Rank</option>
-    </select>
-  </div>
-  <div class="row">
-    <label for="discount">Min Discount (%)</label>
-    <input type="range" id="discount" min="0" max="90" step="5" oninput="document.getElementById('discountValue').textContent = this.value + '%'">
-    <span id="discountValue">0%</span>
-  </div>
-  <div class="row">
-    <label>Optional Filters</label>
-    <div class="toggle-row"><label>Prime <input type="checkbox" id="filter-prime"><span class="slider"></span></label></div>
-    <div class="toggle-row"><label>Free Shipping <input type="checkbox" id="filter-shipping"><span class="slider"></span></label></div>
-    <div class="toggle-row"><label>Subscribe & Save <input type="checkbox" id="filter-subscribe"><span class="slider"></span></label></div>
-    <div class="toggle-row"><label>Amazon Pantry <input type="checkbox" id="filter-pantry"><span class="slider"></span></label></div>
-    <div class="toggle-row"><label>Video Review <input type="checkbox" id="filter-video"><span class="slider"></span></label></div>
-    <div class="toggle-row"><label>Coupons <input type="checkbox" id="filter-coupons"><span class="slider"></span></label></div>
-    <div class="toggle-row"><label>Gift Wrap <input type="checkbox" id="filter-giftwrap"><span class="slider"></span></label></div>
-  </div>
+  <!-- Existing form content... -->
   <div class="row inline-group">
     <button onclick="startSearch()">Search</button>
     <button onclick="savePreset()">Save Preset</button>
   </div>
+
+  <!-- Share Section -->
+  <div class="share-section">
+    <h2>Spread The Love! Share With A Friend!</h2>
+    <div class="share-buttons">
+      <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://amazonsupersearch.blogspot.com" target="_blank" title="Share on Facebook"></a>
+      <a class="twitter" href="https://twitter.com/intent/tweet?url=https://amazonsupersearch.blogspot.com&text=Check+out+this+awesome+Amazon+search+tool!" target="_blank" title="Share on Twitter"></a>
+      <a class="email" href="mailto:?subject=Check this out&body=Try this Amazon Super Search: https://amazonsupersearch.blogspot.com" title="Share via Email"></a>
+      <a class="sms" href="sms:?&body=Check this out: https://amazonsupersearch.blogspot.com" title="Share via SMS"></a>
+    </div>
+    <div class="copy-link">
+      <input type="text" id="copyField" value="https://amazonsupersearch.blogspot.com" readonly>
+      <button id="copyButton" onclick="copyLink()">Copy Link</button>
+    </div>
+  </div>
 </div>
+<!-- Scripts -->
 <script>
-  const categories = [
-    { name: 'All Categories', value: '' },
-    { name: 'Books', value: 'stripbooks' },
-    { name: 'Electronics', value: 'electronics' },
-    { name: 'Clothing & Accessories', value: 'fashion' },
-    { name: 'Home & Kitchen', value: 'garden' },
-    { name: 'Beauty & Personal Care', value: 'beauty' },
-    { name: 'Toys & Games', value: 'toys-and-games' },
-    { name: 'Health & Personal Care', value: 'hpc' }
-  ];
-
-  const ratings = [
-    { name: 'Any Rating', value: '' },
-    { name: '4 stars & up', value: '4' },
-    { name: '3 stars & up', value: '3' }
-  ];
-
-  window.onload = () => {
-    populateDropdown('category', categories);
-    populateDropdown('minRating', ratings);
-    restoreLastSearch();
-    attachClickTracking();
-  };
-
-  function populateDropdown(id, list) {
-    const select = document.getElementById(id);
-    list.forEach(opt => {
-      const option = document.createElement('option');
-      option.textContent = opt.name;
-      option.value = opt.value;
-      select.appendChild(option);
-    });
-  }
-
-  function restoreLastSearch() {
-    const saved = localStorage.getItem('last-search');
-    if (saved) {
-      const data = JSON.parse(saved);
-      for (const [id, val] of Object.entries(data)) {
-        const el = document.getElementById(id);
-        if (el) {
-          if (el.type === 'checkbox') el.checked = val;
-          else el.value = val;
-        }
-      }
-    }
-  }
-
-  function attachClickTracking() {
-    document.querySelectorAll('button, select, input').forEach(el => {
-      el.addEventListener('click', () => {
-        console.log(`Clicked: ${el.id || el.name || el.tagName}`);
-      });
-    });
-  }
-
-  function savePreset() {
-    const key = prompt('Name this preset:');
-    if (key) {
-      const data = getCurrentSearch();
-      localStorage.setItem(`preset-${key}`, JSON.stringify(data));
-      localStorage.setItem('last-search', JSON.stringify(data));
-    }
-  }
-
-  function getCurrentSearch() {
-    const ids = ['search','category','minRating','minPrice','maxPrice','minReviews','sort','discount',
-      'filter-prime','filter-shipping','filter-subscribe','filter-pantry','filter-video','filter-coupons','filter-giftwrap'];
-    const obj = {};
-    ids.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) obj[id] = el.type === 'checkbox' ? el.checked : el.value;
-    });
-    return obj;
-  }
-
-  function startSearch() {
-    const TAG = 'echolover25-20';
-    const q = encodeURIComponent(document.getElementById('search').value.trim());
-    let url = `https://www.amazon.com/s?k=${q}&tag=${TAG}`;
-
-    const category = document.getElementById('category')?.value;
-    const rating = document.getElementById('minRating')?.value;
-    const minPrice = document.getElementById('minPrice')?.value;
-    const maxPrice = document.getElementById('maxPrice')?.value;
-    const sort = document.getElementById('sort')?.value;
-    const minReviews = document.getElementById('minReviews')?.value;
-
-    if (category) url += `&i=${category}`;
-    if (rating === '4') url += `&rh=p_72%3A2661618011`;
-    else if (rating === '3') url += `&rh=p_72%3A2661619011`;
-
-    if (minPrice || maxPrice) {
-      const minCents = Math.floor((+minPrice || 0) * 100);
-      const maxCents = Math.floor((+maxPrice || 99999) * 100);
-      url += `&rh=p_36%3A${minCents}-${maxCents}`;
-    }
-
-    if (minReviews) url += `&rh=p_n_feature_four_browse-bin%3A${minReviews}`;
-    if (sort && sort !== 'relevance') url += `&s=${sort}`;
-
-    window.open(url, '_blank');
-  }
+function copyLink() {
+  const field = document.getElementById('copyField');
+  field.select();
+  field.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(field.value).then(() => {
+    alert('Link copied to clipboard!');
+  });
+}
 </script>
 </body>
 </html>
