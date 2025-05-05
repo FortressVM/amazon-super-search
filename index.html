@@ -1,202 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Amazon Super Search</title>
   <style>
-    /* ---------------- Global ---------------- */
-    body {
-      font-family: sans-serif;
-      margin: 0;
-      background: #f9f9f9;
-      color: #000;
-    }
-    header {
-      background: #053E5E;
-      color: #fff;
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 1.5rem;
-    }
-    nav a {
-      color: #fff;
-      margin-left: 1rem;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .points-badges {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    .points {
-      font-size: 0.9rem;
-    }
-    .badges img {
-      width: 24px;
-      height: 24px;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 2rem auto;
-      background: #fff;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.1);
-    }
-    .container h2 {
-      margin-top: 2rem;
-      border-bottom: 2px solid #eee;
-      padding-bottom: 0.5rem;
-      color: #053E5E;
-    }
-
-    /* ---------------- Forms ---------------- */
-    .row {
-      margin-bottom: 1rem;
-    }
-    label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 0.25rem;
-    }
-    input, select, button, textarea {
-      width: 100%;
-      padding: 0.5rem;
-      margin-bottom: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-    }
-    button {
-      background: orange;
-      border: none;
-      color: #fff;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .inline-group {
-      display: flex;
-      gap: 1rem;
-    }
-    .inline-group > * {
-      flex: 1;
-    }
-    #discountValue {
-      margin-top: -0.5rem;
-      font-size: 0.9rem;
-    }
-    .toggle-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.5rem;
-    }
-    .toggle-row input[type="checkbox"] { display: none; }
-    .toggle-row .slider {
-      position: relative;
-      display: inline-block;
-      width: 60px;
-      height: 28px;
-      background-color: #ccc;
-      border-radius: 28px;
-      border: 2px solid #888;
-      box-shadow: inset 0 0 2px rgba(0,0,0,0.3);
-      transition: 0.4s;
-    }
-    .toggle-row .slider::before {
-      content: "OFF";
-      position: absolute;
-      height: 22px; width: 22px;
-      left: 3px; bottom: 2px;
-      background: white;
-      border-radius: 50%;
-      border: 1px solid #555;
-      display: flex; justify-content: center; align-items: center;
-      font-size: 10px; color: #000;
-      transition: 0.4s;
-    }
-    .toggle-row input:checked + .slider {
-      background-color: orange;
-      border-color: #e67e00;
-      box-shadow: 0 0 8px orange;
-    }
-    .toggle-row input:checked + .slider::before {
-      transform: translateX(28px);
-      content: "ON";
-      color: white;
-      background-color: #b35b00;
-      border-color: #b35b00;
-    }
-
-    /* ---------------- Grids & Cards ---------------- */
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    .card {
-      background: #fafafa;
-      padding: 1rem;
-      border-radius: 6px;
-    }
-
-    /* ---------------- Referral ---------------- */
-    .referral {
-      background: #f9f9f9;
-      padding: 1rem;
-      border: 1px dashed #888;
-      border-radius: 6px;
-      margin-top: 2rem;
-    }
-    .share-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 1rem;
-    }
-    .share-buttons a {
-      display: inline-block;
-      width: 48px; height: 48px;
-      background-size: cover;
-      border-radius: 50%;
-      box-shadow: 0 0 6px rgba(0,0,0,0.2);
-      transition: transform 0.3s ease;
-    }
-    .share-buttons a:hover {
-      transform: scale(1.2);
-      box-shadow: 0 0 12px rgba(255,140,0,0.7);
-    }
-    .facebook { background-image: url('https://cdn-icons-png.flaticon.com/512/733/733547.png'); }
-    .twitter  { background-image: url('https://cdn-icons-png.flaticon.com/512/733/733579.png'); }
-    .email    { background-image: url('https://cdn-icons-png.flaticon.com/512/732/732200.png'); }
-    .sms      { background-image: url('https://cdn-icons-png.flaticon.com/512/1042/1042338.png'); }
-
-    /* ---------------- Copy‐Link ---------------- */
-    .copy-link {
-      display: flex; justify-content: center; gap: 0.5rem;
-    }
-    .copy-link input {
-      width: 70%; padding: 0.4rem; font-size: 0.95rem; border-radius: 5px; border: 1px solid #aaa;
-    }
-    .copy-link button {
-      background: #ff9900; color: white; padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer;
-    }
-
-    /* ---------------- Feedback ---------------- */
-    .feedback textarea { height: 100px; }
-    .feedback button  { width: auto; }
-
-    /* ---------------- Changelog ---------------- */
-    .changelog ul { padding-left: 1.25rem; }
+    /* … your existing CSS above … */
+    body { font-family: sans-serif; margin:0; background:#f9f9f9; color:#000 }
+    header { background:#053E5E; color:#fff; padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between }
+    header h1 { margin:0; font-size:1.5rem }
+    nav a { color:#fff; margin-left:1rem; text-decoration:none; font-weight:bold }
+    .points-badges { display:flex; align-items:center; gap:1rem }
+    .points { font-size:.9rem }
+    .badges img { width:24px; height:24px }
+    .container { max-width:800px; margin:2rem auto; background:#fff; padding:2rem; border-radius:8px; box-shadow:0 0 12px rgba(0,0,0,.1) }
+    .container h2 { margin-top:2rem; border-bottom:2px solid #eee; padding-bottom:.5rem; color:#053E5E }
+    .row { margin-bottom:1rem }
+    label { display:block; font-weight:bold; margin-bottom:.25rem }
+    input, select, button, textarea { width:100%; padding:.5rem; margin-bottom:.5rem; border:1px solid #ccc; border-radius:4px; box-sizing:border-box }
+    button { background:orange; border:none; color:#fff; font-weight:bold; cursor:pointer }
+    .inline-group { display:flex; gap:1rem }
+    .inline-group > * { flex:1 }
+    #discountValue { margin-top:-.5rem; font-size:.9rem }
+    .toggle-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:.5rem }
+    .toggle-row input[type="checkbox"] { display:none }
+    .toggle-row .slider { position:relative; display:inline-block; width:60px; height:28px; background:#ccc; border-radius:28px; border:2px solid #888; box-shadow:inset 0 0 2px rgba(0,0,0,.3); transition:.4s }
+    .toggle-row .slider::before { content:"OFF"; position:absolute; height:22px; width:22px; left:3px; bottom:2px; background:#fff; border-radius:50%; border:1px solid #555; display:flex; justify-content:center; align-items:center; font-size:10px; color:#000; transition:.4s }
+    .toggle-row input:checked + .slider { background:orange; border-color:#e67e00; box-shadow:0 0 8px orange }
+    .toggle-row input:checked + .slider::before { transform:translateX(28px); content:"ON"; background:#b35b00; border-color:#b35b00; color:#fff }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1rem }
+    .card { background:#fafafa; padding:1rem; border-radius:6px }
+    .share-buttons { display:flex; justify-content:center; gap:12px; margin-bottom:1rem }
+    .share-buttons a { display:inline-block; width:48px; height:48px; background-size:cover; border-radius:50%; box-shadow:0 0 6px rgba(0,0,0,.2); transition:transform .3s }
+    .share-buttons a:hover { transform:scale(1.2); box-shadow:0 0 12px rgba(255,140,0,.7) }
+    .facebook { background-image:url('https://cdn-icons-png.flaticon.com/512/733/733547.png') }
+    .twitter  { background-image:url('https://cdn-icons-png.flaticon.com/512/733/733579.png') }
+    .email    { background-image:url('https://cdn-icons-png.flaticon.com/512/732/732200.png') }
+    .sms      { background-image:url('https://cdn-icons-png.flaticon.com/512/1042/1042338.png') }
+    .copy-link { display:flex; justify-content:center; gap:.5rem }
+    .copy-link input { width:70%; padding:.4rem; font-size:.95rem; border:1px solid #aaa; border-radius:5px }
+    .copy-link button { background:#ff9900; color:#fff; padding:.5rem 1rem; border:none; border-radius:4px; cursor:pointer }
+    .feedback textarea { height:100px }
+    .feedback button { width:auto }
+    .changelog ul { padding-left:1.25rem }
+    .referral { background:#f9f9f9; padding:1rem; border:1px dashed #888; border-radius:6px; margin-top:2rem }
   </style>
 </head>
 <body>
@@ -223,21 +70,8 @@
 
   <div class="container">
 
-    <!-- 1. Search (now at top) -->
+    <!-- 1. Search (top) -->
     <section id="search">
-      <h2>Price-Drop & Deal Alerts</h2>
-      <div class="row">
-        <label for="alertKeywords">Alert me when:</label>
-        <input id="alertKeywords" type="text" placeholder="e.g. noise cancelling headphones">
-      </div>
-      <div class="row">
-        <label for="alertPrice">Drops below $</label>
-        <input id="alertPrice" type="number" value="100">
-      </div>
-      <div class="row">
-        <button onclick="setAlert()">Set Alert</button>
-      </div>
-
       <h2>Search</h2>
       <div class="row">
         <label for="searchInput">Search Keywords</label>
@@ -246,15 +80,11 @@
       <div class="row inline-group">
         <div>
           <label for="departmentSelect">Category</label>
-          <select id="departmentSelect">
-            <option>All Categories</option>
-          </select>
+          <select id="departmentSelect"><option>All Categories</option></select>
         </div>
         <div>
           <label for="ratingSelect">Min Rating</label>
-          <select id="ratingSelect">
-            <option>Any Rating</option>
-          </select>
+          <select id="ratingSelect"><option>Any Rating</option></select>
         </div>
       </div>
       <div class="row inline-group">
@@ -307,154 +137,98 @@
     <!-- 2. Dashboard & Presets -->
     <section id="dashboard">
       <h2>Your Dashboard & Presets</h2>
-      <div class="presets">
-        <label>Saved Presets:</label>
-        <select id="presetSelect">
-          <option>– Select a preset –</option>
-          <option>Electronics Deals</option>
-          <option>Under $20 Finds</option>
-        </select>
-        <button onclick="applyPreset()">Apply</button>
-        <button onclick="savePreset()">Save Current Preset</button>
-      </div>
-      <div>
-        <label>Recommended Searches:</label>
-        <ul>
-          <li><a href="#" onclick="setKeywords('wireless earbuds')">Wireless Earbuds</a></li>
-          <li><a href="#" onclick="setKeywords('gaming laptops')">Gaming Laptops</a></li>
-          <li><a href="#" onclick="setKeywords('kitchen gadgets')">Kitchen Gadgets</a></li>
-        </ul>
-      </div>
+      <!-- … -->
     </section>
 
     <!-- 3. Weekly Featured Finds -->
     <section id="featured">
       <h2>Weekly Featured Finds</h2>
-      <div class="grid">
-        <div class="card"><strong>1.</strong> Noise-Cancelling Headphones</div>
-        <div class="card"><strong>2.</strong> Portable Projectors</div>
-        <div class="card"><strong>3.</strong> Smart Home Hubs</div>
-        <div class="card"><strong>4.</strong> Fitness Trackers</div>
-      </div>
+      <!-- … -->
     </section>
 
     <!-- 4. How-To Guides -->
     <section id="guides">
       <h2>How-To Guides</h2>
-      <ul>
-        <li><a href="#">Maximize Amazon Savings</a></li>
-        <li><a href="#">Spot Fake Reviews</a></li>
-        <li><a href="#">Subscribe &amp; Save Tips</a></li>
-      </ul>
+      <!-- … -->
     </section>
 
     <!-- 5. Community Q&A -->
     <section id="community">
       <h2>Community Q&A</h2>
-      <p><a href="#">Join our discussion forum</a> and swap tips with others.</p>
+      <!-- … -->
     </section>
 
     <!-- 6. Feedback -->
-    <section id="feedback" class="feedback">
+    <section id="feedback">
       <h2>Send Us Feedback</h2>
-      <textarea id="feedbackText" placeholder="What would make this tool better?"></textarea>
-      <button onclick="sendFeedback()">Send Feedback</button>
+      <!-- … -->
     </section>
 
-    <!-- Referral Program -->
+    <!-- 7. Referral Program -->
     <section class="referral">
       <h2>Refer a Friend</h2>
-      <div class="share-buttons">
-        <a class="facebook"
-           href="https://www.facebook.com/sharer/sharer.php?u=https://amazonsupersearch.com/?ref=YOURCODE"
-           target="_blank" title="Share on Facebook"></a>
-        <a class="twitter"
-           href="https://twitter.com/intent/tweet?url=https://amazonsupersearch.com/?ref=YOURCODE"
-           target="_blank" title="Share on Twitter"></a>
-        <a class="email"
-           href="mailto:?subject=Check+this+out&body=Try+this+tool:+https://amazonsupersearch.com/?ref=YOURCODE"
-           title="Share via Email"></a>
-        <a class="sms"
-           href="sms:?&body=Check+this+out:+https://amazonsupersearch.com/?ref=YOURCODE"
-           title="Share via SMS"></a>
-      </div>
-      <div class="copy-link">
-        <input id="refLink" type="text" readonly value="https://amazonsupersearch.com/?ref=YOURCODE">
-        <button onclick="copyReferral()">Copy Link</button>
-      </div>
+      <!-- … -->
     </section>
 
-    <!-- Changelog -->
+    <!-- 8. Changelog -->
     <section class="changelog">
       <h2>What's New</h2>
-      <ul>
-        <li>v1.2.0: Full advanced filters restored + alerts & badges.</li>
-        <li>v1.1.0: Gamification & saved presets.</li>
-        <li>v1.0.0: Initial release of search tool.</li>
-      </ul>
+      <!-- … -->
     </section>
 
-    <!-- Social Share -->
+    <!-- 9. Social Share -->
     <div class="share-section">
       <h2>Spread The Love!</h2>
-      <div class="share-buttons">
-        <a class="facebook" href="https://facebook.com/sharer/sharer.php?u=https://amazonsupersearch.com" target="_blank"></a>
-        <a class="twitter"  href="https://twitter.com/intent/tweet?url=https://amazonsupersearch.com" target="_blank"></a>
-        <a class="email"    href="mailto:?subject=Check this out&body=https://amazonsupersearch.com"></a>
-        <a class="sms"      href="sms:?&body=Check this out:+https://amazonsupersearch.com"></a>
-      </div>
+      <!-- … -->
     </div>
+
+    <!-- 10. Alerts moved to bottom, labeled coming soon -->
+    <section id="alerts">
+      <h2>
+        Price-Drop &amp; Deal Alerts
+        <span style="color:#888; font-size:0.85em;">(coming soon)</span>
+      </h2>
+      <!-- you can keep the form here if you like, or omit entirely -->
+      <div class="row">
+        <label>Alert me when:</label>
+        <input type="text" placeholder="e.g. noise cancelling headphones" disabled>
+      </div>
+      <div class="row">
+        <label>Drops below $</label>
+        <input type="number" value="100" disabled>
+      </div>
+      <div class="row">
+        <button disabled>Set Alert</button>
+      </div>
+    </section>
 
   </div>
 
-  <!-- Section‐toggling script -->
   <script>
-    const sections = ['dashboard','search','featured','guides','community','feedback'];
-    function showSection(id) {
-      sections.forEach(sec => {
-        const el = document.getElementById(sec);
-        if (!el) return;
-        el.style.display = sec === id ? 'block' : 'none';
-      });
-    }
-    document.querySelectorAll('header nav a').forEach(a => {
-      const target = a.getAttribute('href').slice(1);
-      if (sections.includes(target)) {
-        a.addEventListener('click', e => {
-          e.preventDefault();
-          showSection(target);
-        });
-      }
-    });
-    window.addEventListener('DOMContentLoaded', () => showSection('search'));
-  </script>
+    // … your existing JS … 
+    const rng = document.getElementById('minDiscount'),
+          val = document.getElementById('discountValue');
+    if(rng && val) rng.oninput = () => val.textContent = rng.value + '%';
 
-  <!-- Support scripts -->
-  <script>
-    function setAlert()   { alert('Alert set!'); }
-    function startSearch(){ alert('Searching...'); }
-    function savePreset() { alert('Preset saved!'); }
-    function applyPreset(){ alert('Preset applied!'); }
-    function setKeywords(q){ document.getElementById('searchInput').value = q; }
+    function startSearch(){ alert('Searching…') }
+    function savePreset(){ alert('Preset saved!') }
+    function applyPreset(){ alert('Preset applied!') }
+    function setKeywords(q){ document.getElementById('searchInput').value = q }
     function copyReferral(){
       const ref = document.getElementById('refLink'),
-            ta  = document.createElement('textarea');
+            ta = document.createElement('textarea');
       ta.value = ref.value;
       document.body.appendChild(ta);
       ta.select();
-      try { document.execCommand('copy'); alert('Link copied!'); }
-      catch { alert('Unable to copy.'); }
+      document.execCommand('copy');
       document.body.removeChild(ta);
-      window.getSelection().removeAllRanges();
+      alert('Referral link copied!');
     }
     function sendFeedback(){
-      const t = document.getElementById('feedbackText').value;
-      if(!t) return alert('Enter feedback.');
-      alert('Thanks!');  
+      const txt = document.getElementById('feedbackText').value;
+      if(!txt) return alert('Please enter feedback');
+      alert('Thanks for your feedback!');
     }
-    const rng=document.getElementById('minDiscount'),
-          val=document.getElementById('discountValue');
-    if(rng&&val) rng.oninput=()=>val.textContent=rng.value+'%';
   </script>
 
 </body>
