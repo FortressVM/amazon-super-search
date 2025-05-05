@@ -33,18 +33,18 @@
           </h2>
           <div id="collapseCore" class="accordion-collapse collapse show" data-bs-parent="#accordionCore">
             <div class="accordion-body">
-              <!-- Price Range & Discount -->
+              <!-- Price & Discount -->
               <div class="row g-3">
                 <div class="col-md-6">
                   <label class="form-label">Price Range ($)</label>
                   <div class="d-flex">
-                    <input type="number" step="0.01" class="form-control me-2" name="min-price">
-                    <input type="number" step="0.01" class="form-control" name="max-price">
+                    <input type="number" step="0.01" class="form-control me-2" name="min-price" placeholder="Min">
+                    <input type="number" step="0.01" class="form-control" name="max-price" placeholder="Max">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <label class="form-label">% Off Discount ≥</label>
-                  <input type="range" class="form-range" min="10" max="90" step="5" name="percent-off" oninput="this.nextElementSibling.innerText=this.value+'%';">
+                  <input type="range" class="form-range" min="10" max="90" step="5" name="percent-off" oninput="this.nextElementSibling.innerText = this.value+'%';">
                   <div class="slider-label"><span>10%</span><span>90%</span></div>
                 </div>
               </div>
@@ -86,6 +86,7 @@
 
       <!-- Advanced Panels -->
       <div class="accordion" id="accordionAdvanced">
+
         <!-- Power-User Tools -->
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingPower">
@@ -95,10 +96,9 @@
           </h2>
           <div id="collapsePower" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
             <div class="accordion-body">
-              <!-- Boolean, Field filters, Direct lookup -->
               <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" name="enable-boolean">
-                <label class="form-check-label">Boolean Operators</label>
+                <input class="form-check-input" type="checkbox" name="enable-boolean" id="enableBoolean">
+                <label class="form-check-label" for="enableBoolean">Boolean Operators</label>
               </div>
               <input type="text" class="form-control mb-2" name="field-filters" placeholder="field-title:wireless">
               <input type="text" class="form-control mb-2" name="direct-lookup" placeholder="ASIN/ISBN/UPC">
@@ -116,8 +116,8 @@
           <div id="collapseDeal" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
             <div class="accordion-body">
               <input type="number" class="form-control mb-2" name="price-drop" placeholder="X% below 90-day avg">
-              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="coupon-only"><label class="form-check-label">Coupon Only</label></div>
-              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="warehouse-refurb"><label class="form-check-label">Warehouse/Refurb</label></div>
+              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="coupon-only" id="couponOnly"><label class="form-check-label" for="couponOnly">Coupon Only</label></div>
+              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="warehouse-refurb" id="warehouseRefurb"><label class="form-check-label" for="warehouseRefurb">Warehouse/Refurb</label></div>
               <button type="button" class="btn btn-outline-secondary mb-2">Show Lightning Deals</button>
               <button type="button" class="btn btn-outline-secondary">Upcoming Deals</button>
             </div>
@@ -133,9 +133,9 @@
           </h2>
           <div id="collapseCompare" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
             <div class="accordion-body">
-              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="side-by-side"><label class="form-check-label">Side-by-Side Tables</label></div>
+              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="side-by-side" id="sideBySide"><label class="form-check-label" for="sideBySide">Side-by-Side Tables</label></div>
               <button type="button" class="btn btn-outline-secondary mb-2">Price-History Charts</button>
-              <div class="form-check"><input class="form-check-input" type="checkbox" name="verified-only"><label class="form-check-label">Verified Purchase Only</label></div>
+              <div class="form-check"><input class="form-check-input" type="checkbox" name="verified-only" id="verifiedOnly"><label class="form-check-label" for="verifiedOnly">Verified Purchase Only</label></div>
             </div>
           </div>
         </div>
@@ -149,9 +149,9 @@
           </h2>
           <div id="collapsePersonal" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
             <div class="accordion-body">
-              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="predictive-score"><label class="form-check-label">Buy-Now-or-Wait Score</label></div>
+              <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="predictive-score" id="predictiveScore"><label class="form-check-label" for="predictiveScore">Buy-Now-or-Wait Score</label></div>
               <input type="text" class="form-control mb-2" name="restock-forecast" placeholder="ASIN for restock forecast">
-              <div class="form-check"><input class="form-check-input" type="checkbox" name="emotion-feedback"><label class="form-check-label">Emotion Feedback Loop</label></div>
+              <div class="form-check"><input class="form-check-input" type="checkbox" name="emotion-feedback" id="emotionFeedback"><label class="form-check-label" for="emotionFeedback">Emotion Feedback Loop</label></div>
             </div>
           </div>
         </div>
@@ -164,50 +164,108 @@
     </form>
   </div>
 
+  <!-- Bootstrap JS Bundle -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
   <script>
     document.getElementById('amazon-search-form').addEventListener('submit', function(e) {
       e.preventDefault();
       const data = new FormData(this);
       const params = new URLSearchParams();
+
       // Affiliate tag
       params.set('tag', data.get('tag'));
+
       // Keywords
       if (data.get('q')) params.set('k', data.get('q').trim());
-      // Price range
+
+      // Price range (exact cents)
       ['min-price','max-price'].forEach(name => {
-        const v = data.get(name);
-        if (v) params.set(name==='min-price'?'low-price':'high-price', parseFloat(v).toFixed(2));
+        const raw = data.get(name)?.trim();
+        if (raw) {
+          const num = parseFloat(raw);
+          if (!isNaN(num)) {
+            const key = name === 'min-price' ? 'low-price' : 'high-price';
+            params.set(key, num.toFixed(2));
+          }
+        }
       });
+
       // Discount
-      if (data.get('percent-off')) params.append('rh', 'p_n_pct-off-with-discount:' + data.get('percent-off'));
+      if (data.get('percent-off')) {
+        params.append('rh', 'p_n_pct-off-with-discount:' + data.get('percent-off'));
+      }
+
       // Prime & stock
-      if (data.get('prime-only')) params.append('rh', (params.get('rh')||'') + ',p_85:');
-      if (data.get('in-stock')) params.append('rh', (params.get('rh')||'') + ',p_n_availability:1248879011');
+      if (data.get('prime-only')) {
+        params.append('rh', (params.get('rh')||'') + ',p_85:');
+      }
+      if (data.get('in-stock')) {
+        params.append('rh', (params.get('rh')||'') + ',p_n_availability:1248879011');
+      }
+
       // Rating
-      const ratingMap = {'4 ★ & up':'2661618011','3 ★ & up':'2661619011','2 ★ & up':'2661620011','1 ★ & up':'2661621011'};
-      if (ratingMap[data.get('min-rating')]) params.append('p_72', ratingMap[data.get('min-rating')]);
+      const ratingMap = {
+        '4 ★ & up':'2661618011',
+        '3 ★ & up':'2661619011',
+        '2 ★ & up':'2661620011',
+        '1 ★ & up':'2661621011'
+      };
+      if (ratingMap[data.get('min-rating')]) {
+        params.append('p_72', ratingMap[data.get('min-rating')]);
+      }
+
       // Sort
-      if (data.get('sort')) params.set('s', data.get('sort'));
+      if (data.get('sort')) {
+        params.set('s', data.get('sort'));
+      }
+
       // Power-user filters
-      if (data.get('enable-boolean')) params.set('bop', 'enable');
-      if (data.get('field-filters')) params.set('rh', (params.get('rh')||'') + ',' + data.get('field-filters'));
+      if (data.get('enable-boolean')) {
+        params.set('bop', 'enable');
+      }
+      if (data.get('field-filters')) {
+        params.set('rh', (params.get('rh')||'') + ',' + data.get('field-filters'));
+      }
+
       // Direct lookup
       if (data.get('direct-lookup')) {
-        window.open(`https://www.amazon.com/dp/${encodeURIComponent(data.get('direct-lookup'))}/?tag=${data.get('tag')}`, '_blank');
+        window.open(
+          `https://www.amazon.com/dp/${encodeURIComponent(data.get('direct-lookup'))}/?tag=${data.get('tag')}`,
+          '_blank'
+        );
         return;
       }
+
       // Deal-hunter
-      if (data.get('price-drop')) params.append('rh', (params.get('rh')||'') + ',p_n_pct-price-drop:' + data.get('price-drop'));
-      if (data.get('coupon-only')) params.append('rh', (params.get('rh')||'') + ',p_5:couponEligible');
-      if (data.get('warehouse-refurb')) params.append('rh', (params.get('rh')||'') + ',p_n_condition-type:1380442031');
+      if (data.get('price-drop')) {
+        params.append('rh', (params.get('rh')||'') + ',p_n_pct-price-drop:' + data.get('price-drop'));
+      }
+      if (data.get('coupon-only')) {
+        params.append('rh', (params.get('rh')||'') + ',p_5:couponEligible');
+      }
+      if (data.get('warehouse-refurb')) {
+        params.append('rh', (params.get('rh')||'') + ',p_n_condition-type:1380442031');
+      }
+
       // Comparison & research
-      if (data.get('side-by-side')) params.set('compare', 'side-by-side');
-      if (data.get('verified-only')) params.set('reviewerType', 'avp_only_reviews');
+      if (data.get('side-by-side')) {
+        params.set('compare', 'side-by-side');
+      }
+      if (data.get('verified-only')) {
+        params.set('reviewerType', 'avp_only_reviews');
+      }
+
       // Personalization & AI
-      if (data.get('predictive-score')) params.set('predictive', '1');
-      if (data.get('restock-forecast')) params.set('restockASIN', data.get('restock-forecast'));
-      if (data.get('emotion-feedback')) params.set('emotion', '1');
+      if (data.get('predictive-score')) {
+        params.set('predictive', '1');
+      }
+      if (data.get('restock-forecast')) {
+        params.set('restockASIN', data.get('restock-forecast'));
+      }
+      if (data.get('emotion-feedback')) {
+        params.set('emotion', '1');
+      }
+
       // Redirect to Amazon
       window.open(`https://www.amazon.com/s?${params.toString()}`, '_blank');
     });
