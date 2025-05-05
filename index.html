@@ -80,11 +80,18 @@
       <div class="row inline-group">
         <div>
           <label for="departmentSelect">Category</label>
-          <select id="departmentSelect"><option>All Categories</option></select>
+          <select id="departmentSelect">
+            <option>All Categories</option>
+            <!-- add more if needed -->
+          </select>
         </div>
         <div>
           <label for="ratingSelect">Min Rating</label>
-          <select id="ratingSelect"><option>Any Rating</option></select>
+          <select id="ratingSelect">
+            <option>Any Rating</option>
+            <option>4 ★ & up</option>
+            <option>3 ★ & up</option>
+          </select>
         </div>
       </div>
       <div class="row inline-group">
@@ -134,102 +141,75 @@
       </div>
     </section>
 
+    <!-- other sections… -->
     <!-- 2. Dashboard & Presets -->
-    <section id="dashboard">
-      <h2>Your Dashboard & Presets</h2>
-      <!-- … -->
-    </section>
-
+    <section id="dashboard"><h2>Your Dashboard & Presets</h2></section>
     <!-- 3. Weekly Featured Finds -->
-    <section id="featured">
-      <h2>Weekly Featured Finds</h2>
-      <!-- … -->
-    </section>
-
+    <section id="featured"><h2>Weekly Featured Finds</h2></section>
     <!-- 4. How-To Guides -->
-    <section id="guides">
-      <h2>How-To Guides</h2>
-      <!-- … -->
-    </section>
-
+    <section id="guides"><h2>How-To Guides</h2></section>
     <!-- 5. Community Q&A -->
-    <section id="community">
-      <h2>Community Q&A</h2>
-      <!-- … -->
-    </section>
-
+    <section id="community"><h2>Community Q&A</h2></section>
     <!-- 6. Feedback -->
-    <section id="feedback">
-      <h2>Send Us Feedback</h2>
-      <!-- … -->
-    </section>
-
+    <section id="feedback"><h2>Send Us Feedback</h2></section>
     <!-- 7. Referral Program -->
-    <section class="referral">
-      <h2>Refer a Friend</h2>
-      <!-- … -->
-    </section>
-
+    <section class="referral"><h2>Refer a Friend</h2></section>
     <!-- 8. Changelog -->
-    <section class="changelog">
-      <h2>What's New</h2>
-      <!-- … -->
-    </section>
-
+    <section class="changelog"><h2>What's New</h2></section>
     <!-- 9. Social Share -->
-    <div class="share-section">
-      <h2>Spread The Love!</h2>
-      <!-- … -->
-    </div>
-
-    <!-- 10. Alerts moved to bottom, labeled coming soon -->
+    <div class="share-section"><h2>Spread The Love!</h2></div>
+    <!-- 10. Alerts (coming soon) -->
     <section id="alerts">
       <h2>
         Price-Drop &amp; Deal Alerts
         <span style="color:#888; font-size:0.85em;">(coming soon)</span>
       </h2>
-      <!-- you can keep the form here if you like, or omit entirely -->
       <div class="row">
         <label>Alert me when:</label>
-        <input type="text" placeholder="e.g. noise cancelling headphones" disabled>
+        <input type="text" disabled placeholder="…"/>
       </div>
       <div class="row">
         <label>Drops below $</label>
-        <input type="number" value="100" disabled>
+        <input type="number" disabled/>
       </div>
       <div class="row">
         <button disabled>Set Alert</button>
       </div>
     </section>
-
   </div>
 
   <script>
-    // … your existing JS … 
+    // Discount slider label
     const rng = document.getElementById('minDiscount'),
           val = document.getElementById('discountValue');
-    if(rng && val) rng.oninput = () => val.textContent = rng.value + '%';
+    if (rng && val) rng.oninput = () => val.textContent = rng.value + '%';
 
-    function startSearch(){ alert('Searching…') }
-    function savePreset(){ alert('Preset saved!') }
-    function applyPreset(){ alert('Preset applied!') }
-    function setKeywords(q){ document.getElementById('searchInput').value = q }
-    function copyReferral(){
-      const ref = document.getElementById('refLink'),
-            ta = document.createElement('textarea');
-      ta.value = ref.value;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      alert('Referral link copied!');
+    // Affiliate-enabled search
+    function startSearch(){
+      const q = document.getElementById('searchInput').value.trim();
+      if(!q) return alert('Please enter some search keywords.');
+
+      // build Amazon search URL
+      let url = 'https://www.amazon.com/s?k=' + encodeURIComponent(q);
+
+      // add price filters if present
+      const minP = document.getElementById('minPrice').value;
+      const maxP = document.getElementById('maxPrice').value;
+      if(minP) url += '&rh=p_36%3A' + (minP*100) + '-';
+      if(maxP) url += (maxP*100);
+
+      // affiliate tag
+      const TAG = 'yourtag-20';  // ← replace with your affiliate tag
+      url += '&tag=' + encodeURIComponent(TAG);
+
+      // open in new tab
+      window.open(url, '_blank');
     }
-    function sendFeedback(){
-      const txt = document.getElementById('feedbackText').value;
-      if(!txt) return alert('Please enter feedback');
-      alert('Thanks for your feedback!');
-    }
+
+    function savePreset(){ alert('Preset saved!'); }
+    function applyPreset(){ alert('Preset applied!'); }
+    function setKeywords(q){ document.getElementById('searchInput').value = q; }
+    function sendFeedback(){ alert('Thanks for your feedback!'); }
   </script>
-
 </body>
 </html>
