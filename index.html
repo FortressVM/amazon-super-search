@@ -1,110 +1,101 @@
-<!-- Updated HTML with All Missing Features -->
-<!-- This version adds keyword logic (AND/OR/NOT), excluded keywords, exact phrase matching, saved search presets, language/currency/localization, and export support -->
-
-<!-- For brevity, only newly added sections will be shown here. I'll modify your existing HTML and add all the advanced features in the appropriate places. -->
-
-<!-- Inside the #advancedSection div, add the following: -->
-
-<!-- Boolean Logic Filters -->
-<label for="includeKeywords">Include Keywords (AND/OR/NOT)</label>
-<input id="includeKeywords" type="text" placeholder="e.g. waterproof AND hiking OR boots NOT used">
-
-<label for="excludeKeywords">Exclude Keywords</label>
-<input id="excludeKeywords" type="text" placeholder="e.g. refurbished, fake">
-
-<label for="exactPhrase">Exact Phrase</label>
-<input id="exactPhrase" type="text" placeholder='e.g. "noise cancelling headphones"'>
-
-<!-- Localization & Personalization -->
-<div class="row">
-  <div class="col">
-    <label for="language">Language</label>
-    <select id="language">
-      <option value="en_US">English</option>
-      <option value="es_US">Español</option>
-      <option value="de_DE">Deutsch</option>
-      <option value="fr_FR">Français</option>
-      <option value="ja_JP">日本語</option>
-    </select>
-  </div>
-  <div class="col">
-    <label for="currency">Currency</label>
-    <select id="currency">
-      <option value="USD">USD</option>
-      <option value="EUR">EUR</option>
-      <option value="GBP">GBP</option>
-      <option value="JPY">JPY</option>
-      <option value="CAD">CAD</option>
-    </select>
-  </div>
-</div>
-
-<!-- Saved Search Presets -->
-<div class="row">
-  <div class="col">
-    <label for="preset">Saved Search Presets</label>
-    <select id="preset" onchange="loadPreset(this.value)">
-      <option value="">-- Select Preset --</option>
-      <option value="gift-tech">🎁 Gift - Tech Deals</option>
-      <option value="deals-fitness">🔥 Fitness Deals</option>
-      <option value="books-5stars">📚 5★ Books</option>
-    </select>
-  </div>
-  <div class="col">
-    <label>&nbsp;</label>
-    <button onclick="savePreset()">💾 Save Current as Preset</button>
-  </div>
-</div>
-
-<!-- Export Option -->
-<div class="row">
-  <div class="col">
-    <label for="export">Export Search</label>
-    <select id="export">
-      <option value="">-- Select --</option>
-      <option value="csv">CSV</option>
-      <option value="pdf">PDF</option>
-    </select>
-  </div>
-</div>
-
-<!-- Add this function to your JS: -->
 <script>
-function savePreset() {
-  const query = document.getElementById('search').value;
-  if (!query) return alert('Enter a search query first.');
-  const key = prompt('Name this preset:');
-  if (key) localStorage.setItem(`preset-${key}`, JSON.stringify(getCurrentSearch()));
-}
-
-function loadPreset(presetId) {
-  if (!presetId) return;
-  const data = localStorage.getItem(`preset-${presetId}`);
-  if (!data) return alert('Preset not found.');
-  const values = JSON.parse(data);
-  for (const [id, val] of Object.entries(values)) {
-    const el = document.getElementById(id);
-    if (el) el.value = val;
+  function toggleTheme() {
+    document.body.classList.toggle('dark');
   }
-}
 
-function getCurrentSearch() {
-  return {
-    search: document.getElementById('search').value,
-    category: document.getElementById('category').value,
-    minPrice: document.getElementById('minPrice').value,
-    maxPrice: document.getElementById('maxPrice').value,
-    minRating: document.getElementById('minRating').value,
-    minReviews: document.getElementById('minReviews').value,
-    brand: document.getElementById('brand').value,
-    seller: document.getElementById('seller').value,
-    sort: document.getElementById('sort').value,
-    discount: document.getElementById('discount').value,
-    includeKeywords: document.getElementById('includeKeywords').value,
-    excludeKeywords: document.getElementById('excludeKeywords').value,
-    exactPhrase: document.getElementById('exactPhrase').value,
-    language: document.getElementById('language').value,
-    currency: document.getElementById('currency').value
-  };
-}
+  function toggleAdvanced() {
+    const adv = document.getElementById('advancedSection'),
+          txt = document.getElementById('toggleText'),
+          arr = document.getElementById('toggleArrow'),
+          hidden = adv.classList.toggle('hidden');
+    txt.textContent = hidden ? 'Show Advanced Filters' : 'Hide Advanced Filters';
+    arr.textContent = hidden ? '⯈' : '⯆';
+  }
+
+  function savePreset() {
+    const query = document.getElementById('search').value;
+    if (!query) return alert('Enter a search query first.');
+    const key = prompt('Name this preset:');
+    if (key) localStorage.setItem(`preset-${key}`, JSON.stringify(getCurrentSearch()));
+  }
+
+  function loadPreset(presetId) {
+    if (!presetId) return;
+    const data = localStorage.getItem(`preset-${presetId}`);
+    if (!data) return alert('Preset not found.');
+    const values = JSON.parse(data);
+    for (const [id, val] of Object.entries(values)) {
+      const el = document.getElementById(id);
+      if (el) el.value = val;
+    }
+  }
+
+  function getCurrentSearch() {
+    return {
+      search: document.getElementById('search').value,
+      category: document.getElementById('category').value,
+      minPrice: document.getElementById('minPrice').value,
+      maxPrice: document.getElementById('maxPrice').value,
+      minRating: document.getElementById('minRating').value,
+      minReviews: document.getElementById('minReviews').value,
+      includeKeywords: document.getElementById('includeKeywords').value,
+      excludeKeywords: document.getElementById('excludeKeywords').value,
+      exactPhrase: document.getElementById('exactPhrase').value,
+      language: document.getElementById('language').value,
+      currency: document.getElementById('currency').value,
+      preset: document.getElementById('preset').value,
+      export: document.getElementById('export').value
+    };
+  }
+
+  function startSearch() {
+    const TAG = 'echolover25-20';
+    let query = document.getElementById('search').value.trim();
+    const include = document.getElementById('includeKeywords').value.trim();
+    const exclude = document.getElementById('excludeKeywords').value.trim();
+    const phrase = document.getElementById('exactPhrase').value.trim();
+
+    if (phrase) query += ` "${phrase}"`;
+    if (include) query += ` ${include}`;
+    if (exclude) query += ` -${exclude.split(',').join(' -')}`;
+
+    const q = encodeURIComponent(query);
+    let url = `https://www.amazon.com/s?k=${q}&tag=${TAG}`;
+
+    const category = document.getElementById('category').value;
+    if (category) url += `&i=${category}`;
+
+    const minPrice = document.getElementById('minPrice').value;
+    const maxPrice = document.getElementById('maxPrice').value;
+    if (minPrice || maxPrice) {
+      const minCents = Math.floor((+minPrice || 0) * 100);
+      const maxCents = Math.floor((+maxPrice || 99999) * 100);
+      url += `&rh=p_36%3A${minCents}-${maxCents}`;
+    }
+
+    const minRating = document.getElementById('minRating').value;
+    if (minRating === '4') url += `&rh=p_72%3A2661618011`;
+    if (minRating === '3') url += `&rh=p_72%3A2661619011`;
+
+    const minReviews = document.getElementById('minReviews').value;
+    if (minReviews) url += `&rh=p_n_feature_four_browse-bin%3A${minReviews}`;
+
+    const sort = document.getElementById('sort');
+    if (sort && sort.value && sort.value !== 'relevance') {
+      url += `&s=${sort.value}`;
+    }
+
+    // Export Option (Simulated Output for Now)
+    const exportType = document.getElementById('export').value;
+    if (exportType) {
+      const output = `Search Query: ${query}\nURL: ${url}`;
+      const blob = new Blob([output], { type: exportType === 'csv' ? 'text/csv' : 'application/pdf' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `amazon_search.${exportType}`;
+      a.click();
+    } else {
+      window.open(url, '_blank');
+    }
+  }
 </script>
