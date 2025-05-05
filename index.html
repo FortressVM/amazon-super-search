@@ -86,11 +86,31 @@
   }
 
   function startSearch() {
+    const TAG = 'echolover25-20';
     const query = document.getElementById('search')?.value.trim();
     if (!query) return alert('Search keywords are required.');
-    localStorage.setItem('last-search', JSON.stringify(getCurrentSearch()));
-    logDebug('🔍 Search triggered');
-    // ... existing logic continues ...
+
+    const category = document.getElementById('category')?.value;
+    const rating = document.getElementById('minRating')?.value;
+    const filters = getCurrentSearch();
+
+    localStorage.setItem('last-search', JSON.stringify(filters));
+
+    let q = encodeURIComponent(query);
+    let url = `https://www.amazon.com/s?k=${q}&tag=${TAG}`;
+
+    if (category) url += `&i=${category}`;
+    if (rating === '4') url += `&rh=p_72%3A2661618011`;
+    if (rating === '3') url += `&rh=p_72%3A2661619011`;
+
+    toggles.forEach(id => {
+      if (filters[id]) {
+        url += `&${id}=true`;
+      }
+    });
+
+    logDebug(`🌐 Opening URL: ${url}`);
+    window.open(url, '_blank');
   }
 
   function logDebug(msg) {
