@@ -79,17 +79,18 @@ h1.text-pulse {
 <body>
   <div class="container-fluid bg-white p-3 p-md-4 rounded shadow-sm">
     <h1 class="mb-4 text-center text-pulse">Amazon Super Search</h1>
-    <form id="amazon-search-form">
+    <form id="amazon-search-form" autocomplete="off">
       <input type="hidden" name="tag" value="echolover25-20">
 
      <!-- Keywords with Boolean helper -->
 <div class="mb-3">
   <label class="form-label">Search Keywords</label>
   <input
-    type="text"
-    class="form-control"
-    name="q"
-    placeholder="e.g. wireless headphones">
+  autocomplete="off"
+  type="text"
+  class="form-control"
+  name="q"
+  placeholder="e.g. wireless headphones">
   <small class="form-text text-muted">
     Supports Boolean operators: <code>AND</code>, <code>OR</code>, <code>NOT</code>.
     e.g. <em>wireless AND headphones NOT bluetooth</em>
