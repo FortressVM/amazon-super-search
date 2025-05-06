@@ -474,6 +474,14 @@ h1.text-pulse {
       const data = new FormData(this);
       const params = new URLSearchParams();
 
+      // Empty‐query guard: require at least a keyword
+const query = data.get('q')?.trim();
+if (!query) {
+  alert('Please enter search keywords before hitting Search.');
+  return;
+}
+
+
       // Affiliate tag
       params.set('tag', data.get('tag'));
       console.log('AFFILIATE TAG IN PARAMS →', params.get('tag'));
