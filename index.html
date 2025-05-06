@@ -96,6 +96,9 @@ h1.text-pulse {
     e.g. <em>wireless AND headphones NOT bluetooth</em>
   </small>
 </div>
+      <!-- right after your Search Keywords block -->
+<div id="empty-hint" class="text-danger mt-1"></div>
+
       <!-- Core Filters & Sorters -->
       <div class="accordion mb-3" id="accordionCore">
         <div class="accordion-item">
@@ -475,11 +478,18 @@ h1.text-pulse {
       const params = new URLSearchParams();
 
       // Empty‐query guard: require at least a keyword
+// Empty-query guard: require at least a keyword
+const hint  = document.getElementById('empty-hint');
 const query = data.get('q')?.trim();
+
 if (!query) {
-  alert('Please enter search keywords before hitting Search.');
+  // show inline hint instead of alert
+  hint.textContent = 'Please type something before you search.';
   return;
 }
+// clear any previous hint
+hint.textContent = '';
+
 
 
       // Affiliate tag
