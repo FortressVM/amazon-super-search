@@ -215,16 +215,10 @@ h1.text-pulse {
 <div class="col-12 col-md-6 mb-3">
   <div class="card h-100">
     <div class="card-body">
-      <div class="card h-100">
-  <div class="card-body">
     <h5 class="card-title mb-3">
       More Options <small class="text-muted">(select to filter)</small>
     </h5>
     <!-- …your checkboxes here… -->
-  </div>
-</div>
-
-
       <!-- Prime & Stock -->
       <div class="form-check mb-2">
         <input class="form-check-input" type="checkbox" name="prime-only" id="primeOnly"/>
@@ -264,24 +258,46 @@ h1.text-pulse {
         <input class="form-check-input" type="checkbox" name="best-seller" id="bestSeller"/>
         <label class="form-check-label" for="bestSeller">Best Seller</label>
       </div>
+       <!-- Free Returns -->
       <div class="form-check mb-2">
-        <input class="form-check-input" type="checkbox" name="free-returns" id="freeReturns"/>
-        <label class="fo
-
-
-
-      <!-- Customer Review -->
-      <div class="col-6 col-md-3">
-        <label class="form-label">Customer Review</label>
-        <select class="form-select" name="min-rating">
-          <option value="">Any</option>
-          <option>4 ★ & up</option>
-          <option>3 ★ & up</option>
-          <option>2 ★ & up</option>
-          <option>1 ★ & up</option>
-        </select>
+        <input
+          class="form-check-input"
+          type="checkbox"
+          name="free-returns"
+          id="freeReturns"
+        />
+        <label class="form-check-label" for="freeReturns">
+          Free Returns
+        </label>
       </div>
 
+      <!-- Gift Wrap -->
+      <div class="form-check mb-2">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          name="gift-wrap"
+          id="giftWrap"
+        />
+        <label class="form-check-label" for="giftWrap">
+          Gift Wrap Available
+        </label>
+      </div>
+
+    </div><!-- /.card-body -->
+  </div><!-- /.card -->
+</div><!-- /.col -->
+<!-- Customer Review -->
+<div class="col-6 col-md-3">
+  <label class="form-label">Customer Review</label>
+  <select class="form-select" name="min-rating">
+    <option value="">Any</option>
+    <option value="4">4★ & up</option>
+    <option value="3">3★ & up</option>
+    <option value="2">2★ & up</option>
+    <option value="1">1★ & up</option>
+  </select>
+</div>
       <!-- Sort By -->
       <div class="col-6 col-md-3">
         <label class="form-label">Sort By</label>
