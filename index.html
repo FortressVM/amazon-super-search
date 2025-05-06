@@ -170,19 +170,29 @@ h1.text-pulse {
     placeholder="e.g. Sony, Samsung"
   >
 
-  <!-- ✔ Only include these brands -->
-  <div class="form-check mt-2">
+ <!-- Include Brands + Match Only Toggle -->
+<div class="col-6 col-md-3">
+  <label class="form-label">Include Brands</label>
+  <input
+    type="text"
+    class="form-control"
+    name="brand-include"
+    placeholder="e.g. Sony, Samsung"
+  />
+
+  <div class="form-check mt-2 ms-2">
     <input
       class="form-check-input"
       type="checkbox"
       id="include-only"
       name="include-only"
-    >
-    <label class="form-check-label" for="include-only">
+    />
+    <label class="form-check-label small" for="include-only">
       Match only these brands
     </label>
   </div>
 </div>
+
 
 +
 +  <!-- Exclude Brands -->
