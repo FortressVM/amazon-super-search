@@ -92,13 +92,29 @@
           <div id="collapseCore" class="accordion-collapse collapse show" data-bs-parent="#accordionCore">
             <div class="accordion-body">
                 <!-- Price Range -->
-                <div class="col-12 col-md-6">
-                  <label class="form-label">Price Range ($)</label>
-                  <div class="d-flex flex-column flex-sm-row">
-                    <input type="number" step="0.01" class="form-control me-sm-2 mb-2 mb-sm-0" name="min-price" placeholder="Min">
-                    <input type="number" step="0.01" class="form-control" name="max-price" placeholder="Max">
-                  </div>
-                </div>
+                 <div class="col-12 col-md-6">
+    <label class="form-label">Price Range ($)</label>
+    <div class="d-flex flex-column flex-sm-row">
+      <input type="number" step="0.01"
+             class="form-control me-sm-2 mb-2 mb-sm-0"
+             name="min-price" placeholder="Min">
+      <input type="number" step="0.01"
+             class="form-control"
+             name="max-price" placeholder="Max">
+    </div>
+  </div>
+  <!-- Discount Dropdown -->
+  <div class="col-12 col-md-6">
+    <label class="form-label">% Off Discount ≥</label>
+    <select class="form-select" name="percent-off">
+      <option value="">Any</option>
+      <option value="0">0%</option>
+      <option value="5">5%</option>
+      <!-- …etc… -->
+      <option value="90">90%</option>
+    </select>
+  </div>
+</div>
 -   <!-- Discount Slider -->
 -   <div class="col-12 col-md-6">
 -     <label class="form-label">% Off Discount ≥</label>
