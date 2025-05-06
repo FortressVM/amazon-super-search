@@ -379,8 +379,19 @@
       // Affiliate tag
       params.set('tag', data.get('tag'));
 
-      // Keywords
-      if (data.get('q')) params.set('k', data.get('q').trim());
+     // Keywords w/ Boolean support
+let q = data.get('q')?.trim() || '';
+if (data.get('enable-boolean')) {
+  // turn “AND” into space, “NOT” into “-”
+  q = q
+    .replace(/\bAND\b/gi, ' ')
+    .replace(/\bNOT\b/gi, '-');
+  params.set('bop', 'enable');
+}
+if (q) {
+  params.set('k', q);
+}
+
 
       // Price range (exact filter)
 const low = data.get('min-price')?.trim();
