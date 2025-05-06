@@ -394,12 +394,12 @@ if (low && high) {
   }
 }
 
+// Discount
+if (data.get('percent-off')) params.append('rh', 'p_n_pct-off-with-discount:' + data.get('percent-off'));
+// Prime & stock
+if (data.get('prime-only')) params.append('rh', (params.get('rh')||'') + ',p_85:');
+if (data.get('in-stock')) params.append('rh', (params.get('rh')||'') + ',p_n_availability:1248879011');
 
-      // Discount
-      if (data.get('percent-off')) params.append('rh', 'p_n_pct-off-with-discount:' + data.get('percent-off'));
-      // Prime & stock
-      if (data.get('prime-only')) params.append('rh', (params.get('rh')||'') + ',p_85:');
-      if (data.get('in-stock')) params.append('rh', (params.get('rh')||'') + ',p_n_availability:1248879011');
       // Rating
       const ratingMap = { '4 ★ & up':'2661618011','3 ★ & up':'2661619011','2 ★ & up':'2661620011','1 ★ & up':'2661621011' };
       if (ratingMap[data.get('min-rating')]) params.append('p_72', ratingMap[data.get('min-rating')]);
