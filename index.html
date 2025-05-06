@@ -239,29 +239,51 @@ h1.text-pulse {
         </div>
 
         <!-- Deal-Hunter Goodies -->
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingDeal">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDeal">
-              Deal-Hunter Goodies
-            </button>
-          </h2>
-          <div id="collapseDeal" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
-            <div class="accordion-body">
-              <div class="mb-3">
-                <label class="form-label">Price Drop ≥ X% Below 90-Day Avg</label>
-                <input type="number" class="form-control" name="price-drop" placeholder="e.g. 20">
-              </div>
-              <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" name="coupon-only" id="couponOnly">
-                <label class="form-check-label" for="couponOnly">Coupon-Clippable Only</label>
-              </div>
-              <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" name="warehouse-refurb" id="warehouseRefurb">
-                <label class="form-check-label" for="warehouseRefurb">Warehouse / Open-Box</label>
-              </div>
-            </div>
-          </div>
+<div class="accordion-item">
+  <h2 class="accordion-header" id="headingDeal">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDeal">
+      Deal-Hunter Goodies
+    </button>
+  </h2>
+  <div id="collapseDeal" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
+    <div class="accordion-body">
+      <div class="mb-3">
+        <label class="form-label">Price Drop ≥ X% Below 90-Day Avg</label>
+        <input type="number" class="form-control" name="price-drop" placeholder="e.g. 20">
+      </div>
+      <div class="form-check mb-2">
+        <input class="form-check-input" type="checkbox" name="coupon-only" id="couponOnly">
+        <label class="form-check-label" for="couponOnly">Coupon-Clippable Only</label>
+      </div>
+      <div class="form-check mb-2">
+        <input class="form-check-input" type="checkbox" name="warehouse-refurb" id="warehouseRefurb">
+        <label class="form-check-label" for="warehouseRefurb">Warehouse / Open-Box</label>
+      </div>
+
+      <!-- Price History & Volatility Filters -->
+      <div class="row g-3 mt-3">
+        <div class="col-6 col-md-3">
+          <label class="form-label">▼ % vs. 30-Day Avg</label>
+          <input type="number" min="0" class="form-control" name="below-avg-30" placeholder="e.g. 20">
         </div>
+        <div class="col-6 col-md-3">
+          <label class="form-label">▼ % vs. 60-Day Avg</label>
+          <input type="number" min="0" class="form-control" name="below-avg-60" placeholder="e.g. 15">
+        </div>
+        <div class="col-6 col-md-3">
+          <label class="form-label">▼ % vs. 90-Day Avg</label>
+          <input type="number" min="0" class="form-control" name="below-avg-90" placeholder="e.g. 10">
+        </div>
+        <div class="col-6 col-md-3">
+          <label class="form-label">▲ Max 7-Day Volatility</label>
+          <input type="number" min="0" class="form-control" name="max-volatility-7" placeholder="e.g. 5">
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 
         <!-- Comparison & Research Aids -->
         <div class="accordion-item">
@@ -557,6 +579,7 @@ if (drop90) {
     );
   }
 // ——— Price History & Volatility Stubs ———
+// ——— Price History & Volatility Filters ———
 const b30 = data.get('below-avg-30')?.trim();
 if (b30) params.set('below30', encodeURIComponent(b30));
 
@@ -568,7 +591,8 @@ if (b90) params.set('below90', encodeURIComponent(b90));
 
 const vol7 = data.get('max-volatility-7')?.trim();
 if (vol7) params.set('maxvol7', encodeURIComponent(vol7));
-// ——————————————————————————————
+// ——————————————————————————
+
 
         // Redirect
   const tag = encodeURIComponent(data.get('tag'));
