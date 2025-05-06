@@ -22,10 +22,16 @@
   <meta name="twitter:image" content="https://amazonsupersearch.blogspot.com/thumbnail.png">
   <!-- Bootstrap CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Choices.js CSS -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"
+/>
   <style>
   body { padding: 1rem; background: #d3d3d3; }
   .slider-label { display: flex; justify-content: space-between; }
   small.coming-soon { color: #888; font-style: italic; margin-left: .5rem; }
+  
   /* Thicker borders for better visibility */
   .form-control, .form-select, .form-range {
     border: 2px solid #999 !important;
@@ -183,36 +189,22 @@ h1.text-pulse {
     </div>
   </div>
 </div>
-
-
-<!-- BRANDS BOX -->
-<div class="col-12 col-md-6 mb-3">
-  <div class="card h-100">
-    <div class="card-body">
-      <h5 class="card-title mb-3">Brand Options</h5>
-      <div class="row g-2">
-        <!-- Include Brands + Match-Only Toggle -->
-        <div class="col-12 col-lg-6">
-          <label class="form-label">Include Brands</label>
-          <input
-            type="text"
-            class="form-control"
-            name="brand-include"
-            placeholder="e.g. Sony, Samsung"
-          />
-          <div class="form-check mt-2">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="include-only"
-              name="include-only"
-            />
-            <label class="form-check-label small" for="include-only">
-              Match only these brands
-            </label>
-          </div>
-        </div>
-
+<!-- Include Brands + Match-Only Toggle -->
+<div class="col-12 col-lg-6">
+  <label class="form-label">Brand Options</label>
+  <select
+    class="form-select"
+    id="brandInclude"
+    name="brand-include"
+    multiple
+  ></select>
+  <div class="form-check mt-2">
+    <input class="form-check-input" type="checkbox" id="include-only" name="include-only"/>
+    <label class="form-check-label small" for="include-only">
+      Match only these brands
+    </label>
+  </div>
+</div>
         <!-- Exclude Brands -->
         <div class="col-12 col-lg-6">
           <label class="form-label">Exclude Brands</label>
@@ -567,16 +559,51 @@ h1.text-pulse {
   </div>
 
   <!-- Bootstrap JS Bundle -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
-  <script>
+ <script>
+  // Initialize your brand multi-select via Choices.js
+  document.addEventListener('DOMContentLoaded', function() {
+    const brandSelect = document.getElementById('brandInclude');
+    const brandChoices = new Choices(brandSelect, {
+      removeItemButton: true,
+      placeholderValue: 'Choose brands',
+      searchPlaceholderValue: 'Search brands…',
+      shouldSort: false,
+      position: 'bottom'
+    });
+
+    // Populate with your category’s brand list:
+    brandChoices.setChoices(
+      ['Sony','Samsung','LG','Acer','Apple','Dell']
+        .map(b => ({ value: b, label: b })),
+      'value',
+      'label',
+      false
+    );
+  });
     document.getElementById('amazon-search-form').addEventListener('submit', function(e) {
       e.preventDefault();
       const data = new FormData(this);
       const params = new URLSearchParams();
       const includeOnly = data.get('include-only') === 'on';
+ // Pull out all the brands the user picked
+const selectedBrands = data.getAll('brand-include');
 
-
-      // Empty‐query guard: require at least a keyword
+if (selectedBrands.length) {
+  // encode and join with pipe for Amazon’s rh param
+  const brandParam = selectedBrands
+    .map(b => encodeURIComponent(b))
+    .join('|');
+  if (includeOnly) {
+    // override: match only these
+    params.set('p_89', brandParam);
+  } else {
+    // add to rh=… list
+    params.append(
+      'rh',
+      (params.get('rh') || '') + `,p_89:${brandParam}`
+    );
+  }
+}
 // Empty-query guard: require at least a keyword
 const hint  = document.getElementById('empty-hint');
 const query = data.get('q')?.trim();
@@ -601,8 +628,6 @@ if (data.get('enable-boolean')) {
 if (q) {
   params.set('k', q);
 }
-
-
 // Price range (exact filter, in cents)
 const low  = data.get('min-price')?.trim();
 const high = data.get('max-price')?.trim();
@@ -739,8 +764,6 @@ if (incBrands) {
     );
   }
 }
-
-
   // Exclude Brands
   const excBrands = data.get('brand-exclude')?.trim();
   if (excBrands) {
@@ -753,9 +776,6 @@ if (incBrands) {
       (params.get('rh') || '') + `,p_89:${excList}`
     );
   }
-
-
-
     // Redirect with affiliate tag and all filters
   const tag      = encodeURIComponent(data.get('tag'));
   const finalUrl = `https://www.amazon.com/s?tag=${tag}&${params.toString()}`;
