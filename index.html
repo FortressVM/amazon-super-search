@@ -504,7 +504,15 @@ if (data.get('in-stock')) params.append('rh', (params.get('rh')||'') + ',p_n_ava
       }
 
       // Deal-Hunter
-      if (data.get('price-drop')) params.append('rh', (params.get('rh')||'') + ',p_n_pct-price-drop:' + data.get('price-drop'));
+      // 90-day price-drop (Amazon supports this directly)
+const drop90 = data.get('price-drop')?.trim();
+if (drop90) {
+  params.append(
+    'rh',
+    (params.get('rh') || '') + `,p_n_pct-price-drop:${encodeURIComponent(drop90)}`
+  );
+}
+
       if (data.get('coupon-only')) params.append('rh', (params.get('rh')||'') + ',p_5:couponEligible');
       if (data.get('warehouse-refurb')) params.append('rh', (params.get('rh')||'') + ',p_n_condition-type:1380442031');
 
@@ -546,6 +554,19 @@ if (data.get('in-stock')) params.append('rh', (params.get('rh')||'') + ',p_n_ava
       (params.get('rh') || '') + `,p_89:${excList}`
     );
   }
+// ——— Price History & Volatility Stubs ———
+const b30 = data.get('below-avg-30')?.trim();
+if (b30) params.set('below30', encodeURIComponent(b30));
+
+const b60 = data.get('below-avg-60')?.trim();
+if (b60) params.set('below60', encodeURIComponent(b60));
+
+const b90 = data.get('below-avg-90')?.trim();
+if (b90) params.set('below90', encodeURIComponent(b90));
+
+const vol7 = data.get('max-volatility-7')?.trim();
+if (vol7) params.set('maxvol7', encodeURIComponent(vol7));
+// ——————————————————————————————
 
       // Redirect
       const tag = encodeURIComponent(data.get('tag'));
