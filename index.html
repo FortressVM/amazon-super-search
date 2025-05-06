@@ -631,26 +631,80 @@ if (low && high) {
 
 // Discount
 if (data.get('percent-off')) params.append('rh', 'p_n_pct-off-with-discount:' + data.get('percent-off'));
-// Prime & stock
-if (data.get('prime-only')) params.append('rh', (params.get('rh')||'') + ',p_85:');
-if (data.get('in-stock')) params.append('rh', (params.get('rh')||'') + ',p_n_availability:1248879011');
 
-      // Rating
-      const ratingMap = { '4 ★ & up':'2661618011','3 ★ & up':'2661619011','2 ★ & up':'2661620011','1 ★ & up':'2661621011' };
-      if (ratingMap[data.get('min-rating')]) params.append('p_72', ratingMap[data.get('min-rating')]);
-      // Sort
-      if (data.get('sort')) params.set('s', data.get('sort'));
+// Prime Only
+if (data.get('prime-only') === 'on') {
+  params.append(
+    'rh',
+    (params.get('rh') || '') + ',p_89:ATVPDKIKX0DER'
+  );
+}
 
-      // Boolean & field
-      if (data.get('enable-boolean')) params.set('bop', 'enable');
-      if (data.get('field-filters')) params.append('rh', data.get('field-filters'));
+// In Stock
+if (data.get('in-stock') === 'on') {
+  params.append(
+    'rh',
+    (params.get('rh') || '') + ',p_n_availability:1248879011'
+  );
+}
+// Free Shipping
+if (data.get('free-shipping') === 'on') {
+  params.append(
+    'rh',
+    (params.get('rh') || '') + ',p_76:13184787011'
+  );
+}
 
-      // Direct lookup
-      const lookup = data.get('direct-lookup')?.trim();
-      if (lookup) {
-       
-      }
+// Sold & Shipped by Amazon (FBA-only)
+if (data.get('fba-only') === 'on') {
+  params.append(
+    'rh',
+    (params.get('rh') || '') + ',p_6:ATVPDKIKX0DER'
+  );
+}
 
+// Lightning Deals
+if (data.get('lightning-deals') === 'on') {
+  params.append(
+    'rh',
+    (params.get('rh') || '') + ',p_n_deal_type:n_tlc_deal_type_flash'
+  );
+}
+// (…and so on for Coupons, Subscribe & Save, Amazon’s Choice, Best Seller, Free Returns, Gift Wrap…)
+  
+// Rating → map the numeric option-values, not the labels
+const ratingMap = {
+  '4': '2661618011',
+  '3': '2661619011',
+  '2': '2661620011',
+  '1': '2661621011'
+};
+const minRating = data.get('min-rating');
+if (minRating && ratingMap[minRating]) {
+  params.append('p_72', ratingMap[minRating]);
+}
+
+// Sort
+if (data.get('sort')) {
+  params.set('s', data.get('sort'));
+}
+
+// Boolean & field
+if (data.get('enable-boolean')) {
+  params.set('bop', 'enable');
+}
+if (data.get('field-filters')) {
+  params.append('rh', data.get('field-filters'));
+}
+
+// Direct ASIN/ISBN lookup – jump straight to the product page and bail out
+const lookup = data.get('direct-lookup')?.trim();
+if (lookup) {
+  const tagVal = encodeURIComponent(data.get('tag'));
+  const url = `https://www.amazon.com/dp/${lookup}?tag=${tagVal}`;
+  window.open(url, '_blank');
+  return;
+}
       // Deal-Hunter
       // 90-day price-drop (Amazon supports this directly)
 const drop90 = data.get('price-drop')?.trim();
