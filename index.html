@@ -149,37 +149,49 @@ h1.text-pulse {
     <option value="90">90%</option>
   </select>
 </div>
- <!-- Include Brands + Match Only Toggle -->
-<div class="col-6 col-md-3">
-  <label class="form-label">Include Brands</label>
-  <input
-    type="text"
-    class="form-control"
-    name="brand-include"
-    placeholder="e.g. Sony, Samsung"
-  />
+<!-- BRANDS BOX -->
+<div class="col-12 col-md-6 mb-3">
+  <div class="card h-100">
+    <div class="card-body">
+      <h5 class="card-title mb-3">Brands</h5>
+      <div class="row g-2">
+        <!-- Include Brands + Match-Only Toggle -->
+        <div class="col-12 col-lg-6">
+          <label class="form-label">Include Brands</label>
+          <input
+            type="text"
+            class="form-control"
+            name="brand-include"
+            placeholder="e.g. Sony, Samsung"
+          />
+          <div class="form-check mt-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="include-only"
+              name="include-only"
+            />
+            <label class="form-check-label small" for="include-only">
+              Match only these brands
+            </label>
+          </div>
+        </div>
 
-  <div class="form-check mt-2 ms-2">
-    <input
-      class="form-check-input"
-      type="checkbox"
-      id="include-only"
-      name="include-only"
-    />
-    <label class="form-check-label small" for="include-only">
-      Match only these brands
-    </label>
+        <!-- Exclude Brands -->
+        <div class="col-12 col-lg-6">
+          <label class="form-label">Exclude Brands</label>
+          <input
+            type="text"
+            class="form-control"
+            name="brand-exclude"
+            placeholder="e.g. LG, Acer"
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-  <!-- Exclude Brands -->
-  <div class="col-6 col-md-3">
-    <label class="form-label">Exclude Brands</label>
-    <input
-      type="text"
-      class="form-control"
-      name="brand-exclude"
-     placeholder="e.g. LG, Acer">
- </div>
+
       <!-- Prime Only -->
       <div class="col-6 col-md-3 form-check">
         <input class="form-check-input" type="checkbox" name="prime-only" id="primeOnly">
