@@ -57,12 +57,28 @@
     animation: pulse-glow 2s infinite;
     transition: box-shadow 0.3s ease-in-out;
   }
+    /* ——— AMAZON-ORANGE PULSING HEADING ——— */
+@keyframes text-pulse {
+  0%   { text-shadow: 0 0 5px rgba(255,153,0,0.7), 0 0 10px rgba(255,153,0,0.5); }
+  50%  { text-shadow: 0 0 20px rgba(255,153,0,0.9), 0 0 30px rgba(255,153,0,0.7); }
+  100% { text-shadow: 0 0 5px rgba(255,153,0,0.7), 0 0 10px rgba(255,153,0,0.5); }
+}
+
+h1.text-pulse {
+  color: #FF9900;
+  text-shadow:
+    -1px -1px 0 #000,
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
+  animation: text-pulse 2s infinite ease-in-out;
+}
 </style>
 
 </head>
 <body>
   <div class="container-fluid bg-white p-3 p-md-4 rounded shadow-sm">
-    <h1 class="mb-4 text-center">Amazon Super Search</h1>
+    <h1 class="mb-4 text-center text-pulse">Amazon Super Search</h1>
     <form id="amazon-search-form">
       <input type="hidden" name="tag" value="echolover25-20">
 
