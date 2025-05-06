@@ -490,12 +490,6 @@ if (!query) {
 // clear any previous hint
 hint.textContent = '';
 
-
-
-      // Affiliate tag
-      params.set('tag', data.get('tag'));
-      console.log('AFFILIATE TAG IN PARAMS →', params.get('tag'));
-
      // Keywords w/ Boolean support
 let q = data.get('q')?.trim() || '';
 if (data.get('enable-boolean')) {
