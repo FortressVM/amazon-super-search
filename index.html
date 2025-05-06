@@ -96,13 +96,6 @@ h1.text-pulse {
     e.g. <em>wireless AND headphones NOT bluetooth</em>
   </small>
 </div>
-      <!-- Match only these brands toggle -->
-<div class="form-check mb-3">
-  <input class="form-check-input" type="checkbox" id="include-only" name="include-only">
-  <label class="form-check-label" for="include-only">
-    Match only these brands
-  </label>
-</div>
 
       <!-- right after your Search Keywords block -->
 <div id="empty-hint" class="text-danger mt-1"></div>
@@ -167,15 +160,30 @@ h1.text-pulse {
     Match only these brands
   </label>
 </div>
-      <!-- Include Brands -->
-+  <div class="col-6 col-md-3">
-+    <label class="form-label">Include Brands</label>
-+    <input
-+      type="text"
-+      class="form-control"
-+      name="brand-include"
-+      placeholder="e.g. Sony, Samsung">
-+  </div>
+<!-- Include Brands -->
+<div class="col-6 col-md-3">
+  <label class="form-label">Include Brands</label>
+  <input
+    type="text"
+    class="form-control"
+    name="brand-include"
+    placeholder="e.g. Sony, Samsung"
+  >
+
+  <!-- ✔ Only include these brands -->
+  <div class="form-check mt-2">
+    <input
+      class="form-check-input"
+      type="checkbox"
+      id="include-only"
+      name="include-only"
+    >
+    <label class="form-check-label" for="include-only">
+      Match only these brands
+    </label>
+  </div>
+</div>
+
 +
 +  <!-- Exclude Brands -->
 +  <div class="col-6 col-md-3">
