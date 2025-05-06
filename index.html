@@ -148,6 +148,17 @@ h1.text-pulse {
     <option value="90">90%</option>
   </select>
 </div>
+  <!-- Match only these brands toggle -->
+<div class="col-12 col-md-3 d-flex align-items-center mb-3">
+  <input
+    class="form-check-input me-2"
+    type="checkbox"
+    id="include-only"
+    name="include-only">
+  <label class="form-check-label mb-0" for="include-only">
+    Match only these brands
+  </label>
+</div>
       <!-- Include Brands -->
 +  <div class="col-6 col-md-3">
 +    <label class="form-label">Include Brands</label>
@@ -476,6 +487,8 @@ h1.text-pulse {
       e.preventDefault();
       const data = new FormData(this);
       const params = new URLSearchParams();
+      const includeOnly = data.get('include-only') === 'on';
+
 
       // Empty‐query guard: require at least a keyword
 // Empty-query guard: require at least a keyword
@@ -567,19 +580,26 @@ if (drop90) {
 
        // …your existing filters, e.g. restock forecast, predictive score, etc.
 
-    // Include Brands
-  const incBrands = data.get('brand-include')?.trim();
-  if (incBrands) {
-    const incList = incBrands
-      .split(',')
-      .map(s => encodeURIComponent(s.trim()))
-      .join('|');
-    // backtick string starts right before the comma
+// Include Brands (only-if toggle)
+const incBrands = data.get('brand-include')?.trim();
+if (incBrands) {
+  const incList = incBrands
+    .split(',')
+    .map(s => encodeURIComponent(s.trim()))
+    .join('|');
+
+  if (includeOnly) {
+    // when “Match only these brands” is checked
+    params.set('p_89', incList);
+  } else {
+    // the usual “add to rh=…” behavior
     params.append(
       'rh',
-      (params.get('rh') || '') + `,p_89:${incList}`
+      (params.get('rh')||'') + `,p_89:${incList}`
     );
   }
+}
+
 
   // Exclude Brands
   const excBrands = data.get('brand-exclude')?.trim();
