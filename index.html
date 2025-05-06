@@ -568,12 +568,15 @@ const vol7 = data.get('max-volatility-7')?.trim();
 if (vol7) params.set('maxvol7', encodeURIComponent(vol7));
 // ——————————————————————————————
 
-      // Redirect
-      const tag = encodeURIComponent(data.get('tag'));
-// drop the params.set('tag',…) earlier in your builder
-// now we force it to go first:
-window.open(`https://www.amazon.com/s?tag=${tag}&${params.toString()}`, '_blank');
+        // Redirect
+  const tag = encodeURIComponent(data.get('tag')));
+ drop the params.set('tag',…) earlier in your builder
+ now we force it to go first:
+ const finalUrl = `https://www.amazon.com/s?tag=${tag}&${params.toString()}`;
+ console.log('Amazon Search URL →', finalUrl);
+  window.open(finalUrl, '_blank');
   });
+
                                                                    </script>
 </body>
 </html>
