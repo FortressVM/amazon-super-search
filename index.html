@@ -1,6 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Add Firebase SDK scripts BEFORE your custom script -->
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBSjVSznhsEFQ4Y52m8d0iQe7EUsiVSBcY",
+    authDomain: "super-search-36c59.firebaseapp.com",
+    databaseURL: "https://super-search-36c59-default-rtdb.firebaseio.com",
+    projectId: "super-search-36c59",
+    storageBucket: "super-search-36c59.firebasestorage.app",
+    messagingSenderId: "552816882741",
+    appId: "1:552816882741:web:b7e20a3962f2daddff6d7c",
+    measurementId: "G-CRZMVFRMS2"
+  };
+
+  // Initialize Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const analytics = firebase.analytics();
+</script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Amazon Super Search</title>
@@ -804,6 +825,18 @@ if (sortValue) {
   params.set('s', 'relevanceblender'); // Amazon's internal name for default sort
 }
 
+  <!-- Live Searches Box (Top-Right Corner) -->
+<div id="live-searches-box" class="position-fixed top-0 end-0 mt-3 me-3" style="z-index: 1050; width: 250px;">
+  <div class="card border-info shadow">
+    <div class="card-header bg-info text-white fw-bold py-2">
+      Live Searches
+    </div>
+    <ul id="live-searches-list" class="list-group list-group-flush small">
+      <!-- New searches will appear here -->
+    </ul>
+  </div>
+</div>
+
 
 
     // Redirect with affiliate tag and all filters
@@ -812,7 +845,89 @@ if (sortValue) {
   console.log('Amazon Search URL →', finalUrl);
   window.open(finalUrl, '_blank');
 
+  <script>
+  const liveSearchesList = document.getElementById('live-searches-list');
+
+  // Load saved searches from localStorage
+  const savedSearches = JSON.parse(localStorage.getItem('liveSearches') || '[]');
+  savedSearches.forEach(term => addLiveSearch(term, false));
+
+  function addLiveSearch(term, save = true) {
+    if (!term) return;
+    const exists = [...liveSearchesList.children].some(
+      li => li.textContent.toLowerCase() === term.toLowerCase()
+    );
+    if (exists) return;
+
+    const li = document.createElement('li');
+    li.className = 'list-group-item';
+    li.innerHTML = `<a href="?q=${encodeURIComponent(term)}" class="text-decoration-none">${term}</a>`;
+    liveSearchesList.prepend(li);
+
+    // Trim to 10 items
+    if (liveSearchesList.children.length > 10) {
+      liveSearchesList.removeChild(liveSearchesList.lastChild);
+    }
+
+    if (save) {
+      const terms = [term, ...savedSearches.filter(t => t.toLowerCase() !== term.toLowerCase())];
+      localStorage.setItem('liveSearches', JSON.stringify(terms.slice(0, 10)));
+    }
+  }
+
+  document.getElementById('amazon-search-form').addEventListener('submit', function (e) {
+    const term = new FormData(this).get('q')?.trim();
+    if (term) addLiveSearch(term, true);
   });
+</script>
+
+  function addLiveSearch(term) {
+    if (!term) return;
+    const exists = [...liveSearchesList.children].some(
+      li => li.textContent.toLowerCase() === term.toLowerCase()
+    );
+    if (exists) return;
+
+    const li = document.createElement('li');
+    li.className = 'list-group-item';
+    li.innerHTML = `<a href="?q=${encodeURIComponent(term)}" class="text-decoration-none">${term}</a>`;
+    liveSearchesList.prepend(li);
+    if (liveSearchesList.children.length > 10) {
+      liveSearchesList.removeChild(liveSearchesList.lastChild);
+    }
+  }
+
+  document.getElementById('amazon-search-form').addEventListener('submit', function (e) {
+    const term = new FormData(this).get('q')?.trim();
+    if (term) addLiveSearch(term);
+  });
+</script>
+
+
+  });
+<!-- Firebase App (core) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<!-- Firebase Realtime Database -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+  // Your Firebase config
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "super-search-36c59.firebaseapp.com",
+    databaseURL: "https://super-search-36c59-default-rtdb.firebaseio.com",
+    projectId: "super-search-36c59",
+    storageBucket: "super-search-36c59.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+  console.log("Firebase initialized:", firebase.app().name);
+
+</script>
 
                                                                    </script>
 </body>
