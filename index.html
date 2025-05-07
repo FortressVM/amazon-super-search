@@ -24,8 +24,9 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet" />
   <!-- Choices.js CSS -->
 <!-- Tagify CSS & JS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css">
-<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+<!-- Tagify CSS & JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" />
+<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.min.js"></script>
   <style>
   body { padding: 1rem; background: #d3d3d3; }
   .slider-label { display: flex; justify-content: space-between; }
@@ -563,221 +564,80 @@ h1.text-pulse {
       </section>
   </div>
 
-  <!-- Bootstrap JS Bundle -->
- <script>
- <script>
-  document.addEventListener('DOMContentLoaded', function () {
-      const excludeInput = document.querySelector('#brandExclude');
-  if (excludeInput) {
-    new Tagify(excludeInput, {
-      whitelist: ["Sony", "Samsung", "LG", "Acer", "Apple", "Dell"],
-      dropdown: {
-        enabled: 0,
-        maxItems: 10
-      }
-    });
-  }
+    <!-- Bootstrap JS Bundle (includes Popper) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 
-    const brandInput = document.querySelector('input[name="brand-include"]');
-    if (brandInput) {
-      new Tagify(brandInput, {
-        whitelist: ["Sony", "Samsung", "LG", "Acer", "Apple", "Dell"],
-        dropdown: {
-          enabled: 0,
-          maxItems: 10
-        }
+  <!-- Tagify & form init -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // — initialize Tagify —
+      new Tagify(document.getElementById('brandInclude'), {
+        whitelist: ["Sony","Samsung","LG","Acer","Apple","Dell"],
+        dropdown: { enabled: 0, maxItems: 10 }
       });
-    }
-  });
+      new Tagify(document.getElementById('brandExclude'), {
+        whitelist: ["Sony","Samsung","LG","Acer","Apple","Dell"],
+        dropdown: { enabled: 0, maxItems: 10 }
+      });
 
-  document.getElementById('amazon-search-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const data = new FormData(this);
-    const params = new URLSearchParams();
-    const includeOnly = data.get('include-only') === 'on';
+      // — form submit handler —  
+      document.getElementById('amazon-search-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const data   = new FormData(this);
+        const params = new URLSearchParams();
+        const includeOnly = data.get('include-only') === 'on';
 
-    // Parse Tagify JSON field
-    const incRaw = data.get('brand-include');
-    let incBrands = '';
-    try {
-      incBrands = JSON.parse(incRaw).map(obj => obj.value).join(',');
-    } catch (e) {
-      incBrands = '';
-    }
+        // 1) Boolean keywords
+        let q = data.get('q')?.trim() || '';
+        if (data.get('enable-boolean')) {
+          q = q.replace(/\bAND\b/gi, ' ')
+               .replace(/\bNOT\b/gi, '-');
+          params.set('bop', 'enable');
+        }
+        if (q) params.set('k', q);
 
-    if (incBrands) {
-      const rhValue = `p_89:${incBrands}`;
-      if (includeOnly) {
-        params.append('rh', rhValue);
-      } else {
-        params.append('rh', (params.get('rh') || '') + `,${rhValue}`);
-      }
-    }
+        // 2) Price range
+        const low  = data.get('min-price')?.trim();
+        const high = data.get('max-price')?.trim();
+        if (low && high) {
+          const lowC  = Math.floor(parseFloat(low) * 100);
+          const highC = Math.ceil (parseFloat(high) * 100);
+          params.append('rh', `p_36:${lowC}-${highC}`);
+        }
 
-    // 👇 continue with the rest of your filters here (e.g. exclude brands, min-price, sort, etc.)
+        // 3) Discount & flags
+        if (data.get('percent-off')) {
+          params.append('rh',
+            'p_n_pct-off-with-discount:' + data.get('percent-off')
+          );
+        }
+        if (data.get('prime-only') === 'on') {
+          params.append(
+            'rh',
+            (params.get('rh')||'') + ',p_89:ATVPDKIKX0DER'
+          );
+        }
+        if (data.get('in-stock') === 'on') {
+          params.append(
+            'rh',
+            (params.get('rh')||'') + ',p_n_availability:1248879011'
+          );
+        }
+        if (data.get('free-shipping') === 'on') {
+          params.append(
+            'rh',
+            (params.get('rh')||'') + ',p_76:13184787011'
+          );
+        }
 
-// Empty-query guard: require at least a keyword
-const hint  = document.getElementById('empty-hint');
-const query = data.get('q')?.trim();
+        // 4) …then paste in your remaining filters (FBA-only, lightning deals, ratings, brand include/exclude, etc.)…
 
-if (!query) {
-  // show inline hint instead of alert
-  hint.textContent = 'Please type something before you search.';
-  return;
-}
-// clear any previous hint
-hint.textContent = '';
-
-     // Keywords w/ Boolean support
-let q = data.get('q')?.trim() || '';
-if (data.get('enable-boolean')) {
-  // turn “AND” into space, “NOT” into “-”
-  q = q
-    .replace(/\bAND\b/gi, ' ')
-    .replace(/\bNOT\b/gi, '-');
-  params.set('bop', 'enable');
-}
-if (q) {
-  params.set('k', q);
-}
-// Price range (exact filter, in cents)
-const low  = data.get('min-price')?.trim();
-const high = data.get('max-price')?.trim();
-if (low && high) {
-  const lowNum  = parseFloat(low);
-  const highNum = parseFloat(high);
-  if (!isNaN(lowNum) && !isNaN(highNum)) {
-    // Amazon’s “p_36” param must be integer cents.
-    // Floor the low-end, ceil the high-end.
-    const lowCents  = Math.floor(lowNum  * 100);
-    const highCents = Math.ceil( highNum * 100);
-    params.append('rh', `p_36:${lowCents}-${highCents}`);
-  }
-}
-
-
-// Discount
-if (data.get('percent-off')) params.append('rh', 'p_n_pct-off-with-discount:' + data.get('percent-off'));
-
-// Prime Only
-if (data.get('prime-only') === 'on') {
-  params.append(
-    'rh',
-    (params.get('rh') || '') + ',p_89:ATVPDKIKX0DER'
-  );
-}
-
-// In Stock
-if (data.get('in-stock') === 'on') {
-  params.append(
-    'rh',
-    (params.get('rh') || '') + ',p_n_availability:1248879011'
-  );
-}
-// Free Shipping
-if (data.get('free-shipping') === 'on') {
-  params.append(
-    'rh',
-    (params.get('rh') || '') + ',p_76:13184787011'
-  );
-}
-
-// Sold & Shipped by Amazon (FBA-only)
-if (data.get('fba-only') === 'on') {
-  params.append(
-    'rh',
-    (params.get('rh') || '') + ',p_6:ATVPDKIKX0DER'
-  );
-}
-
-// Lightning Deals
-if (data.get('lightning-deals') === 'on') {
-  params.append(
-    'rh',
-    (params.get('rh') || '') + ',p_n_deal_type:n_tlc_deal_type_flash'
-  );
-}
-// (…and so on for Coupons, Subscribe & Save, Amazon’s Choice, Best Seller, Free Returns, Gift Wrap…)
-  
-// Rating → map the numeric option-values, not the labels
-const ratingMap = {
-  '4': '2661618011',
-  '3': '2661619011',
-  '2': '2661620011',
-  '1': '2661621011'
-};
-const minRating = data.get('min-rating');
-if (minRating && ratingMap[minRating]) {
-  params.append('p_72', ratingMap[minRating]);
-}
-
-// Sort
-if (data.get('sort')) {
-  params.set('s', data.get('sort'));
-}
-
-// Boolean & field
-if (data.get('enable-boolean')) {
-  params.set('bop', 'enable');
-}
-if (data.get('field-filters')) {
-  params.append('rh', data.get('field-filters'));
-}
-
-// Direct ASIN/ISBN lookup – jump straight to the product page and bail out
-const lookup = data.get('direct-lookup')?.trim();
-if (lookup) {
-  const tagVal = encodeURIComponent(data.get('tag'));
-  const url = `https://www.amazon.com/dp/${lookup}?tag=${tagVal}`;
-  window.open(url, '_blank');
-  return;
-}
-      // Deal-Hunter
-      // 90-day price-drop (Amazon supports this directly)
-const drop90 = data.get('price-drop')?.trim();
-if (drop90) {
-  params.append(
-    'rh',
-    (params.get('rh') || '') + `,p_n_pct-price-drop:${encodeURIComponent(drop90)}`
-  );
-}
-
-      if (data.get('coupon-only')) params.append('rh', (params.get('rh')||'') + ',p_5:couponEligible');
-      if (data.get('warehouse-refurb')) params.append('rh', (params.get('rh')||'') + ',p_n_condition-type:1380442031');
-
-      // Comparison
-      if (data.get('side-by-side')) params.set('compare', 'side-by-side');
-      if (data.get('verified-only')) params.set('reviewerType', 'avp_only_reviews');
-
-      // Personalization & AI
-      if (data.get('predictive-score')) params.set('predictive', '1');
-      const restock = data.get('restock-forecast')?.trim();
-      if (restock) params.set('restockASIN', encodeURIComponent(restock));
-      if (data.get('emotion-feedback')) params.set('emotion', '1');
-
-       // …your existing filters, e.g. restock forecast, predictive score, etc.
-
-  // Exclude Brands (Tagify-aware)
-const excRaw = data.get('brand-exclude');
-let excBrands = '';
-try {
-  excBrands = JSON.parse(excRaw).map(obj => `-${encodeURIComponent(obj.value)}`).join('|');
-} catch (e) {
-  excBrands = '';
-}
-
-if (excBrands) {
-  params.append('rh', (params.get('rh') || '') + `,p_89:${excBrands}`);
-}
-
-    // Redirect with affiliate tag and all filters
-  const tag      = encodeURIComponent(data.get('tag'));
-  const finalUrl = `https://www.amazon.com/s?tag=${tag}&${params.toString()}`;
-  console.log('Amazon Search URL →', finalUrl);
-  window.open(finalUrl, '_blank');
-
-  });
-
-                                                                   </script>
+        // Finally open the URL
+        const tag      = encodeURIComponent(data.get('tag'));
+        const finalUrl = `https://www.amazon.com/s?tag=${tag}&${params.toString()}`;
+        window.open(finalUrl, '_blank');
+      });
+    });
+  </script>
 </body>
 </html>
