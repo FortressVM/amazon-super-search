@@ -46,6 +46,16 @@
   .btn-outline-secondary, .btn-primary {
     border-width: 2px !important;
   }
+/* Pulse on hover */
+.mic-ripple:hover::before,
+.mic-ripple:hover::after {
+  animation: rippleHover 0.8s ease-out forwards;
+}
+
+@keyframes rippleHover {
+  0%   { transform: scale(0); opacity: 0.6; }
+  100% { transform: scale(2); opacity: 0; }
+}
 
   /* ——— PULSE GLOW ANIMATION ——— */
   @keyframes pulse-glow {
@@ -94,6 +104,81 @@ h1.text-pulse {
     padding: 1.5rem !important;   /* match p-md-4 on larger screens */
   }
 }
+.mic-ripple {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.mic-ripple::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgba(0, 123, 255, 0.5);
+  border-radius: 50%;
+  transform: scale(0);
+  opacity: 0;
+  pointer-events: none;
+  animation: ripple 1s ease-out;
+}
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+/* ——— mic sound-wave animation when listening ——— */
+.mic-ripple {
+  position: relative;
+  overflow: visible;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* pseudo-elements start hidden */
+.mic-ripple::before,
+.mic-ripple::after {
+  content: "";
+  position: absolute;
+  border: 2px solid rgba(0, 123, 255, 0.5);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0);
+  pointer-events: none;
+  /* no animation by default */
+  animation: none;
+}
+
+/* when .listening is present, trigger the two pulses */
+.mic-ripple.listening::before {
+  width: 100%;
+  height: 100%;
+  animation: wave1 1s ease-out forwards;
+}
+.mic-ripple.listening::after {
+  width: 150%;
+  height: 150%;
+  animation: wave2 1s ease-out forwards;
+  animation-delay: 0.3s;
+}
+
+@keyframes wave1 {
+  0%   { transform: scale(0);   opacity: 0.6; }
+  100% { transform: scale(1.5); opacity: 0;   }
+}
+@keyframes wave2 {
+  0%   { transform: scale(0);   opacity: 0.4; }
+  100% { transform: scale(2.0); opacity: 0;   }
+}
 
 </style>
 <link
@@ -111,7 +196,9 @@ h1.text-pulse {
 <div class="mb-3 input-group">
   <label class="form-label" for="q">Search Keywords</label>
   <div class="input-group">
-    <span class="input-group-text"><i class="bi bi-mic-fill"></i></span>
+    <span class="input-group-text mic-ripple">
+      <i class="bi bi-mic-fill"></i>
+    </span>
     <input
       autocomplete="off"
       type="text"
@@ -120,14 +207,12 @@ h1.text-pulse {
       name="q"
       placeholder="e.g. wireless headphones"
     />
-  </div><!-- /.input-group -->
+  </div> <!-- /.input-group -->
   <small class="form-text text-muted">
     Supports Boolean operators: <code>AND</code>, <code>OR</code>, <code>NOT</code>.<br>
     e.g. <em>wireless AND headphones NOT bluetooth</em>
   </small>
-</div><!-- /.mb-3 -->
-
-
+</div> <!-- /.mb-3 -->
 
       <!-- right after your Search Keywords block -->
 <div id="empty-hint" class="text-danger mt-1"></div>
@@ -646,41 +731,150 @@ h1.text-pulse {
 </section>
 
 
-      <!-- Help Section -->
-      <section id="help" class="mt-5">
-        <h2 class="h4">Help &amp; Usage Guide</h2>
-        <p>This guide explains every control on the Amazon Super Search page:</p>
-        <ul>
-          <li>
-            <strong>Search Keywords:</strong>
-            Enter any terms (e.g., “wireless headphones”). 
-            Supports Boolean operators: <code>AND</code>, <code>OR</code>, <code>NOT</code>. 
-            e.g. <em>wireless AND headphones NOT bluetooth</em>
-          </li>
-          <li><strong>Price Range:</strong> Specify minimum and maximum prices (supports cents).</li>
-          <li><strong>% Off Discount:</strong> Slide to filter items by minimum discount percentage.</li>
-          <li><strong>Prime Only:</strong> Show only Amazon Prime–eligible products.</li>
-          <li><strong>In Stock:</strong> Show only items that are available to ship immediately.</li>
-          <li><strong>Customer Review:</strong> Select minimum star rating (1★–4★).</li>
-          <li><strong>Sort By:</strong> Choose how results are ordered (price, recency, discount).</li>
-          <li><strong>Enable Boolean Operators:</strong> Toggle to allow AND/OR/NOT in keywords.</li>
-          <li><strong>Field Filters:</strong> Restrict to fields (e.g., <code>field-brand:Sony</code>).</li>
-          <li><strong>ASIN/ISBN Direct Lookup:</strong> Jump straight to a product page by its ASIN/ISBN.</li>
-          <li><strong>Price Drop:</strong> Filter items at least X% below their 90‑day average price.</li>
-          <li><strong>Coupon‑Clippable Only:</strong> Show items with an available Amazon coupon.</li>
-          <li><strong>Warehouse / Open‑Box:</strong> Include Amazon Warehouse or open‑box deals.</li>
-          <li><strong>Side‑by‑Side Spec Tables:</strong> Compare specifications of up to two products.</li>
-          <li><strong>Verified‑Purchase Only Reviews:</strong> Show reviews verified by Amazon.</li>
-          <li><strong>Buy‑Now‑or‑Wait Score:</strong> AI‑driven recommendation on purchase timing.</li>
-          <li><strong>Restock Forecasts:</strong> Enter an ASIN to see estimated restock date.</li>
-          <li><strong>Emotion‑Feedback Loop:</strong> Provide purchase emotion insights.</li>
-        </ul>
-        <p>Controls labeled <em>(coming soon)</em> require additional API integrations.</p>
-      </section>
+  <!-- Help Section -->
+  <section id="help" class="mt-5">
+    <h2 class="h4">Help &amp; Usage Guide</h2>
+    <p>This guide explains every control on the Amazon Super Search page:</p>
+    <ul>
+      <li>
+        <strong>Search Keywords:</strong>
+        Enter any terms (e.g., “wireless headphones”). 
+        Supports Boolean operators: <code>AND</code>, <code>OR</code>, <code>NOT</code>. 
+        e.g. <em>wireless AND headphones NOT bluetooth</em>
+      </li>
+      <!-- …the rest of your help items… -->
+    </ul>
+    <p>Controls labeled <em>(coming soon)</em> require additional API integrations.</p>
+  </section>
+  <!-- close Help -->
+
+<!-- Tic-Tac-Toe Game -->
+<div class="card mb-5">
+  <div class="card-body">
+    <h5 class="card-title">Play: Tic-Tac-Toe</h5>
+    <div id="ttt-board" class="d-grid"
+         style="grid-template: repeat(3,1fr)/repeat(3,1fr); gap: .5rem;">
+      <!-- 9 cells injected by JS -->
+    </div>
+    <button id="ttt-reset" class="btn btn-sm btn-outline-primary mt-3">
+      Reset
+    </button>
   </div>
+</div>
+
+<script>
+(function(){
+  const boardEl = document.getElementById('ttt-board');
+  const resetBtn = document.getElementById('ttt-reset');
+  let turn = 'X', cells;
+
+  function init() {
+    boardEl.innerHTML = '';
+    for(let i=0; i<9; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'border bg-light d-flex align-items-center justify-content-center fw-bold';
+      cell.style = 'height:3rem; font-size:1.5rem; cursor:pointer;';
+      cell.addEventListener('click', onClickCell);
+      boardEl.appendChild(cell);
+    }
+    cells = Array.from(boardEl.children);
+    turn = 'X';
+  }
+
+  function onClickCell(e) {
+    const cell = e.currentTarget;
+    if (cell.textContent) return;
+    cell.textContent = turn;
+    if (checkWin(turn)) {
+      setTimeout(()=>alert(turn+' wins!'),10);
+      disableBoard();
+    } else if (cells.every(c=>c.textContent)) {
+      setTimeout(()=>alert("It's a draw!"),10);
+    } else {
+      turn = turn==='X'?'O':'X';
+    }
+  }
+
+  function checkWin(player) {
+    const idx = cells.map(c=>c.textContent);
+    const wins = [
+      [0,1,2],[3,4,5],[6,7,8],
+      [0,3,6],[1,4,7],[2,5,8],
+      [0,4,8],[2,4,6]
+    ];
+    return wins.some(line=>line.every(i=>idx[i]===player));
+  }
+
+  function disableBoard() {
+    cells.forEach(c=>c.removeEventListener('click', onClickCell));
+  }
+
+  resetBtn.addEventListener('click', init);
+  init();
+})();
+</script>
 
   <!-- Bootstrap JS Bundle -->
  <script>
+   const micBtn = document.querySelector('.mic-ripple');
+
+function startListening() {
+  // start your speech-to-text…
+  micBtn.classList.add('listening');
+}
+
+function stopListening() {
+  // stop your speech-to-text…
+  micBtn.classList.remove('listening');
+}
+
+micBtn.addEventListener('click', () => {
+  if (micBtn.classList.contains('listening')) stopListening();
+  else startListening();
+});
+// 1. Feature-detect and create the SpeechRecognition object
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+if (!SpeechRecognition) {
+  console.warn('Speech recognition not supported in this browser.');
+} else {
+  const recog = new SpeechRecognition();
+  recog.continuous = false;            // stop automatically on silence
+  recog.interimResults = false;        // only final results
+  recog.lang = 'en-US';                // change as needed
+
+  // 2. Start/stop when the user clicks the mic
+  micBtn.addEventListener('click', () => {
+    if (micBtn.classList.contains('listening')) {
+      recog.stop();
+    } else {
+      recog.start();
+    }
+  });
+
+  // 3. When recognition starts
+  recog.addEventListener('start', () => {
+    micBtn.classList.add('listening');
+  });
+
+  // 4. When it ends (silence or manual stop)
+  recog.addEventListener('end', () => {
+    micBtn.classList.remove('listening');
+  });
+
+  // 5. On result, put text into your input box
+  recog.addEventListener('result', (ev) => {
+    // grab the transcript of the first (and only) result
+    const transcript = Array.from(ev.results)
+      .map(r => r[0].transcript)
+      .join('');
+    // set it into your search box and optionally auto-submit
+    const input = document.getElementById('q');
+    input.value = transcript;
+    // optional: immediately run the search
+    // document.getElementById('amazon-search-form').submit();
+  });
+}
+
   // Initialize your brand multi-select via Choices.js
   document.addEventListener('DOMContentLoaded', function() {
     const brandSelect = document.getElementById('brandInclude');
@@ -691,6 +885,47 @@ h1.text-pulse {
       shouldSort: false,
       position: 'bottom'
     });
+<script>
+  // 0. Grab the mic button and the search input
+  const micBtn      = document.querySelector('.mic-ripple');
+  const searchInput = document.getElementById('q');
+
+  // 1. Feature-detect SpeechRecognition
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    console.warn('Speech recognition not supported in this browser.');
+  } else {
+    // 2. Create & configure the recognizer
+    const recog = new SpeechRecognition();
+    recog.continuous     = false;      // stop on silence
+    recog.interimResults = false;      // only final results
+    recog.lang           = 'en-US';    // adjust if needed
+
+    // 3. Toggle listening state on button click
+    micBtn.addEventListener('click', () => {
+      if (micBtn.classList.contains('listening')) {
+        recog.stop();
+      } else {
+        recog.start();
+      }
+    });
+
+    // 4. Reflect recording state in the UI
+    recog.addEventListener('start', () => micBtn.classList.add('listening'));
+    recog.addEventListener('end',   () => micBtn.classList.remove('listening'));
+
+    // 5. When we get a result, fill the input
+    recog.addEventListener('result', ev => {
+      const transcript = Array.from(ev.results)
+        .map(r => r[0].transcript)
+        .join('')
+        .trim();
+      searchInput.value = transcript;
+      // optionally auto-submit:
+      // document.getElementById('amazon-search-form').submit();
+    });
+  }
+</script>
 
     // Populate with your category’s brand list:
     brandChoices.setChoices(
@@ -927,5 +1162,7 @@ if (incBrands) {
   });
 
                                                                    </script>
+        <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+
 </body>
 </html>
