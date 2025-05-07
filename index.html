@@ -587,6 +587,29 @@ h1.text-pulse {
         const params = new URLSearchParams();
         const includeOnly = data.get('include-only') === 'on';
 
+// — Include Brands —
+const incRaw = data.get('brand-include');
+let incArr = [];
+try {
+  incArr = JSON.parse(incRaw).map(o => encodeURIComponent(o.value));
+} catch(e) {}
+if (incArr.length) {
+  const incVal = incArr.join(',');
+  params.append('rh', `p_89:${incVal}`);
+}
+
+// — Exclude Brands —
+const excRaw = data.get('brand-exclude');
+let excArr = [];
+try {
+  excArr = JSON.parse(excRaw).map(o => `-${encodeURIComponent(o.value)}`);
+} catch(e) {}
+if (excArr.length) {
+  const excVal = excArr.join('|');           // <-- pipe not comma
+  params.append('rh', `p_89:${excVal}`);
+}
+
+
         // 1) Boolean keywords
         let q = data.get('q')?.trim() || '';
         if (data.get('enable-boolean')) {
