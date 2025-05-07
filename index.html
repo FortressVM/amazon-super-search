@@ -96,7 +96,10 @@ h1.text-pulse {
 }
 
 </style>
-
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css"
+/>
 </head>
 <body>
   <div class="container-fluid bg-white p-3 p-md-4 rounded shadow-sm">
@@ -104,20 +107,27 @@ h1.text-pulse {
     <form id="amazon-search-form" autocomplete="off">
       <input type="hidden" name="tag" value="echolover25-20">
 
-     <!-- Keywords with Boolean helper -->
-<div class="mb-3">
-  <label class="form-label">Search Keywords</label>
-  <input
-  autocomplete="off"
-  type="text"
-  class="form-control"
-  name="q"
-  placeholder="e.g. wireless headphones">
+<!-- Keywords with Boolean helper -->
+<div class="mb-3 input-group">
+  <label class="form-label" for="q">Search Keywords</label>
+  <div class="input-group">
+    <span class="input-group-text"><i class="bi bi-mic-fill"></i></span>
+    <input
+      autocomplete="off"
+      type="text"
+      class="form-control"
+      id="q"
+      name="q"
+      placeholder="e.g. wireless headphones"
+    />
+  </div><!-- /.input-group -->
   <small class="form-text text-muted">
-    Supports Boolean operators: <code>AND</code>, <code>OR</code>, <code>NOT</code>.
+    Supports Boolean operators: <code>AND</code>, <code>OR</code>, <code>NOT</code>.<br>
     e.g. <em>wireless AND headphones NOT bluetooth</em>
   </small>
-</div>
+</div><!-- /.mb-3 -->
+
+
 
       <!-- right after your Search Keywords block -->
 <div id="empty-hint" class="text-danger mt-1"></div>
@@ -796,6 +806,26 @@ if (data.get('lightning-deals') === 'on') {
     (params.get('rh') || '') + ',p_n_deal_type:n_tlc_deal_type_flash'
   );
 }
+      // Sustainability & Ethical Toggles
+if (data.get('sustainability-recycled') === 'on') {
+  params.append(
+    'rh',
+    (params.get('rh') || '') + ',p_n_material_recycled:1388928031'
+  );
+}
+if (data.get('sustainability-carbonneutral') === 'on') {
+  params.append(
+    'rh',
+    (params.get('rh') || '') + ',p_n_carbon_neutral_shipping:1388929031'
+  );
+}
+if (data.get('sustainability-fairtrade') === 'on') {
+  params.append(
+    'rh',
+    (params.get('rh') || '') + ',p_n_certification:1388930031'
+  );
+}
+
 // (…and so on for Coupons, Subscribe & Save, Amazon’s Choice, Best Seller, Free Returns, Gift Wrap…)
   
 // Rating → map the numeric option-values, not the labels
