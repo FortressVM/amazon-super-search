@@ -926,6 +926,18 @@ if (sortValue) {
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
   console.log("Firebase initialized:", firebase.app().name);
+  function addLiveSearch(term) {
+  const timestamp = new Date().toISOString();
+  db.ref('live_searches').push({
+    term: term,
+    timestamp: timestamp
+  }).then(() => {
+    console.log("Search term saved:", term);
+  }).catch((error) => {
+    console.error("Error saving search term:", error);
+  });
+}
+
 
 </script>
 
