@@ -748,70 +748,75 @@ h1.text-pulse {
   </section>
   <!-- close Help -->
 
-<!-- Tic-Tac-Toe Game -->
-<div class="card mb-5">
-  <div class="card-body">
-    <h5 class="card-title">Play: Tic-Tac-Toe</h5>
-    <div id="ttt-board" class="d-grid"
-         style="grid-template: repeat(3,1fr)/repeat(3,1fr); gap: .5rem;">
-      <!-- 9 cells injected by JS -->
+ <!-- Tic-Tac-Toe Game -->
+  <div class="card mb-5">
+    <div class="card-body">
+      <h5 class="card-title">Play: Tic-Tac-Toe</h5>
+      <div
+        id="ttt-board"
+        class="d-grid"
+        style="grid-template: repeat(3, 1fr) / repeat(3, 1fr); gap: .5rem;"
+      >
+        <!-- 9 cells injected by JS -->
+      </div>
+      <button id="ttt-reset" class="btn btn-sm btn-outline-primary mt-3">
+        Reset
+      </button>
     </div>
-    <button id="ttt-reset" class="btn btn-sm btn-outline-primary mt-3">
-      Reset
-    </button>
   </div>
-</div>
 
-(function(){
-  const boardEl = document.getElementById('ttt-board');
-  const resetBtn = document.getElementById('ttt-reset');
-  let turn = 'X', cells;
+  <script>
+  (function() {
+    const boardEl = document.getElementById('ttt-board');
+    const resetBtn = document.getElementById('ttt-reset');
+    let turn = 'X', cells;
 
-  function init() {
-    boardEl.innerHTML = '';
-    for(let i=0; i<9; i++) {
-      const cell = document.createElement('div');
-      cell.className = 'border bg-light d-flex align-items-center justify-content-center fw-bold';
-      cell.style = 'height:3rem; font-size:1.5rem; cursor:pointer;';
-      cell.addEventListener('click', onClickCell);
-      boardEl.appendChild(cell);
+    function init() {
+      boardEl.innerHTML = '';
+      for (let i = 0; i < 9; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'border bg-light d-flex align-items-center justify-content-center fw-bold';
+        cell.style = 'height: 3rem; font-size: 1.5rem; cursor: pointer;';
+        cell.addEventListener('click', onClickCell);
+        boardEl.appendChild(cell);
+      }
+      cells = Array.from(boardEl.children);
+      turn = 'X';
     }
-    cells = Array.from(boardEl.children);
-    turn = 'X';
-  }
 
-  function onClickCell(e) {
-    const cell = e.currentTarget;
-    if (cell.textContent) return;
-    cell.textContent = turn;
-    if (checkWin(turn)) {
-      setTimeout(()=>alert(turn+' wins!'),10);
-      disableBoard();
-    } else if (cells.every(c=>c.textContent)) {
-      setTimeout(()=>alert("It's a draw!"),10);
-    } else {
-      turn = turn==='X'?'O':'X';
+    function onClickCell(e) {
+      const cell = e.currentTarget;
+      if (cell.textContent) return;
+      cell.textContent = turn;
+      if (checkWin(turn)) {
+        setTimeout(() => alert(turn + ' wins!'), 10);
+        disableBoard();
+      } else if (cells.every(c => c.textContent)) {
+        setTimeout(() => alert("It's a draw!"), 10);
+      } else {
+        turn = turn === 'X' ? 'O' : 'X';
+      }
     }
-  }
 
-  function checkWin(player) {
-    const idx = cells.map(c=>c.textContent);
-    const wins = [
-      [0,1,2],[3,4,5],[6,7,8],
-      [0,3,6],[1,4,7],[2,5,8],
-      [0,4,8],[2,4,6]
-    ];
-    return wins.some(line=>line.every(i=>idx[i]===player));
-  }
+    function checkWin(player) {
+      const idx = cells.map(c => c.textContent);
+      const wins = [
+        [0,1,2],[3,4,5],[6,7,8],
+        [0,3,6],[1,4,7],[2,5,8],
+        [0,4,8],[2,4,6]
+      ];
+      return wins.some(line => line.every(i => idx[i] === player));
+    }
 
-  function disableBoard() {
-    cells.forEach(c=>c.removeEventListener('click', onClickCell));
-  }
+    function disableBoard() {
+      cells.forEach(c => c.removeEventListener('click', onClickCell));
+    }
 
-  resetBtn.addEventListener('click', init);
-  init();
-})();
-</script>
+    resetBtn.addEventListener('click', init);
+    // kick it off
+    init();
+  })();
+  </script>
 
   <!-- Bootstrap JS Bundle -->
  <script>
@@ -924,7 +929,6 @@ if (!SpeechRecognition) {
       // document.getElementById('amazon-search-form').submit();
     });
   }
-</script>
 
     // Populate with your category’s brand list:
     brandChoices.setChoices(
