@@ -588,7 +588,7 @@ if (incRaw) {
         params.append('rh', (params.get('rh') || '') + `,${rhValue}`);
       }
     }
-    // Exclude Brands (plain text version)
+   // Exclude Brands (plain comma-separated input)
 const excRaw = data.get('brand-exclude')?.trim();
 let excBrands = '';
 if (excRaw) {
