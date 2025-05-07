@@ -565,29 +565,7 @@ h1.text-pulse {
   <!-- Bootstrap JS Bundle -->
  <script>
  <script>
-  document.addEventListener('DOMContentLoaded', function () {
-      const excludeInput = document.querySelector('#brandExclude');
-  if (excludeInput) {
-    new Tagify(excludeInput, {
-      whitelist: ["Sony", "Samsung", "LG", "Acer", "Apple", "Dell"],
-      dropdown: {
-        enabled: 0,
-        maxItems: 10
-      }
-    });
-  }
-
-    const brandInput = document.querySelector('input[name="brand-include"]');
-    if (brandInput) {
-      new Tagify(brandInput, {
-        whitelist: ["Sony", "Samsung", "LG", "Acer", "Apple", "Dell"],
-        dropdown: {
-          enabled: 0,
-          maxItems: 10
-        }
-      });
-    }
-  });
+ 
 
   document.getElementById('amazon-search-form').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -596,13 +574,11 @@ h1.text-pulse {
     const includeOnly = data.get('include-only') === 'on';
 
     // Parse Tagify JSON field
-    const incRaw = data.get('brand-include');
-    let incBrands = '';
-    try {
-      incBrands = JSON.parse(incRaw).map(obj => obj.value).join(',');
-    } catch (e) {
-      incBrands = '';
-    }
+   const incRaw = data.get('brand-include')?.trim();
+let incBrands = '';
+if (incRaw) {
+  incBrands = incRaw.split(',').map(s => encodeURIComponent(s.trim())).join('|');
+}
 
     if (incBrands) {
       const rhValue = `p_89:${incBrands}`;
@@ -612,6 +588,20 @@ h1.text-pulse {
         params.append('rh', (params.get('rh') || '') + `,${rhValue}`);
       }
     }
+    // Exclude Brands (plain text version)
+const excRaw = data.get('brand-exclude')?.trim();
+let excBrands = '';
+if (excRaw) {
+  excBrands = excRaw
+    .split(',')
+    .map(s => `-${encodeURIComponent(s.trim())}`)
+    .join('|');
+}
+
+if (excBrands) {
+  params.append('rh', (params.get('rh') || '') + `,p_89:${excBrands}`);
+}
+
 
     // 👇 continue with the rest of your filters here (e.g. exclude brands, min-price, sort, etc.)
 
