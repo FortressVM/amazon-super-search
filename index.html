@@ -701,9 +701,19 @@ if (minRating && ratingMap[minRating]) {
 }
 
 // Sort
-if (data.get('sort')) {
-  params.set('s', data.get('sort'));
-}
+<label class="form-label" for="sort">Sort By</label>
+<select name="sort" id="sort" class="form-select">
+  <option value="">Relevance</option>
+  <option value="price-asc-rank">Price: Low → High</option>
+  <option value="price-desc-rank">Price: High → Low</option>
+  <option value="review-rank">Avg. Customer Review</option>
+  <option value="date-desc-rank">Newest Arrivals</option>
+  <option value="popularity-rank">Best Sellers</option>
+  <option value="sale-flag">Discounted Items</option>
+  <option value="featured-rank">Featured</option>
+  <option value="rank">Amazon Ranking</option>
+</select>
+
 
 // Boolean & field
 if (data.get('enable-boolean')) {
