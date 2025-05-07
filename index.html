@@ -79,6 +79,22 @@ h1.text-pulse {
      1px  1px 0 #000;
   animation: text-pulse 2s infinite ease-in-out;
 }
+  /* make the white container truly full-viewport wide */
+.container-fluid.bg-white {
+  position: relative !important;
+  left: 50% !important;
+  margin-left: -50vw !important;
+  width: 100vw !important;
+  max-width: none !important;
+  box-sizing: border-box !important;
+  padding: 1rem !important;       /* match your existing padding */
+}
+@media (min-width: 768px) {
+  .container-fluid.bg-white {
+    padding: 1.5rem !important;   /* match p-md-4 on larger screens */
+  }
+}
+
 </style>
 
 </head>
