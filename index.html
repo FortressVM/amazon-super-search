@@ -670,6 +670,7 @@ h1.text-pulse {
 
     </form>
 
+
            <!-- Share With Friends -->
 <section id="share" class="mt-5 mb-5">
   <h2 class="h4">Share With Friends</h2>
@@ -725,9 +726,6 @@ h1.text-pulse {
     >Copy URL</button>
   </div>
 
-  <script>
-    document.getElementById('shareLink').value = 'https://amazonsupersearch.blogspot.com/';
-  </script>
 </section>
 
    <!-- Help Section -->
@@ -882,16 +880,14 @@ h1.text-pulse {
 
       // Empty-query guard
       const hint = document.getElementById('empty-hint');
-      const q = (data.get('q')||'').trim();
-      if (!q) {
-        hint.textContent = 'Please type something before you search.';
-        return;
-      }
-      hint.textContent = '';
+  const q    = (data.get('q')||'').trim();
+  if (!q) {
+    hint.textContent = 'Please type something before you search.';
+    return;
+  }
+ hint.textContent = '';
 
       // …rest of your URL logic here…
-    });
-  });
     
      // Keywords w/ Boolean support
 let q = data.get('q')?.trim() || '';
