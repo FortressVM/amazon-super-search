@@ -2,25 +2,45 @@
 <html lang="en">
 <head>
   <!-- Add Firebase SDK scripts BEFORE your custom script -->
-<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js"></script>
 
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyBSjVSznhsEFQ4Y52m8d0iQe7EUsiVSBcY",
-    authDomain: "super-search-36c59.firebaseapp.com",
-    databaseURL: "https://super-search-36c59-default-rtdb.firebaseio.com",
-    projectId: "super-search-36c59",
-    storageBucket: "super-search-36c59.firebasestorage.app",
-    messagingSenderId: "552816882741",
-    appId: "1:552816882741:web:b7e20a3962f2daddff6d7c",
-    measurementId: "G-CRZMVFRMS2"
-  };
+  <script>
+    // Firebase configuration and initialization
+    const firebaseConfig = {
+      apiKey: "AIzaSyBSjVSznhsEFQ4Y52m8d0iQe7EUsiVSBcY",
+      authDomain: "super-search-36c59.firebaseapp.com",
+      databaseURL: "https://super-search-36c59-default-rtdb.firebaseio.com",
+      projectId: "super-search-36c59",
+      storageBucket: "super-search-36c59.firebasestorage.app",
+      messagingSenderId: "552816882741",
+      appId: "1:552816882741:web:b7e20a3962f2daddff6d7c",
+      measurementId: "G-CRZMVFRMS2"
+    };
 
-  // Initialize Firebase
-  const app = firebase.initializeApp(firebaseConfig);
-  const analytics = firebase.analytics();
-</script>
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const analytics = firebase.analytics(app);
+
+    // Initialize Realtime Database
+    const db = firebase.database(app);
+
+    // Example: Writing data to Firebase
+    const ref = db.ref('path/to/your/data');
+    ref.set({
+      someKey: "someValue"
+    });
+
+    // Example: Reading data from Firebase
+    ref.on('value', (snapshot) => {
+      const data = snapshot.val();
+      console.log(data);
+    });
+
+    // Log an event to Firebase Analytics (Example)
+    firebase.analytics().logEvent('page_view', { page_name: 'home' });
+  </script>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -44,7 +64,6 @@
   <!-- Bootstrap CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet" />
   <!-- Choices.js CSS -->
-
 
   <style>
   body { padding: 1rem; background: #d3d3d3; }
@@ -584,350 +603,9 @@ h1.text-pulse {
           <li><strong>Prime Only:</strong> Show only Amazon Prime–eligible products.</li>
           <li><strong>In Stock:</strong> Show only items that are available to ship immediately.</li>
           <li><strong>Customer Review:</strong> Select minimum star rating (1★–4★).</li>
-          <li><strong>Sort By:</strong> Choose how results are ordered (price, recency, discount).</li>
-          <li><strong>Enable Boolean Operators:</strong> Toggle to allow AND/OR/NOT in keywords.</li>
-          <li><strong>Field Filters:</strong> Restrict to fields (e.g., <code>field-brand:Sony</code>).</li>
-          <li><strong>ASIN/ISBN Direct Lookup:</strong> Jump straight to a product page by its ASIN/ISBN.</li>
-          <li><strong>Price Drop:</strong> Filter items at least X% below their 90‑day average price.</li>
-          <li><strong>Coupon‑Clippable Only:</strong> Show items with an available Amazon coupon.</li>
-          <li><strong>Warehouse / Open‑Box:</strong> Include Amazon Warehouse or open‑box deals.</li>
-          <li><strong>Side‑by‑Side Spec Tables:</strong> Compare specifications of up to two products.</li>
-          <li><strong>Verified‑Purchase Only Reviews:</strong> Show reviews verified by Amazon.</li>
-          <li><strong>Buy‑Now‑or‑Wait Score:</strong> AI‑driven recommendation on purchase timing.</li>
-          <li><strong>Restock Forecasts:</strong> Enter an ASIN to see estimated restock date.</li>
-          <li><strong>Emotion‑Feedback Loop:</strong> Provide purchase emotion insights.</li>
         </ul>
-        <p>Controls labeled <em>(coming soon)</em> require additional API integrations.</p>
       </section>
-  </div>
 
-  <!-- Bootstrap JS Bundle -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
- <script>
- 
-
-  document.getElementById('amazon-search-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const data = new FormData(this);
-    const params = new URLSearchParams();
-    const includeOnly = data.get('include-only') === 'on';
-
-    // Parse Tagify JSON field
-   const incRaw = data.get('brand-include')?.trim();
-let incBrands = '';
-if (incRaw) {
-  incBrands = incRaw.split(',').map(s => encodeURIComponent(s.trim())).join('|');
-}
-
-    if (incBrands) {
-      const rhValue = `p_89:${incBrands}`;
-      if (includeOnly) {
-        params.append('rh', rhValue);
-      } else {
-        params.append('rh', (params.get('rh') || '') + `,${rhValue}`);
-      }
-    }
-   // Exclude Brands (plain comma-separated input)
-const excRaw = data.get('brand-exclude')?.trim();
-let excBrands = '';
-if (excRaw) {
-  excBrands = excRaw
-    .split(',')
-    .map(s => `-${encodeURIComponent(s.trim())}`)
-    .join('|');
-}
-
-if (excBrands) {
-  params.append('rh', (params.get('rh') || '') + `,p_89:${excBrands}`);
-}
-// Handle percent-off filter
-const discount = data.get('percent-off')?.trim();
-if (discount) {
-  params.append('rh', (params.get('rh') || '') + `,p_n_pct-off-with-discount:${discount}`);
-}
-
-
-    // 👇 continue with the rest of your filters here (e.g. exclude brands, min-price, sort, etc.)
-
-// Empty-query guard: require at least a keyword
-const hint  = document.getElementById('empty-hint');
-const query = data.get('q')?.trim();
-
-if (!query) {
-  // show inline hint instead of alert
-  hint.textContent = 'Please type something before you search.';
-  return;
-}
-// clear any previous hint
-hint.textContent = '';
-
-     // Keywords w/ Boolean support
-let q = data.get('q')?.trim() || '';
-if (data.get('enable-boolean')) {
-  // turn “AND” into space, “NOT” into “-”
-  q = q
-    .replace(/\bAND\b/gi, ' ')
-    .replace(/\bNOT\b/gi, '-');
-  params.set('bop', 'enable');
-}
-if (q) {
-  params.set('k', q);
-}
-// Price range (exact filter, in cents)
-const low  = data.get('min-price')?.trim();
-const high = data.get('max-price')?.trim();
-if (low && high) {
-  const lowNum  = parseFloat(low);
-  const highNum = parseFloat(high);
-  if (!isNaN(lowNum) && !isNaN(highNum)) {
-    // Amazon’s “p_36” param must be integer cents.
-    // Floor the low-end, ceil the high-end.
-    const lowCents  = Math.floor(lowNum  * 100);
-    const highCents = Math.ceil( highNum * 100);
-    params.append('rh', `p_36:${lowCents}-${highCents}`);
-  }
-}
-
-
-// Discount
-if (data.get('percent-off')) params.append('rh', 'p_n_pct-off-with-discount:' + data.get('percent-off'));
-
-// Prime Only
-if (data.get('prime-only') === 'on') {
-  params.append(
-    'rh',
-    (params.get('rh') || '') + ',p_89:ATVPDKIKX0DER'
-  );
-}
-
-// In Stock
-if (data.get('in-stock') === 'on') {
-  params.append(
-    'rh',
-    (params.get('rh') || '') + ',p_n_availability:1248879011'
-  );
-}
-// Free Shipping
-if (data.get('free-shipping') === 'on') {
-  params.append(
-    'rh',
-    (params.get('rh') || '') + ',p_76:13184787011'
-  );
-}
-
-// Sold & Shipped by Amazon (FBA-only)
-if (data.get('fba-only') === 'on') {
-  params.append(
-    'rh',
-    (params.get('rh') || '') + ',p_6:ATVPDKIKX0DER'
-  );
-}
-
-// Lightning Deals
-if (data.get('lightning-deals') === 'on') {
-  params.append(
-    'rh',
-    (params.get('rh') || '') + ',p_n_deal_type:n_tlc_deal_type_flash'
-  );
-}
-// (…and so on for Coupons, Subscribe & Save, Amazon’s Choice, Best Seller, Free Returns, Gift Wrap…)
-  
-// Rating → map the numeric option-values, not the labels
-const ratingMap = {
-  '4': '2661618011',
-  '3': '2661619011',
-  '2': '2661620011',
-  '1': '2661621011'
-};
-const minRating = data.get('min-rating');
-if (minRating && ratingMap[minRating]) {
-  params.append('p_72', ratingMap[minRating]);
-}
-
-// Sort
-<label class="form-label" for="sort">Sort By</label>
-<select name="sort" id="sort" class="form-select">
-  <option value="">Relevance</option>
-  <option value="price-asc-rank">Price: Low → High</option>
-  <option value="price-desc-rank">Price: High → Low</option>
-  <option value="review-rank">Avg. Customer Review</option>
-  <option value="date-desc-rank">Newest Arrivals</option>
-  <option value="popularity-rank">Best Sellers</option>
-  <option value="sale-flag">Discounted Items</option>
-  <option value="featured-rank">Featured</option>
-  <option value="rank">Amazon Ranking</option>
-</select>
-
-
-// Boolean & field
-if (data.get('enable-boolean')) {
-  params.set('bop', 'enable');
-}
-if (data.get('field-filters')) {
-  params.append('rh', data.get('field-filters'));
-}
-
-// Direct ASIN/ISBN lookup – jump straight to the product page and bail out
-const lookup = data.get('direct-lookup')?.trim();
-if (lookup) {
-  const tagVal = encodeURIComponent(data.get('tag'));
-  const url = `https://www.amazon.com/dp/${lookup}?tag=${tagVal}`;
-  window.open(url, '_blank');
-  return;
-}
-      // Deal-Hunter
-      // 90-day price-drop (Amazon supports this directly)
-const drop90 = data.get('price-drop')?.trim();
-if (drop90) {
-  params.append(
-    'rh',
-    (params.get('rh') || '') + `,p_n_pct-price-drop:${encodeURIComponent(drop90)}`
-  );
-}
-
-      if (data.get('coupon-only')) params.append('rh', (params.get('rh')||'') + ',p_5:couponEligible');
-      if (data.get('warehouse-refurb')) params.append('rh', (params.get('rh')||'') + ',p_n_condition-type:1380442031');
-
-      // Comparison
-      if (data.get('side-by-side')) params.set('compare', 'side-by-side');
-      if (data.get('verified-only')) params.set('reviewerType', 'avp_only_reviews');
-
-      // Personalization & AI
-      if (data.get('predictive-score')) params.set('predictive', '1');
-      const restock = data.get('restock-forecast')?.trim();
-      if (restock) params.set('restockASIN', encodeURIComponent(restock));
-      if (data.get('emotion-feedback')) params.set('emotion', '1');
-
-       // …your existing filters, e.g. restock forecast, predictive score, etc.
-
-    // Conflict guard: Prime + Min-Rating can fail together
-if (data.get('prime-only') === 'on' && minRating) {
-  console.warn('Prime + Min-Rating selected. Min-Rating filter will be ignored to prevent conflict.');
-  // Optionally disable rating:
-  // minRating = null;
-}
-
- // Warning: Price Range + Sort may yield fewer or no results
-const low = data.get('price-low')?.trim();
-const high = data.get('price-high')?.trim();
-if (low && high && sortValue) {
-  console.warn('Price range + sort combo may reduce visible results or cause Amazon to return fewer matches.');
-}
-   
-
- // Smart sort handling: auto-clear if minRating is active (Amazon sometimes rejects both)
-const sortValue = data.get('sort');
-if (sortValue) {
-  if (!minRating) {
-    params.set('s', sortValue); // safe to apply
-  } else {
-  console.warn('Sort removed due to min-rating conflict. Defaulting to Relevance.');
-  params.set('s', 'relevanceblender'); // Amazon's internal name for default sort
-}
-
-  <!-- Live Searches Box (Top-Right Corner) -->
-<div id="live-searches-box" class="position-fixed top-0 end-0 mt-3 me-3" style="z-index: 1050; width: 250px;">
-  <div class="card border-info shadow">
-    <div class="card-header bg-info text-white fw-bold py-2">
-      Live Searches
-    </div>
-    <ul id="live-searches-list" class="list-group list-group-flush small">
-      <!-- New searches will appear here -->
-    </ul>
-  </div>
-</div>
-
-
-
-    // Redirect with affiliate tag and all filters
-  const tag      = encodeURIComponent(data.get('tag'));
-  const finalUrl = `https://www.amazon.com/s?tag=${tag}&${params.toString()}`;
-  console.log('Amazon Search URL →', finalUrl);
-  window.open(finalUrl, '_blank');
-
-  <script>
-  const liveSearchesList = document.getElementById('live-searches-list');
-
-  // Load saved searches from localStorage
-  const savedSearches = JSON.parse(localStorage.getItem('liveSearches') || '[]');
-  savedSearches.forEach(term => addLiveSearch(term, false));
-
-  function addLiveSearch(term, save = true) {
-    if (!term) return;
-    const exists = [...liveSearchesList.children].some(
-      li => li.textContent.toLowerCase() === term.toLowerCase()
-    );
-    if (exists) return;
-
-    const li = document.createElement('li');
-    li.className = 'list-group-item';
-    li.innerHTML = `<a href="?q=${encodeURIComponent(term)}" class="text-decoration-none">${term}</a>`;
-    liveSearchesList.prepend(li);
-
-    // Trim to 10 items
-    if (liveSearchesList.children.length > 10) {
-      liveSearchesList.removeChild(liveSearchesList.lastChild);
-    }
-
-    if (save) {
-      const terms = [term, ...savedSearches.filter(t => t.toLowerCase() !== term.toLowerCase())];
-      localStorage.setItem('liveSearches', JSON.stringify(terms.slice(0, 10)));
-    }
-  }
-
-  document.getElementById('amazon-search-form').addEventListener('submit', function (e) {
-    const term = new FormData(this).get('q')?.trim();
-    if (term) addLiveSearch(term, true);
-  });
-</script>
-
-  function addLiveSearch(term) {
-    if (!term) return;
-    const exists = [...liveSearchesList.children].some(
-      li => li.textContent.toLowerCase() === term.toLowerCase()
-    );
-    if (exists) return;
-
-    const li = document.createElement('li');
-    li.className = 'list-group-item';
-    li.innerHTML = `<a href="?q=${encodeURIComponent(term)}" class="text-decoration-none">${term}</a>`;
-    liveSearchesList.prepend(li);
-    if (liveSearchesList.children.length > 10) {
-      liveSearchesList.removeChild(liveSearchesList.lastChild);
-    }
-  }
-
-  document.getElementById('amazon-search-form').addEventListener('submit', function (e) {
-    const term = new FormData(this).get('q')?.trim();
-    if (term) addLiveSearch(term);
-  });
-</script>
-
-
-  });
-<!-- Firebase App (core) -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<!-- Firebase Realtime Database -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyBSjVSznhsEFQ4Y52m8d0iQe7EUsiVSBcY",
-    authDomain: "super-search-36c59.firebaseapp.com",
-    databaseURL: "https://super-search-36c59-default-rtdb.firebaseio.com",
-    projectId: "super-search-36c59",
-    storageBucket: "super-search-36c59.appspot.com",
-    messagingSenderId: "552816882741",
-    appId: "1:552816882741:web:b7e20a3962f2daddff6d7c"
-  };
-
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-  console.log("✅ Firebase initialized:", firebase.app().name);
-</script>
- 
-
-                                                                   </script>
+   </div><!-- /.container-fluid -->
 </body>
 </html>
