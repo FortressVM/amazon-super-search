@@ -190,32 +190,43 @@ h1.text-pulse {
   </div>
 </div>
       
-     <!-- Include Brands + Match-Only Toggle -->
-<div class="col-12 col-lg-6">
-  <label class="form-label">Include Brands</label>
-  <input
-    type="text"
-    class="form-control"
-    name="brand-include"
-    id="brandInclude"
-    placeholder="e.g. Sony, Samsung"
-  <div class="form-check mt-2">
-    <input class="form-check-input" type="checkbox" name="include-only" id="includeOnly">
-    <label class="form-check-label" for="includeOnly">Match only these brands</label>
+     <!-- Brand Options Box -->
+<div class="col-12 mb-3">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Brand Options</h5>
+      <div class="row g-3">
+        <!-- Include Brands -->
+        <div class="col-12 col-md-6">
+          <label class="form-label">Include Brands</label>
+          <input
+            type="text"
+            class="form-control"
+            name="brand-include"
+            id="brandInclude"
+            placeholder="e.g. Sony, Samsung"
+          />
+          <div class="form-check mt-2">
+            <input class="form-check-input" type="checkbox" name="include-only" id="includeOnly">
+            <label class="form-check-label" for="includeOnly">Match only these brands</label>
+          </div>
+        </div>
+
+        <!-- Exclude Brands -->
+        <div class="col-12 col-md-6">
+          <label class="form-label">Exclude Brands</label>
+          <input
+            type="text"
+            class="form-control"
+            name="brand-exclude"
+            placeholder="e.g. LG, Acer"
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-
-<!-- Exclude Brands -->
-<div class="col-12 col-lg-6">
-  <label class="form-label">Exclude Brands</label>
-  <input
-    type="text"
-    class="form-control"
-    name="brand-exclude"
-    placeholder="e.g. LG, Acer"
-  />
-</div>
 
         
     <!-- MORE OPTIONS BOX -->
