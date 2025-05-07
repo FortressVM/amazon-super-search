@@ -22,41 +22,16 @@
   <meta name="twitter:image" content="https://amazonsupersearch.blogspot.com/thumbnail.png">
   <!-- Bootstrap CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet" />
- <!-- Choices.js CSS -->
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"
-/>
-
+  <!-- Choices.js CSS -->
 <!-- Tagify CSS & JS -->
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css"
-/>
+<!-- Tagify CSS & JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" />
 <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.min.js"></script>
-
-<!-- populate the %-off dropdown in 5% increments -->
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const discountSelect = document.querySelector('select[name="percent-off"]');
-    if (!discountSelect) return;
-    // start with “Any”
-    discountSelect.innerHTML = '<option value="">Any</option>';
-    // then 5%, 10%, …, 100%
-    for (let p = 5; p <= 100; p += 5) {
-      const opt = document.createElement('option');
-      opt.value = p;
-      opt.textContent = p + '%';
-      discountSelect.appendChild(opt);
-    }
-  });
-</script>
-
-<style>
+  <style>
   body { padding: 1rem; background: #d3d3d3; }
   .slider-label { display: flex; justify-content: space-between; }
   small.coming-soon { color: #888; font-style: italic; margin-left: .5rem; }
-
+  
   /* Thicker borders for better visibility */
   .form-control, .form-select, .form-range {
     border: 2px solid #999 !important;
@@ -71,8 +46,6 @@
   .btn-outline-secondary, .btn-primary {
     border-width: 2px !important;
   }
-  /* …and the rest of your styles… */
-</style>
 
   /* ——— PULSE GLOW ANIMATION ——— */
   @keyframes pulse-glow {
