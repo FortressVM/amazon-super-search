@@ -730,7 +730,6 @@ h1.text-pulse {
   </script>
 </section>
 
-
   <!-- Help Section -->
   <section id="help" class="mt-5">
     <h2 class="h4">Help &amp; Usage Guide</h2>
@@ -748,15 +747,12 @@ h1.text-pulse {
   </section>
   <!-- close Help -->
 
- <!-- Tic-Tac-Toe Game -->
+  <!-- Tic-Tac-Toe Game -->
   <div class="card mb-5">
     <div class="card-body">
       <h5 class="card-title">Play: Tic-Tac-Toe</h5>
-      <div
-        id="ttt-board"
-        class="d-grid"
-        style="grid-template: repeat(3, 1fr) / repeat(3, 1fr); gap: .5rem;"
-      >
+      <div id="ttt-board" class="d-grid"
+           style="grid-template: repeat(3,1fr)/repeat(3,1fr); gap: .5rem;">
         <!-- 9 cells injected by JS -->
       </div>
       <button id="ttt-reset" class="btn btn-sm btn-outline-primary mt-3">
@@ -766,7 +762,7 @@ h1.text-pulse {
   </div>
 
   <script>
-  (function() {
+  (function(){
     const boardEl = document.getElementById('ttt-board');
     const resetBtn = document.getElementById('ttt-reset');
     let turn = 'X', cells;
@@ -776,7 +772,7 @@ h1.text-pulse {
       for (let i = 0; i < 9; i++) {
         const cell = document.createElement('div');
         cell.className = 'border bg-light d-flex align-items-center justify-content-center fw-bold';
-        cell.style = 'height: 3rem; font-size: 1.5rem; cursor: pointer;';
+        cell.style = 'height:3rem; font-size:1.5rem; cursor:pointer;';
         cell.addEventListener('click', onClickCell);
         boardEl.appendChild(cell);
       }
@@ -794,7 +790,7 @@ h1.text-pulse {
       } else if (cells.every(c => c.textContent)) {
         setTimeout(() => alert("It's a draw!"), 10);
       } else {
-        turn = turn === 'X' ? 'O' : 'X';
+        turn = (turn === 'X') ? 'O' : 'X';
       }
     }
 
@@ -813,167 +809,91 @@ h1.text-pulse {
     }
 
     resetBtn.addEventListener('click', init);
-    // kick it off
     init();
   })();
   </script>
 
   <!-- Bootstrap JS Bundle -->
- <script>
-   const micBtn = document.querySelector('.mic-ripple');
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 
-function startListening() {
-  // start your speech-to-text…
-  micBtn.classList.add('listening');
-}
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    //
+    // 1. Mic ripple & SpeechRecognition
+    //
+    const micBtn = document.querySelector('.mic-ripple');
+    function startListening() { micBtn.classList.add('listening'); }
+    function stopListening()  { micBtn.classList.remove('listening'); }
+    micBtn.addEventListener('click', () => {
+      if (micBtn.classList.contains('listening')) stopListening();
+      else startListening();
+    });
 
-function stopListening() {
-  // stop your speech-to-text…
-  micBtn.classList.remove('listening');
-}
-
-micBtn.addEventListener('click', () => {
-  if (micBtn.classList.contains('listening')) stopListening();
-  else startListening();
-});
-// 1. Feature-detect and create the SpeechRecognition object
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-if (!SpeechRecognition) {
-  console.warn('Speech recognition not supported in this browser.');
-} else {
-  const recog = new SpeechRecognition();
-  recog.continuous = false;            // stop automatically on silence
-  recog.interimResults = false;        // only final results
-  recog.lang = 'en-US';                // change as needed
-
-  // 2. Start/stop when the user clicks the mic
-  micBtn.addEventListener('click', () => {
-    if (micBtn.classList.contains('listening')) {
-      recog.stop();
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const recog = new SpeechRecognition();
+      recog.continuous = false;
+      recog.interimResults = false;
+      recog.lang = 'en-US';
+      micBtn.addEventListener('click', () => {
+        micBtn.classList.contains('listening') ? recog.stop() : recog.start();
+      });
+      recog.addEventListener('start', () => micBtn.classList.add('listening'));
+      recog.addEventListener('end',   () => micBtn.classList.remove('listening'));
+      recog.addEventListener('result', ev => {
+        const transcript = Array.from(ev.results)
+          .map(r => r[0].transcript)
+          .join('').trim();
+        document.getElementById('q').value = transcript;
+      });
     } else {
-      recog.start();
+      console.warn('Speech recognition not supported in this browser.');
     }
-  });
 
-  // 3. When recognition starts
-  recog.addEventListener('start', () => {
-    micBtn.classList.add('listening');
-  });
-
-  // 4. When it ends (silence or manual stop)
-  recog.addEventListener('end', () => {
-    micBtn.classList.remove('listening');
-  });
-
-  // 5. On result, put text into your input box
-  recog.addEventListener('result', (ev) => {
-    // grab the transcript of the first (and only) result
-    const transcript = Array.from(ev.results)
-      .map(r => r[0].transcript)
-      .join('');
-    // set it into your search box and optionally auto-submit
-    const input = document.getElementById('q');
-    input.value = transcript;
-    // optional: immediately run the search
-    // document.getElementById('amazon-search-form').submit();
-  });
-}
-
-  // Initialize your brand multi-select via Choices.js
-  document.addEventListener('DOMContentLoaded', function() {
-    const brandSelect = document.getElementById('brandInclude');
-    const brandChoices = new Choices(brandSelect, {
+    //
+    // 2. Choices.js + form submit
+    //
+    const brandChoices = new Choices(document.getElementById('brandInclude'), {
       removeItemButton: true,
       placeholderValue: 'Choose brands',
       searchPlaceholderValue: 'Search brands…',
       shouldSort: false,
       position: 'bottom'
-    });
-<script>
-  // 0. Grab the mic button and the search input
-  const micBtn      = document.querySelector('.mic-ripple');
-  const searchInput = document.getElementById('q');
-
-  // 1. Feature-detect SpeechRecognition
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRecognition) {
-    console.warn('Speech recognition not supported in this browser.');
-  } else {
-    // 2. Create & configure the recognizer
-    const recog = new SpeechRecognition();
-    recog.continuous     = false;      // stop on silence
-    recog.interimResults = false;      // only final results
-    recog.lang           = 'en-US';    // adjust if needed
-
-    // 3. Toggle listening state on button click
-    micBtn.addEventListener('click', () => {
-      if (micBtn.classList.contains('listening')) {
-        recog.stop();
-      } else {
-        recog.start();
-      }
-    });
-
-    // 4. Reflect recording state in the UI
-    recog.addEventListener('start', () => micBtn.classList.add('listening'));
-    recog.addEventListener('end',   () => micBtn.classList.remove('listening'));
-
-    // 5. When we get a result, fill the input
-    recog.addEventListener('result', ev => {
-      const transcript = Array.from(ev.results)
-        .map(r => r[0].transcript)
-        .join('')
-        .trim();
-      searchInput.value = transcript;
-      // optionally auto-submit:
-      // document.getElementById('amazon-search-form').submit();
-    });
-  }
-
-    // Populate with your category’s brand list:
-    brandChoices.setChoices(
+    }).setChoices(
       ['Sony','Samsung','LG','Acer','Apple','Dell']
         .map(b => ({ value: b, label: b })),
-      'value',
-      'label',
-      false
+      'value','label',false
     );
-  });
-    document.getElementById('amazon-search-form').addEventListener('submit', function(e) {
+
+    document.getElementById('amazon-search-form').addEventListener('submit', e => {
       e.preventDefault();
-      const data = new FormData(this);
+      const data = new FormData(e.target);
       const params = new URLSearchParams();
       const includeOnly = data.get('include-only') === 'on';
- // Pull out all the brands the user picked
-const selectedBrands = data.getAll('brand-include');
 
-if (selectedBrands.length) {
-  // encode and join with pipe for Amazon’s rh param
-  const brandParam = selectedBrands
-    .map(b => encodeURIComponent(b))
-    .join('|');
-  if (includeOnly) {
-    // override: match only these
-    params.set('p_89', brandParam);
-  } else {
-    // add to rh=… list
-    params.append(
-      'rh',
-      (params.get('rh') || '') + `,p_89:${brandParam}`
-    );
-  }
-}
-// Empty-query guard: require at least a keyword
-const hint  = document.getElementById('empty-hint');
-const query = data.get('q')?.trim();
+      // Brands
+      const selected = data.getAll('brand-include');
+      if (selected.length) {
+        const param = selected.map(b => encodeURIComponent(b)).join('|');
+        includeOnly ? params.set('p_89', param)
+                    : params.append('rh', (params.get('rh')||'') + `,p_89:${param}`);
+      }
 
-if (!query) {
-  // show inline hint instead of alert
-  hint.textContent = 'Please type something before you search.';
-  return;
-}
-// clear any previous hint
-hint.textContent = '';
+      // Empty-query guard
+      const hint = document.getElementById('empty-hint');
+      const q = (data.get('q')||'').trim();
+      if (!q) {
+        hint.textContent = 'Please type something before you search.';
+        return;
+      }
+      hint.textContent = '';
+
+      // …rest of your URL logic here…
+    });
+  });
+  </script>
+
+
 
      // Keywords w/ Boolean support
 let q = data.get('q')?.trim() || '';
