@@ -778,6 +778,44 @@ if (excBrands) {
 
   });
 
-                                                                   </script>
+                                                                   </script> 
+    <script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    let brands = [];
+    try {
+      const resp = await fetch('brands.json');
+      brands = await resp.json(); // now brands is your full array
+    } catch (err) {
+      console.error('Could not load brands.json:', err);
+    }
+
+    // Initialize Tagify on Include Brands
+    const includeInput = document.querySelector('input[name="brand-include"]');
+    if (includeInput) {
+      new Tagify(includeInput, {
+        whitelist: brands,
+        dropdown: {
+          enabled: 1,       // show suggestions on focus
+          fuzzySearch: true,
+          maxItems: 20
+        }
+      });
+    }
+
+    // Initialize Tagify on Exclude Brands
+    const excludeInput = document.querySelector('input[name="brand-exclude"]');
+    if (excludeInput) {
+      new Tagify(excludeInput, {
+        whitelist: brands,
+        dropdown: {
+          enabled: 1,
+          fuzzySearch: true,
+          maxItems: 20
+        }
+      });
+    }
+  });
+</script>
+
 </body>
 </html>
