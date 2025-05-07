@@ -23,9 +23,9 @@
   <!-- Bootstrap CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet" />
   <!-- Choices.js CSS -->
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"
+<!-- Tagify CSS & JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css">
+<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
 />
   <style>
   body { padding: 1rem; background: #d3d3d3; }
@@ -189,24 +189,43 @@ h1.text-pulse {
     </div>
   </div>
 </div>
-<!-- Include Brands + Match-Only Toggle -->
-<div class="col-12 col-lg-6"> 
-</div>
+<div class="col-12 mb-3">
+  <div class="card border-success shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title text-success mb-3">Brand Filters</h5>
+      <div class="row g-3">
+        <!-- Include Brands -->
+        <div class="col-12 col-md-6">
+          <label class="form-label">Include Brands</label>
+          <input
+            type="text"
+            class="form-control border border-success"
+            name="brand-include"
+            id="brandInclude"
+            placeholder="e.g. Sony, LG"
+          />
+          <div class="form-check mt-2">
+            <input class="form-check-input" type="checkbox" name="include-only" id="includeOnly" />
+            <label class="form-check-label" for="includeOnly">Match only these brands</label>
+          </div>
+        </div>
+
         <!-- Exclude Brands -->
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-md-6">
           <label class="form-label">Exclude Brands</label>
           <input
             type="text"
-            class="form-control"
+            class="form-control border border-danger"
             name="brand-exclude"
-            placeholder="e.g. LG, Acer"
+            id="brandExclude"
+            placeholder="e.g. Acer, Apple"
           />
         </div>
       </div>
     </div>
   </div>
 </div>
-
+      
     <!-- MORE OPTIONS BOX -->
 <div class="col-12 col-md-6 mb-3">
   <div class="card h-100">
@@ -547,50 +566,57 @@ h1.text-pulse {
 
   <!-- Bootstrap JS Bundle -->
  <script>
-  // Initialize your brand multi-select via Choices.js
-  document.addEventListener('DOMContentLoaded', function() {
-    const brandSelect = document.getElementById('brandInclude');
-    const brandChoices = new Choices(brandSelect, {
-      removeItemButton: true,
-      placeholderValue: 'Choose brands',
-      searchPlaceholderValue: 'Search brands…',
-      shouldSort: false,
-      position: 'bottom'
+ <script>
+  document.addEventListener('DOMContentLoaded', function () {
+      const excludeInput = document.querySelector('#brandExclude');
+  if (excludeInput) {
+    new Tagify(excludeInput, {
+      whitelist: ["Sony", "Samsung", "LG", "Acer", "Apple", "Dell"],
+      dropdown: {
+        enabled: 0,
+        maxItems: 10
+      }
     });
-
-    // Populate with your category’s brand list:
-    brandChoices.setChoices(
-      ['Sony','Samsung','LG','Acer','Apple','Dell']
-        .map(b => ({ value: b, label: b })),
-      'value',
-      'label',
-      false
-    );
-  });
-    document.getElementById('amazon-search-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const data = new FormData(this);
-      const params = new URLSearchParams();
-      const includeOnly = data.get('include-only') === 'on';
- // Pull out all the brands the user picked
-const selectedBrands = data.getAll('brand-include');
-
-if (selectedBrands.length) {
-  // encode and join with pipe for Amazon’s rh param
-  const brandParam = selectedBrands
-    .map(b => encodeURIComponent(b))
-    .join('|');
-  if (includeOnly) {
-    // override: match only these
-    params.set('p_89', brandParam);
-  } else {
-    // add to rh=… list
-    params.append(
-      'rh',
-      (params.get('rh') || '') + `,p_89:${brandParam}`
-    );
   }
-}
+
+    const brandInput = document.querySelector('input[name="brand-include"]');
+    if (brandInput) {
+      new Tagify(brandInput, {
+        whitelist: ["Sony", "Samsung", "LG", "Acer", "Apple", "Dell"],
+        dropdown: {
+          enabled: 0,
+          maxItems: 10
+        }
+      });
+    }
+  });
+
+  document.getElementById('amazon-search-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const data = new FormData(this);
+    const params = new URLSearchParams();
+    const includeOnly = data.get('include-only') === 'on';
+
+    // Parse Tagify JSON field
+    const incRaw = data.get('brand-include');
+    let incBrands = '';
+    try {
+      incBrands = JSON.parse(incRaw).map(obj => obj.value).join(',');
+    } catch (e) {
+      incBrands = '';
+    }
+
+    if (incBrands) {
+      const rhValue = `p_89:${incBrands}`;
+      if (includeOnly) {
+        params.append('rh', rhValue);
+      } else {
+        params.append('rh', (params.get('rh') || '') + `,${rhValue}`);
+      }
+    }
+
+    // 👇 continue with the rest of your filters here (e.g. exclude brands, min-price, sort, etc.)
+
 // Empty-query guard: require at least a keyword
 const hint  = document.getElementById('empty-hint');
 const query = data.get('q')?.trim();
@@ -732,37 +758,19 @@ if (drop90) {
 
        // …your existing filters, e.g. restock forecast, predictive score, etc.
 
-// Include Brands (only-if toggle)
-const incBrands = data.get('brand-include')?.trim();
-if (incBrands) {
-  const incList = incBrands
-    .split(',')
-    .map(s => encodeURIComponent(s.trim()))
-    .join('|');
-
-  if (includeOnly) {
-    // when “Match only these brands” is checked
-    params.set('p_89', incList);
-  } else {
-    // the usual “add to rh=…” behavior
-    params.append(
-      'rh',
-      (params.get('rh')||'') + `,p_89:${incList}`
-    );
-  }
+  // Exclude Brands (Tagify-aware)
+const excRaw = data.get('brand-exclude');
+let excBrands = '';
+try {
+  excBrands = JSON.parse(excRaw).map(obj => `-${encodeURIComponent(obj.value)}`).join('|');
+} catch (e) {
+  excBrands = '';
 }
-  // Exclude Brands
-  const excBrands = data.get('brand-exclude')?.trim();
-  if (excBrands) {
-    const excList = excBrands
-      .split(',')
-      .map(s => `-${encodeURIComponent(s.trim())}`)
-      .join('|');
-    params.append(
-      'rh',
-      (params.get('rh') || '') + `,p_89:${excList}`
-    );
-  }
+
+if (excBrands) {
+  params.append('rh', (params.get('rh') || '') + `,p_89:${excBrands}`);
+}
+
     // Redirect with affiliate tag and all filters
   const tag      = encodeURIComponent(data.get('tag'));
   const finalUrl = `https://www.amazon.com/s?tag=${tag}&${params.toString()}`;
