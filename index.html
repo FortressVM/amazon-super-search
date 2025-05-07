@@ -746,18 +746,7 @@ if (drop90) {
 
        // …your existing filters, e.g. restock forecast, predictive score, etc.
 
-  // Exclude Brands (Tagify-aware)
-const excRaw = data.get('brand-exclude');
-let excBrands = '';
-try {
-  excBrands = JSON.parse(excRaw).map(obj => `-${encodeURIComponent(obj.value)}`).join('|');
-} catch (e) {
-  excBrands = '';
-}
-
-if (excBrands) {
-  params.append('rh', (params.get('rh') || '') + `,p_89:${excBrands}`);
-}
+  
 
     // Redirect with affiliate tag and all filters
   const tag      = encodeURIComponent(data.get('tag'));
