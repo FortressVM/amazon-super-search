@@ -746,7 +746,32 @@ if (drop90) {
 
        // …your existing filters, e.g. restock forecast, predictive score, etc.
 
-  
+    // Conflict guard: Prime + Min-Rating can fail together
+if (data.get('prime-only') === 'on' && minRating) {
+  console.warn('Prime + Min-Rating selected. Min-Rating filter will be ignored to prevent conflict.');
+  // Optionally disable rating:
+  // minRating = null;
+}
+
+ // Warning: Price Range + Sort may yield fewer or no results
+const low = data.get('price-low')?.trim();
+const high = data.get('price-high')?.trim();
+if (low && high && sortValue) {
+  console.warn('Price range + sort combo may reduce visible results or cause Amazon to return fewer matches.');
+}
+   
+
+ // Smart sort handling: auto-clear if minRating is active (Amazon sometimes rejects both)
+const sortValue = data.get('sort');
+if (sortValue) {
+  if (!minRating) {
+    params.set('s', sortValue); // safe to apply
+  } else {
+  console.warn('Sort removed due to min-rating conflict. Defaulting to Relevance.');
+  params.set('s', 'relevanceblender'); // Amazon's internal name for default sort
+}
+
+
 
     // Redirect with affiliate tag and all filters
   const tag      = encodeURIComponent(data.get('tag'));
