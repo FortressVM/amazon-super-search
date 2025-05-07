@@ -29,116 +29,33 @@
   <!-- Amazon master brand list (via unpkg) -->
   <script src="https://unpkg.com/amazon-brand-list@1.0.0/dist/brands.min.js"></script>
   <style>
-  body { padding: 1rem; background: #d3d3d3; }
-  .slider-label { display: flex; justify-content: space-between; }
-  small.coming-soon { color: #888; font-style: italic; margin-left: .5rem; }
-  
-  /* Thicker borders for better visibility */
-  .form-control, .form-select, .form-range {
-    border: 2px solid #999 !important;
-    border-radius: 4px !important;
-  }
-  .form-check-input {
-    width: 1.4em;
-    height: 1.4em;
-    border: 2px solid #999;
-    border-radius: 3px;
-  }
-  .btn-outline-secondary, .btn-primary {
-    border-width: 2px !important;
-  }
-
-  /* ——— PULSE GLOW ANIMATION ——— */
-  @keyframes pulse-glow {
-    0% {
-      box-shadow: 0 0 0 0 rgba(13,110,253, 0.5);
-    }
-    50% {
-      box-shadow: 0 0 20px 10px rgba(13,110,253, 0.5);
-    }
-    100% {
-      box-shadow: 0 0 0 0 rgba(13,110,253, 0.5);
-    }
-  }
-  .pulse-glow {
-    animation: pulse-glow 2s infinite;
-    transition: box-shadow 0.3s ease-in-out;
-  }
-    /* ——— AMAZON-ORANGE PULSING HEADING ——— */
-  @keyframes text-pulse {
-    0%   { text-shadow: 0 0 5px rgba(255,153,0,0.7), 0 0 10px rgba(255,153,0,0.5); }
-    50%  { text-shadow: 0 0 20px rgba(255,153,0,0.9), 0 0 30px rgba(255,153,0,0.7); }
-    100% { text-shadow: 0 0 5px rgba(255,153,0,0.7), 0 0 10px rgba(255,153,0,0.5); }
-  }
-
-  h1.text-pulse {
-    color: #FF9900;
-    text-shadow:
-      -1px -1px 0 #000,
-       1px -1px 0 #000,
-      -1px  1px 0 #000,
-       1px  1px 0 #000;
-    animation: text-pulse 2s infinite ease-in-out;
-  }
+    body { padding: 1rem; background: #d3d3d3; }
+    .slider-label { display: flex; justify-content: space-between; }
+    small.coming-soon { color: #888; font-style: italic; margin-left: .5rem; }
+    /* Thicker borders for better visibility */
+    .form-control, .form-select, .form-range { border: 2px solid #999 !important; border-radius: 4px !important; }
+    .form-check-input { width: 1.4em; height: 1.4em; border: 2px solid #999; border-radius: 3px; }
+    .btn-outline-secondary, .btn-primary { border-width: 2px !important; }
+    /* PULSE GLOW ANIMATION */
+    @keyframes pulse-glow { 0% { box-shadow: 0 0 0 0 rgba(13,110,253,0.5); } 50% { box-shadow: 0 0 20px 10px rgba(13,110,253,0.5); } 100% { box-shadow: 0 0 0 0 rgba(13,110,253,0.5); } }
+    .pulse-glow { animation: pulse-glow 2s infinite; transition: box-shadow 0.3s ease-in-out; }
+    /* AMAZON-ORANGE PULSING HEADING */
+    @keyframes text-pulse { 0% { text-shadow: 0 0 5px rgba(255,153,0,0.7),0 0 10px rgba(255,153,0,0.5); } 50% { text-shadow: 0 0 20px rgba(255,153,0,0.9),0 0 30px rgba(255,153,0,0.7); } 100% { text-shadow: 0 0 5px rgba(255,153,0,0.7),0 0 10px rgba(255,153,0,0.5); } }
+    h1.text-pulse { color:#FF9900; text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000; animation:text-pulse 2s infinite ease-in-out; }
   </style>
-
 </head>
 <body>
-  <div class="container-fluid bg-white p-3 p-md-4 rounded shadow-sm">
-    <h1 class="mb-4 text-center text-pulse">Amazon Super Search</h1>
-    <form id="amazon-search-form" autocomplete="off">
-      <input type="hidden" name="tag" value="echolover25-20">
+  <!-- ... (rest of your form and content unchanged) ... -->
 
-     <!-- Keywords with Boolean helper -->
-<div class="mb-3">
-  <label class="form-label">Search Keywords</label>
-  <input
-  autocomplete="off"
-  type="text"
-  class="form-control"
-  name="q"
-  placeholder="e.g. wireless headphones">
-  <small class="form-text text-muted">
-    Supports Boolean operators: <code>AND</code>, <code>OR</code>, <code>NOT</code>.
-    e.g. <em>wireless AND headphones NOT bluetooth</em>
-  </small>
-</div>
-
-      <!-- right after your Search Keywords block -->
-<div id="empty-hint" class="text-danger mt-1"></div>
-
-      <!-- Core Filters & Sorters -->
-      <div class="accordion mb-3" id="accordionCore">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingCore">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCore">
-              Core Filters & Sorters
-            </button>
-          </h2>
-         <div id="collapseCore" class="accordion-collapse collapse show" data-bs-parent="#accordionCore">
-  <div class="accordion-body">
-    <div class="row g-3">
-     <!-- PRICE BOX -->
-<div class="col-12 col-md-6 mb-3">
-  <div class="card h-100">
-    <div class="card-body">
-      <h5 class="card-title mb-3">Price Range ($)</h5>
-      <div class="row g-2">
-        <!-- Min Price -->
-        <div class="col">
-          <input
-            type="number"
-            step="0.01"
-            class="form-control"
-            name="min-price"
-            placeholder="Min"
-          />
-        </div>
-        <!-- Max Price -->
-        <div class="col">
-          <input
-            type="number"
-            step="0.01"
-            class="form-control"
-            name="max-price"
-            placeholder="Max"
+  <!-- Bootstrap JS & Tagify init -->
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const brands = window.amazonBrands || [];
+    const includeInput = document.querySelector('input[name="brand-include"]');
+    if (includeInput) new Tagify(includeInput, { whitelist: brands, dropdown: { enabled:1, fuzzySearch:true, maxItems:20 } });
+    const excludeInput = document.querySelector('input[name="brand-exclude"]');
+    if (excludeInput) new Tagify(excludeInput, { whitelist: brands, dropdown: { enabled:1, fuzzySearch:true, maxItems:20 } });
+  });
+  </script>
+</body>
+</html>
