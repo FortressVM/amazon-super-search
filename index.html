@@ -3,881 +3,178 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Amazon Super Search</title>
+  <title>Advanced Amazon Filter Search Tool – In-Stock Lightning Deals & Price Drop Alerts</title>
+
   <!-- SEO Meta Tags -->
-  <meta name="description" content="Amazon Super Search: Advan<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Amazon Super Search</title>
-  <!-- SEO Meta Tags -->
-  <meta name="description" content="Amazon Super Search: Advanced Amazon product search with filters including price range, discounts, Prime only, stock availability, reviews, and more. Embed affiliate tag for easy monetization.">
-  <meta name="keywords" content="Amazon search, affiliate Amazon, product filters, price range, discounts, Prime, in-stock, customer reviews">
+  <meta name="description"
+        content="Amazon Super Search lets you uncover live in-stock lightning deals, filter by free shipping only, set deep discount thresholds, track price drops, and sort by top customer ratings. Find the best Prime-only offers fast.">
+  <meta name="keywords"
+        content="Amazon lightning deals in stock, filter Amazon free shipping only, Amazon deep discount search, Amazon price drop alert tool, Prime exclusive deal finder, Amazon filter by customer rating">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://amazonsupersearch.blogspot.com/">
+
   <!-- Open Graph / Social -->
-  <meta property="og:title" content="Amazon Super Search">
-  <meta property="og:description" content="Advanced Amazon search interface with powerful filters and affiliate integration.">
+  <meta property="og:title" content="Advanced Amazon Filter Search Tool – Lightning Deals & Price Drop Alerts">
+  <meta property="og:description"
+        content="Use Amazon Super Search to find in-stock lightning deals, set discount and price-drop alerts, filter free shipping only, and sort by highest ratings.">
   <meta property="og:url" content="https://amazonsupersearch.blogspot.com/">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://amazonsupersearch.blogspot.com/thumbnail.png">
+
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Amazon Super Search">
-  <meta name="twitter:description" content="Advanced Amazon search interface with powerful filters and affiliate integration.">
+  <meta name="twitter:title" content="Advanced Amazon Filter Search Tool">
+  <meta name="twitter:description"
+        content="Discover Amazon’s best live deals: free shipping filters, deep discounts, lightning deals in stock & price drop alerts.">
   <meta name="twitter:image" content="https://amazonsupersearch.blogspot.com/thumbnail.png">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Amazon Super Search",
+    "url": "https://amazonsupersearch.blogspot.com/",
+    "applicationCategory": "WebApplication",
+    "operatingSystem": "All",
+    "description": "Amazon Super Search lets you uncover live in-stock lightning deals, filter by free shipping only, set deep discount thresholds, track price drops, and sort by top customer ratings."
+  }
+  </script>
+
   <!-- Bootstrap CSS -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet" />
-  <!-- Choices.js CSS -->
-<!-- Tagify CSS & JS -->
-<!-- Tagify CSS & JS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" />
-<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Tagify CSS & JS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css">
+  <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.min.js"></script>
+
   <style>
-    /* ——— Fancy frames for all your sections ——— */
-.card, 
-.accordion-item {
-  border: 3px solid #007bff !important;
-  border-radius: 0.75rem !important;
-  box-shadow: 0 4px 12px rgba(0,123,255,0.15) !important;
-  padding: 1rem !important;
-  margin-bottom: 1.5rem !important;
-  background-color: #fff !important;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0,123,255,0.2) !important;
-}
-    /* —— Thicker black borders on all form fields —— */
-.form-control,
-.form-select,
-.form-range {
-  border: 3px solid #000 !important;
-  border-radius: 4px !important;
-}
-
-/* also bump up checkboxes */
-.form-check-input {
-  width: 1.4em;
-  height: 1.4em;
-  border: 3px solid #000 !important;
-  border-radius: 3px;
-}
-
-
-  /* ——— PULSE GLOW ANIMATION ——— */
-  @keyframes pulse-glow {
-    0% {
-      box-shadow: 0 0 0 0 rgba(13,110,253, 0.5);
+    /* Fancy frames */
+    .card, .accordion-item {
+      border: 3px solid #007bff !important;
+      border-radius: .75rem !important;
+      box-shadow: 0 4px 12px rgba(0,123,255,0.15) !important;
+      padding: 1rem !important;
+      margin-bottom: 1.5rem !important;
+      background-color: #fff !important;
     }
-    50% {
-      box-shadow: 0 0 20px 10px rgba(13,110,253, 0.5);
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,123,255,0.2) !important;
     }
-    100% {
-      box-shadow: 0 0 0 0 rgba(13,110,253, 0.5);
+    /* Thicker black borders */
+    .form-control, .form-select, .form-range {
+      border: 3px solid #000 !important;
+      border-radius: 4px !important;
     }
-  }
-  .pulse-glow {
-    animation: pulse-glow 2s infinite;
-    transition: box-shadow 0.3s ease-in-out;
-  }
-    /* ——— AMAZON-ORANGE PULSING HEADING ——— */
-@keyframes text-pulse {
-  0%   { text-shadow: 0 0 5px rgba(255,153,0,0.7), 0 0 10px rgba(255,153,0,0.5); }
-  50%  { text-shadow: 0 0 20px rgba(255,153,0,0.9), 0 0 30px rgba(255,153,0,0.7); }
-  100% { text-shadow: 0 0 5px rgba(255,153,0,0.7), 0 0 10px rgba(255,153,0,0.5); }
-}
-
-h1.text-pulse {
-  color: #FF9900;
-  text-shadow:
-    -1px -1px 0 #000,
-     1px -1px 0 #000,
-    -1px  1px 0 #000,
-     1px  1px 0 #000;
-  animation: text-pulse 2s infinite ease-in-out;
-}
-    /* ——— new Amazon-orange pulse ——— */
-  @keyframes orange-pulse {
-    0%   { box-shadow: 0 0 0 0 rgba(255,153,0, 0); }
-    50%  { box-shadow: 0 0 12px 6px rgba(255,153,0, 0.7); }
-    100% { box-shadow: 0 0 0 0 rgba(255,153,0, 0); }
-  }
-  .pulse-orange {
-    animation: orange-pulse 2s infinite ease-in-out;
-  }
-</style>
-
+    .form-check-input {
+      width: 1.4em; height: 1.4em; border: 3px solid #000 !important; border-radius: 3px;
+    }
+    /* Pulse animations */
+    @keyframes pulse-glow {0%{box-shadow:0 0 0 0 rgba(13,110,253,0.5);}50%{box-shadow:0 0 20px 10px rgba(13,110,253,0.5);}100%{box-shadow:0 0 0 0 rgba(13,110,253,0.5);} }
+    .pulse-glow {animation:pulse-glow 2s infinite;transition:box-shadow .3s ease-in-out;}
+    @keyframes text-pulse {0%{text-shadow:0 0 5px rgba(255,153,0,0.7),0 0 10px rgba(255,153,0,0.5);}50%{text-shadow:0 0 20px rgba(255,153,0,0.9),0 0 30px rgba(255,153,0,0.7);}100%{text-shadow:0 0 5px rgba(255,153,0,0.7),0 0 10px rgba(255,153,0,0.5);} }
+    h1.text-pulse {color:#FF9900;text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000;animation:text-pulse 2s infinite ease-in-out;}
+    @keyframes orange-pulse {0%{box-shadow:0 0 0 0 rgba(255,153,0,0);}50%{box-shadow:0 0 12px 6px rgba(255,153,0,0.7);}100%{box-shadow:0 0 0 0 rgba(255,153,0,0);} }
+    .pulse-orange {animation:orange-pulse 2s infinite ease-in-out;}
+  </style>
 </head>
 <body>
   <div class="container-fluid bg-white p-3 p-md-4 rounded shadow-sm">
+
+    <!-- Page Title -->
     <h1 class="mb-4 text-center text-pulse">Amazon Super Search</h1>
+
     <form id="amazon-search-form" autocomplete="off">
       <input type="hidden" name="tag" value="echolover25-20">
 
-     <!-- Keywords with Boolean helper -->
-<div class="row mb-3">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title mb-3">Search Keywords</h5>
-        <input
-          autocomplete="off"
-          type="text"
-          class="form-control"
-          name="q"
-          placeholder="e.g. wireless headphones"
-        />
-        <small class="form-text text-muted">
-          Supports Boolean operators: <code>AND</code>, <code>OR</code>, <code>NOT</code>.
-          e.g. <em>wireless AND headphones NOT bluetooth</em>
-        </small>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-      <!-- right after your Search Keywords block -->
-<div id="empty-hint" class="text-danger mt-1"></div>
+      <!-- Search Keywords -->
+      <section>
+        <h2 class="mb-3">Search Keywords</h2>
+        <div class="card p-3 mb-4">
+          <input type="text" class="form-control" name="q" placeholder="e.g. wireless headphones" autocomplete="off">
+          <small class="form-text text-muted mt-2">
+            Supports Boolean operators: <code>AND</code>, <code>OR</code>, <code>NOT</code> (e.g. <em>wireless AND headphones NOT bluetooth</em>).
+          </small>
+        </div>
+      </section>
 
       <!-- Core Filters & Sorters -->
-      <div class="accordion mb-3" id="accordionCore">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingCore">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCore">
-              Core Filters & Sorters
-            </button>
-          </h2>
-         <div id="collapseCore" class="accordion-collapse collapse show" data-bs-parent="#accordionCore">
-  <div class="accordion-body">
-    <div class="row g-3">
-     <!-- PRICE BOX -->
-<div class="col-12 col-md-6 mb-3">
-  <div class="card h-100">
-    <div class="card-body">
-      <h5 class="card-title mb-3">Price Range ($)</h5>
-      <div class="row g-2">
-        <!-- Min Price -->
-        <div class="col">
-          <input
-            type="number"
-            step="0.01"
-            class="form-control"
-            name="min-price"
-            placeholder="Min"
-          />
-        </div>
-        <!-- Max Price -->
-        <div class="col">
-          <input
-            type="number"
-            step="0.01"
-            class="form-control"
-            name="max-price"
-            placeholder="Max"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Dropdown Options -->
-<div class="col-12 mb-3">
-  <div class="card h-100">
-    <div class="card-body">
-      <h5 class="card-title mb-3">Dropdown Options</h5>
-      <div class="row g-3">
-        <!-- % Off Discount -->
-          <div class="col-12 col-md-4">
-    <label class="form-label">% Off Discount ≥</label>
-   <select class="form-select" name="percent-off">
-      <option value="">Any</option>
-      <option value="5">5%</option>
-      <option value="10">10%</option>
-      <option value="15">15%</option>
-      <option value="20">20%</option>
-      <option value="25">25%</option>
-      <option value="30">30%</option>
-     <option value="35">35%</option>
-      <option value="40">40%</option>
-     <option value="45">45%</option>
-      <option value="50">50%</option>
-     <option value="55">55%</option>
-     <option value="60">60%</option>
-      <option value="65">65%</option>
-      <option value="70">70%</option>
-      <option value="75">75%</option>
-      <option value="80">80%</option>
-      <option value="85">85%</option>
-      <option value="90">90%</option>
-      <option value="95">95%</option>
-      <option value="100">100%</option>
-    </select>
-  </div>
+      <section>
+        <h2 class="mb-3">Core Filters &amp; Sorters</h2>
+        <div class="accordion mb-4" id="accordionCore">
+          <div class="accordion-item">
+            <h3 class="accordion-header" id="headingCore">
+              <button class="accordion-button" type="button"
+                      data-bs-toggle="collapse" data-bs-target="#collapseCore">
+                Show/Hide Filters
+              </button>
+            </h3>
+            <div id="collapseCore" class="accordion-collapse collapse show" data-bs-parent="#accordionCore">
+              <div class="accordion-body">
+                <div class="row g-4">
 
-
-        <!-- Customer Review -->
-<div class="col-12 col-md-4">
-  <label class="form-label">Customer Review</label>
-  <select class="form-select" name="min-rating">
-    <option value="">Any</option>
-    <option value="1">1★ & up</option>
-    <option value="2">2★ & up</option>
-    <option value="3">3★ & up</option>
-    <option value="4">4★ & up</option>
-    <option value="5">5★ & up</option>
-  </select>
-</div>
-
-
-       <!-- Sort By -->
-<div class="col-12 col-md-4">
-  <label class="form-label">Sort By</label>
-  <select class="form-select" name="sort">
-    <option value="">Relevance</option>
-    <option value="price-asc-rank">Price: Low → High</option>
-    <option value="price-desc-rank">Price: High → Low</option>
-    <option value="review-rank">Avg. Customer Review</option>
-    <option value="date-desc-rank">Newest Arrivals</option>
-    <option value="salesrank">Best Sellers</option>
-  </select>
-</div>
-
-      </div>
-    </div>
-  </div>
-</div>
-<div class="col-12 mb-3">
-  <div class="card border-success shadow-sm">
-    <div class="card-body">
-      <h5 class="card-title text-success mb-3">Brand Filters</h5>
-      <div class="row g-3">
-        <!-- Include Brands -->
-        <div class="col-12 col-md-6">
-          <label class="form-label">Include Brands</label>
-          <input
-            type="text"
-            class="form-control border border-success"
-            name="brand-include"
-            id="brandInclude"
-            placeholder="e.g. Sony, LG"
-          />
-          <div class="form-check mt-2">
-            <input class="form-check-input" type="checkbox" name="include-only" id="includeOnly" />
-            <label class="form-check-label" for="includeOnly">Match only these brands</label>
-          </div>
-        </div>
-
-        <!-- Exclude Brands -->
-        <div class="col-12 col-md-6">
-          <label class="form-label">Exclude Brands</label>
-          <input
-            type="text"
-            class="form-control border border-danger"
-            name="brand-exclude"
-            id="brandExclude"
-            placeholder="e.g. Acer, Apple"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-      
-    <!-- MORE OPTIONS BOX -->
-<div class="col-12 col-md-6 mb-3">
-  <div class="card h-100">
-    <div class="card-body">
-    <h5 class="card-title mb-3">
-      Checkbox Options <small class="text-muted">(select to filter)</small>
-    </h5>
-    <!-- …your checkboxes here… -->
-      <!-- Prime & Stock -->
-      <div class="form-check mb-2">
-        <input class="form-check-input" type="checkbox" name="prime-only" id="primeOnly"/>
-        <label class="form-check-label" for="primeOnly">Prime Only</label>
-      </div>
-      <div class="form-check mb-2">
-        <input class="form-check-input" type="checkbox" name="in-stock" id="inStock"/>
-        <label class="form-check-label" for="inStock">In Stock</label>
-      </div>
-
-      <!-- Extra Boolean Filters -->
-      <div class="form-check mb-2">
-        <input class="form-check-input" type="checkbox" name="free-shipping" id="freeShipping"/>
-        <label class="form-check-label" for="freeShipping">Free Shipping</label>
-      </div>
-      <div class="form-check mb-2">
-        <input class="form-check-input" type="checkbox" name="fba-only" id="fbaOnly"/>
-        <label class="form-check-label" for="fbaOnly">Sold &amp; Shipped by Amazon</label>
-      </div>
-      <div class="form-check mb-2">
-        <input class="form-check-input" type="checkbox" name="lightning-deals" id="lightningDeals"/>
-        <label class="form-check-label" for="lightningDeals">Lightning Deals</label>
-      </div>
-      <div class="form-check mb-2">
-        <input class="form-check-input" type="checkbox" name="coupons" id="coupons"/>
-        <label class="form-check-label" for="coupons">Coupons Available</label>
-      </div>
-      <div class="form-check mb-2">
-        <input class="form-check-input" type="checkbox" name="subscribe-save" id="subscribeSave"/>
-        <label class="form-check-label" for="subscribeSave">Subscribe &amp; Save</label>
-      </div>
-      <div class="form-check mb-2">
-        <input class="form-check-input" type="checkbox" name="amazon-choice" id="amazonChoice"/>
-        <label class="form-check-label" for="amazonChoice">Amazon’s Choice</label>
-      </div>
-      <div class="form-check mb-2">
-        <input class="form-check-input" type="checkbox" name="best-seller" id="bestSeller"/>
-        <label class="form-check-label" for="bestSeller">Best Seller</label>
-      </div>
-       <!-- Free Returns -->
-      <div class="form-check mb-2">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          name="free-returns"
-          id="freeReturns"
-        />
-        <label class="form-check-label" for="freeReturns">
-          Free Returns
-        </label>
-      </div>
-
-      <!-- Gift Wrap -->
-      <div class="form-check mb-2">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          name="gift-wrap"
-          id="giftWrap"
-        />
-        <label class="form-check-label" for="giftWrap">
-          Gift Wrap Available
-        </label>
-      </div>
-
-    </div><!-- /.card-body -->
-  </div><!-- /.card -->
-</div><!-- /.col -->
-      <!-- Advanced Panels -->
-      <div class="accordion" id="accordionAdvanced">
-
-        <!-- Power-User Tools -->
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingPower">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePower">
-              Power-User Tools
-            </button>
-          </h2>
-          <div id="collapsePower" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
-            <div class="accordion-body">
-              <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" name="enable-boolean" id="enableBoolean">
-                <label class="form-check-label" for="enableBoolean">Enable Boolean Operators</label>
-              </div>
-              <div class="mb-2">
-                <label class="form-label">Field Filters</label>
-                <input type="text" class="form-control" name="field-filters" placeholder="e.g. field-brand:Sony">
-              </div>
-              <div class="mb-2">
-                <label class="form-label">ASIN / ISBN Direct Lookup</label>
-                <input type="text" class="form-control" name="direct-lookup" placeholder="Enter ASIN, ISBN or UPC">
-              </div>
-              <div class="mb-2">
-                <button type="button" class="btn btn-outline-secondary">URL Parameter Builder<small class="coming-soon">(coming soon)</small></button>
-              </div>
-              <div>
-                <button type="button" class="btn btn-outline-secondary">API Scratchpad<small class="coming-soon">(coming soon)</small></button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Deal-Hunter Goodies -->
-<div class="accordion-item">
-  <h2 class="accordion-header" id="headingDeal">
-    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDeal">
-      Deal-Hunter Goodies
-    </button>
-  </h2>
-  <div id="collapseDeal" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
-    <div class="accordion-body">
-      <div class="mb-3">
-        <label class="form-label">Price Drop ≥ X% Below 90-Day Avg</label>
-        <input type="number" class="form-control" name="price-drop" placeholder="e.g. 20">
-      </div>
-      <div class="form-check mb-2">
-        <input class="form-check-input" type="checkbox" name="coupon-only" id="couponOnly">
-        <label class="form-check-label" for="couponOnly">Coupon-Clippable Only</label>
-      </div>
-      <div class="form-check mb-2">
-        <input class="form-check-input" type="checkbox" name="warehouse-refurb" id="warehouseRefurb">
-        <label class="form-check-label" for="warehouseRefurb">Warehouse / Open-Box</label>
-      </div>
-
-      <!-- Price History & Volatility Filters -->
-      <div class="row g-3 mt-3">
-        <div class="col-6 col-md-3">
-          <label class="form-label">▼ % vs. 30-Day Avg</label>
-          <input type="number" min="0" class="form-control" name="below-avg-30" placeholder="e.g. 20">
-        </div>
-        <div class="col-6 col-md-3">
-          <label class="form-label">▼ % vs. 60-Day Avg</label>
-          <input type="number" min="0" class="form-control" name="below-avg-60" placeholder="e.g. 15">
-        </div>
-        <div class="col-6 col-md-3">
-          <label class="form-label">▼ % vs. 90-Day Avg</label>
-          <input type="number" min="0" class="form-control" name="below-avg-90" placeholder="e.g. 10">
-        </div>
-        <div class="col-6 col-md-3">
-          <label class="form-label">▲ Max 7-Day Volatility</label>
-          <input type="number" min="0" class="form-control" name="max-volatility-7" placeholder="e.g. 5">
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-
-        <!-- Comparison & Research Aids -->
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingCompare">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCompare">
-              Comparison & Research Aids
-            </button>
-          </h2>
-          <div id="collapseCompare" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
-            <div class="accordion-body">
-              <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" name="side-by-side" id="sideBySide">
-                <label class="form-check-label" for="sideBySide">Side-by-Side Spec Tables</label>
-              </div>
-              <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" name="verified-only" id="verifiedOnly">
-                <label class="form-check-label" for="verifiedOnly">Verified-Purchase Only Reviews</label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Personalization & AI-Driven -->
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingPersonal">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePersonal">
-              Personalization & AI-Driven
-            </button>
-          </h2>
-          <div id="collapsePersonal" class="accordion-collapse collapse" data-bs-parent="#accordionAdvanced">
-            <div class="accordion-body">
-              <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" name="predictive-score" id="predictiveScore">
-                <label class="form-check-label" for="predictiveScore">Buy-Now-or-Wait Score</label>
-              </div>
-              <div class="mb-2">
-                <label class="form-label">Restock Forecasts (ASIN)</label>
-                <input type="text" class="form-control" name="restock-forecast" placeholder="Enter ASIN">
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="emotion-feedback" id="emotionFeedback">
-                <label class="form-check-label" for="emotionFeedback">Emotion-Feedback Loop</label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Visual & Voice Interfaces (coming soon) -->
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingVisual">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseVisual">
-              Visual & Voice Interfaces <small class="coming-soon">(coming soon)</small>
-            </button>
-          </h2>
-        </div>
-
-        <!-- Niche & Lifestyle Filters (coming soon) -->
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingNiche">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNiche">
-              Niche & Lifestyle Filters <small class="coming-soon">(coming soon)</small>
-            </button>
-          </h2>
-        </div>
-
-        <!-- Social & Collaborative (coming soon) -->
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingSocial">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSocial">
-              Social & Collaborative <small class="coming-soon">(coming soon)</small>
-            </button>
-          </h2>
-        </div>
-
-      </div>
-
-     <div class="text-center mt-4 mb-5">
- <button
-  type="submit"
-  class="btn btn-primary btn-lg w-100 w-md-auto pulse-glow"
->
-  Search Amazon
-</button>
-
-</div>
-
-    </form>
-
-           <!-- Share With Friends -->
-<section id="share" class="mt-5 mb-5">
-  <h2 class="h4">Share With Friends</h2>
-  <p>Spread the word about Amazon Super Search:</p>
-  <div class="d-flex flex-column flex-sm-row flex-wrap gap-2 mb-2">
-    <!-- Facebook Share -->
-    <a
-      href="#"
-      onclick="window.open(
-        'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent('https://amazonsupersearch.blogspot.com/'),
-        '_blank','noopener'
-      ); return false;"
-      class="btn btn-primary"
-    >Share on Facebook</a>
-    <!-- Twitter Share -->
-    <a
-      href="#"
-      onclick="window.open(
-        'https://twitter.com/intent/tweet?url='+encodeURIComponent('https://amazonsupersearch.blogspot.com/')+'&text='+encodeURIComponent('Check out this Amazon Super Search!'),
-        '_blank','noopener'
-      ); return false;"
-      class="btn btn-info"
-    >Share on Twitter</a>
-    <!-- Email Share -->
-    <a
-      href="mailto:?subject=Amazon Super Search&body=Check%20this%20out:%20https://amazonsupersearch.blogspot.com/"
-      class="btn btn-secondary"
-    >Share via Email</a>
-    <!-- SMS Share -->
-    <a
-      href="#"
-      onclick="window.open(
-        'sms:?&body='+encodeURIComponent('Check out this Amazon Super Search: https://amazonsupersearch.blogspot.com/'),
-        '_blank'
-      ); return false;"
-      class="btn btn-success"
-    >Share via SMS</a>
-  </div>
-
-  <label class="form-label">Copy Link</label>
-  <div class="input-group">
-    <input
-      type="text"
-      class="form-control"
-      id="shareLink"
-      value="https://amazonsupersearch.blogspot.com/"
-      readonly
-    >
-    <button
- │     class="btn btn-outline-secondary w-100 w-sm-auto pulse-orange"
-      type="button"
-      onclick="navigator.clipboard.writeText('https://amazonsupersearch.blogspot.com/')"
-    >Copy URL</button>
-  </div>
-
-  <script>
-    document.getElementById('shareLink').value = 'https://amazonsupersearch.blogspot.com/';
-  </script>
-</section>
-
-
-     <section id="help" class="mt-5">
-  <h2 class="h4">Help &amp; Usage Guide</h2>
-  <p>This guide explains every control on the Amazon Super Search page:</p>
-  <ul>
-    <li><strong>Search Keywords:</strong> Enter terms and use Boolean operators (<code>AND</code>, <code>OR</code>, <code>NOT</code>).</li>
-    <li><strong>Price Range ($):</strong> Minimum and maximum price (supports cents).</li>
-    <li><strong>% Off Discount ≥:</strong> Filter by discount percentage (5% steps from 5% up to 100%).</li>
-    <li><strong>Customer Review:</strong> Filter by star rating (1★ through 5★).</li>
-    <li><strong>Sort By:</strong> Order results by relevance, price low→high, or price high→low.</li>
-    <li><strong>Include Brands:</strong> Tag brands to include; check “Match only these brands” to exclude all others.</li>
-    <li><strong>Exclude Brands:</strong> Tag brands to exclude.</li>
-    <li><strong>Prime Only:</strong> Show only Prime-eligible products.</li>
-    <li><strong>In Stock:</strong> Show only currently in-stock items.</li>
-    <li><strong>Free Shipping:</strong> Filter for free-shipping items.</li>
-    <li><strong>Sold &amp; Shipped by Amazon:</strong> Only Amazon-sold items.</li>
-    <li><strong>Lightning Deals:</strong> Active lightning deals only.</li>
-    <li><strong>Coupons Available:</strong> Items with coupons.</li>
-    <li><strong>Subscribe &amp; Save:</strong> Subscribe &amp; Save eligible items.</li>
-    <li><strong>Amazon’s Choice:</strong> Amazon’s Choice products.</li>
-    <li><strong>Best Seller:</strong> Amazon Best Sellers.</li>
-    <li><strong>Free Returns:</strong> Items with free returns.</li>
-    <li><strong>Gift Wrap Available:</strong> Items offering gift-wrap.</li>
-    <li><strong>Enable Boolean Operators:</strong> Turn on/off Boolean parsing in keywords.</li>
-    <li><strong>Field Filters:</strong> Advanced field queries (e.g. <code>field-brand:Sony</code>).</li>
-    <li><strong>ASIN/ISBN Direct Lookup:</strong> Jump to a product by ASIN, ISBN or UPC.</li>
-    <li><strong>Price Drop ≥ X% Below 90-Day Avg:</strong> Filter by drop vs. 90-day average price.</li>
-    <li><strong>Coupon-Clippable Only:</strong> Show only coupon-clippable items.</li>
-    <li><strong>Warehouse / Open-Box:</strong> Warehouse and open-box deals.</li>
-    <li><strong>▼ % vs. Avg (30/60/90-Day):</strong> Filter by percentage drop vs. short-term average.</li>
-    <li><strong>▲ Max 7-Day Volatility:</strong> Limit by 7-day price volatility.</li>
-    <li><strong>Side-by-Side Spec Tables:</strong> Compare specs of two products.</li>
-    <li><strong>Verified-Purchase Only Reviews:</strong> Only reviews with verified purchase.</li>
-    <li><strong>Buy-Now-or-Wait Score:</strong> AI-driven purchase timing recommendation.</li>
-    <li><strong>Restock Forecasts:</strong> Enter ASIN to see restock estimates.</li>
-    <li><strong>Emotion-Feedback Loop:</strong> AI-driven emotional insights on purchases.</li>
-    <li><em>(Coming Soon):</em> URL Parameter Builder, API Scratchpad, Visual &amp; Voice Interfaces, Niche &amp; Lifestyle Filters, Social &amp; Collaborative features.</li>
-  </ul>
-</section>
-
-
-    <!-- Bootstrap JS Bundle (includes Popper) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Tagify & form init -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // — initialize Tagify —
-      new Tagify(document.getElementById('brandInclude'), {
-        whitelist: ["Sony","Samsung","LG","Acer","Apple","Dell"],
-        dropdown: { enabled: 0, maxItems: 10 }
-      });
-      new Tagify(document.getElementById('brandExclude'), {
-        whitelist: ["Sony","Samsung","LG","Acer","Apple","Dell"],
-        dropdown: { enabled: 0, maxItems: 10 }
-      });
-
-      // — form submit handler —
-     document
-    .getElementById('amazon-search-form')
-    .addEventListener('submit', function(e) {
-     e.preventDefault();
-      const data   = new FormData(this);
-      const params = new URLSearchParams();
-     // ← Insert filters declaration here:
-      const filters = [];
-  
-// — Include Brands (step 1) —
-const incRaw = data.get('brand-include') || '';
-const incArr = incRaw
-  .split(',')
-  .map(s => s.trim())
-  .filter(Boolean)
-  .map(encodeURIComponent);
-
-if (incArr.length) {
-  // build a single filter clause for all chosen brands
-  filters.push(`p_89:${incArr.join('|')}`);
-}
-      
-// — Exclude Brands (step 2) —
-const excRaw = data.get('brand-exclude') || '';
-const excArr = excRaw
-  .split(',')
-  .map(s => s.trim())
-  .filter(Boolean)
-  .map(encodeURIComponent);
-
-if (excArr.length) {
-  // prefix each with “-” then OR‐join them
-  filters.push(`p_89:-${excArr.join('|-')}`);
-}
-
-// — Prime Only (step 3) —
-if (data.get('prime-only') === 'on') {
-  // use Amazon’s “fulfilled by Amazon” filter flag
-  filters.push('p_n_feature_fulfilled_by_amazon:1');
-}
-
-      // — In Stock (step 4) —
-if (data.get('in-stock') === 'on') {
-  filters.push('p_n_availability:1248879011');
-}
-
-      // — % Off Discount (step 5) —
-const pct = data.get('percent-off');
-if (pct) {
-  filters.push(`p_n_pct-off-with-discount:${pct}`);
-}
-
-      // — Customer Review Rating (step 6) —
-const rating = data.get('min-rating');
-if (rating) {
-  // Amazon uses p_72:500 for 5★, p_72:400 for 4★ & up, etc.
-  filters.push(`p_72:${rating}00`);
-}
-
-      // — Price Range (step 7) —
-const low  = data.get('min-price')?.trim();
-const high = data.get('max-price')?.trim();
-if (low && high) {
-  const lowC  = Math.floor(parseFloat(low)  * 100);
-  const highC = Math.ceil (parseFloat(high) * 100);
-  filters.push(`p_36:${lowC}-${highC}`);
-}
-
-      // — Free Shipping (step 8a) —
-if (data.get('free-shipping') === 'on') {
-  filters.push('p_76:13184787011');
-}
-
-// — Sold & Shipped by Amazon (FBA-Only) (step 8b) —
-if (data.get('fba-only') === 'on') {
-  // “ATVPDKIKX0DER” is Amazon’s seller ID
-  filters.push('p_6:ATVPDKIKX0DER');
-}
-
-      // — Lightning Deals (step 9a) —
-if (data.get('lightning-deals') === 'on') {
-  filters.push('p_n_specials_match:4366'); // Lightning Deals filter code
-}
-
-// — Coupons Available (step 9b) —
-if (data.get('coupons') === 'on') {
-  filters.push('p_n_coupons_available:1');
-}
-
-// — Subscribe & Save (step 9c) —
-if (data.get('subscribe-save') === 'on') {
-  filters.push('p_n_subscribe:8');
-}
-
-// — Amazon’s Choice (step 9d) —
-if (data.get('amazon-choice') === 'on') {
-  filters.push('p_n_feature_browse-bin:15527960011');
-}
-
-// — Best Seller (step 9e) —
-if (data.get('best-seller') === 'on') {
-  filters.push('p_n_feature_browse-bin:15527981011');
-}
-
-// — Free Returns (step 9f) —
-if (data.get('free-returns') === 'on') {
-  filters.push('p_n_free_returns_option:1');
-}
-
-// — Gift Wrap Available (step 9g) —
-if (data.get('gift-wrap') === 'on') {
-  filters.push('p_n_gift_wrap_available:1');
-}
-
- // — Append combined filters —
- if (filters.length) {
-   params.append('rh', filters.join(','));
-}
-
-       // 1) Boolean keywords
-        let q = data.get('q')?.trim() || '';
-        if (data.get('enable-boolean')) {
-          q = q.replace(/\bAND\b/gi, ' ')
-               .replace(/\bNOT\b/gi, '-');
-          params.set('bop', 'enable');
-        }
-        if (q) params.set('k', q);
-
-      // — Sort Option —
-const sort = data.get('sort');
-if (sort) {
-  params.set('s', sort);
-}
-
-       // — Finally open the URL —
-const tag      = encodeURIComponent(data.get('tag'));
-const finalUrl = `https://www.amazon.com/s?tag=${tag}&${params.toString()}`;
-window.open(finalUrl, '_blank');
-  });               // end submit handler
-});                 // end DOMContentLoaded
-
-
-  </script>
-</body>
-<body>
-  <div class="container-fluid bg-white p-3 p-md-4 rounded shadow-sm">
-    <h1 class="mb-4 text-center text-pulse">Amazon Super Search</h1>
-    <form id="amazon-search-form" autocomplete="off">
-      <input type="hidden" name="tag" value="echolover25-20">
-
-      <!-- Keywords with Boolean helper -->
-      <div class="row mb-3">
-        <div class="col-12">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title mb-3">Search Keywords</h5>
-              <input autocomplete="off" type="text" class="form-control" name="q" placeholder="e.g. wireless headphones" />
-              <small class="form-text text-muted">
-                Supports Boolean operators: <code>AND</code>, <code>OR</code>, <code>NOT</code>.
-                e.g. <em>wireless AND headphones NOT bluetooth</em>
-              </small>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="empty-hint" class="text-danger mt-1"></div>
-
-      <!-- Core Filters & Sorters -->
-      <div class="accordion mb-3" id="accordionCore">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingCore">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCore">
-              Core Filters & Sorters
-            </button>
-          </h2>
-          <div id="collapseCore" class="accordion-collapse collapse show" data-bs-parent="#accordionCore">
-            <div class="accordion-body">
-              <div class="row g-3">
-
-                <!-- PRICE BOX -->
-                <div class="col-12 col-md-6 mb-3">
-                  <div class="card h-100">
-                    <div class="card-body">
-                      <h5 class="card-title mb-3">Price Range ($)</h5>
+                  <!-- Price Range -->
+                  <div class="col-12 col-md-6">
+                    <h4>Price Range ($)</h4>
+                    <div class="card p-3">
                       <div class="row g-2">
                         <div class="col">
-                          <input type="number" step="0.01" class="form-control" name="min-price" placeholder="Min" />
+                          <input type="number" step="0.01" class="form-control" name="min-price" placeholder="Min">
                         </div>
                         <div class="col">
-                          <input type="number" step="0.01" class="form-control" name="max-price" placeholder="Max" />
+                          <input type="number" step="0.01" class="form-control" name="max-price" placeholder="Max">
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <!-- Dropdown Options -->
-                <div class="col-12 mb-3">
-                  <div class="card h-100">
-                    <div class="card-body">
-                      <h5 class="card-title mb-3">Dropdown Options</h5>
+                  <!-- Discount & Rating -->
+                  <div class="col-12 col-md-6">
+                    <h4>Discount &amp; Rating</h4>
+                    <div class="card p-3">
                       <div class="row g-3">
-                        <div class="col-12 col-md-4">
-                          <label class="form-label">% Off Discount ≥</label>
+                        <div class="col-12 col-lg-4">
+                          <label class="form-label">% Off ≥</label>
                           <select class="form-select" name="percent-off">
                             <option value="">Any</option>
                             <option value="5">5%</option>
                             <option value="10">10%</option>
-                            <!-- … up to 100% … -->
+                            <option value="15">15%</option>
+                            <option value="20">20%</option>
+                            <option value="25">25%</option>
+                            <option value="30">30%</option>
+                            <option value="35">35%</option>
+                            <option value="40">40%</option>
+                            <option value="45">45%</option>
+                            <option value="50">50%</option>
+                            <option value="55">55%</option>
+                            <option value="60">60%</option>
+                            <option value="65">65%</option>
+                            <option value="70">70%</option>
+                            <option value="75">75%</option>
+                            <option value="80">80%</option>
+                            <option value="85">85%</option>
+                            <option value="90">90%</option>
                             <option value="95">95%</option>
                             <option value="100">100%</option>
                           </select>
                         </div>
-                        <div class="col-12 col-md-4">
+                        <div class="col-12 col-lg-4">
                           <label class="form-label">Customer Review</label>
                           <select class="form-select" name="min-rating">
                             <option value="">Any</option>
-                            <option value="1">1★ & up</option>
-                            <option value="2">2★ & up</option>
-                            <option value="3">3★ & up</option>
-                            <option value="4">4★ & up</option>
-                            <option value="5">5★ & up</option>
+                            <option value="1">1★ &amp; up</option>
+                            <option value="2">2★ &amp; up</option>
+                            <option value="3">3★ &amp; up</option>
+                            <option value="4">4★ &amp; up</option>
+                            <option value="5">5★ &amp; up</option>
                           </select>
                         </div>
-                        <div class="col-12 col-md-4">
+                        <div class="col-12 col-lg-4">
                           <label class="form-label">Sort By</label>
                           <select class="form-select" name="sort">
-                            <option value="">Relevance
+                            <option value="">Relevance</option>
                             <option value="price-asc-rank">Price: Low → High</option>
                             <option value="price-desc-rank">Price: High → Low</option>
                             <option value="review-rank">Avg. Customer Review</option>
@@ -888,166 +185,340 @@ window.open(finalUrl, '_blank');
                       </div>
                     </div>
                   </div>
+
+                </div><!--/.row-->
+              </div><!--/.accordion-body-->
+            </div><!--/.collapse-->
+          </div><!--/.accordion-item-->
+        </div><!--/.accordion-->
+      </section>
+
+      <!-- Brand Filters -->
+      <section>
+        <h2 class="mb-3 text-success">Brand Filters</h2>
+        <div class="card border-success shadow-sm mb-4 p-3">
+          <div class="row g-3">
+            <div class="col-12 col-md-6">
+              <label class="form-label">Include Brands</label>
+              <input type="text" class="form-control" name="brand-include" id="brandInclude" placeholder="e.g. Sony, LG">
+              <div class="form-check mt-2">
+                <input class="form-check-input" type="checkbox" name="include-only" id="includeOnly">
+                <label class="form-check-label" for="includeOnly">Match only these brands</label>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label">Exclude Brands</label>
+              <input type="text" class="form-control" name="brand-exclude" id="brandExclude" placeholder="e.g. Acer, Apple">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Checkbox Options -->
+      <section>
+        <h2 class="mb-3">Checkbox Options <small class="text-muted">(select to filter)</small></h2>
+        <div class="card mb-4 p-3">
+          <div class="form-check"><input class="form-check-input" type="checkbox" name="prime-only" id="primeOnly"><label class="form-check-label" for="primeOnly">Prime Only</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" name="in-stock" id="inStock"><label class="form-check-label" for="inStock">In Stock</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" name="free-shipping" id="freeShipping"><label class="form-check-label" for="freeShipping">Free Shipping</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" name="fba-only" id="fbaOnly"><label class="form-check-label" for="fbaOnly">Sold &amp; Shipped by Amazon</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" name="lightning-deals" id="lightningDeals"><label class="form-check-label" for="lightningDeals">Lightning Deals</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" name="coupons" id="coupons"><label class="form-check-label" for="coupons">Coupons Available</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" name="subscribe-save" id="subscribeSave"><label class="form-check-label" for="subscribeSave">Subscribe &amp; Save</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" name="amazon-choice" id="amazonChoice"><label class="form-check-label" for="amazonChoice">Amazon’s Choice</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" name="best-seller" id="bestSeller"><label class="form-check-label" for="bestSeller">Best Seller</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" name="free-returns" id="freeReturns"><label class="form-check-label" for="freeReturns">Free Returns</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" name="gift-wrap" id="giftWrap"><label class="form-check-label" for="giftWrap">Gift Wrap Available</label></div>
+        </div>
+      </section>
+
+      <!-- Power-User Tools -->
+      <section>
+        <div class="accordion mb-4" id="accordionPower">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingPower">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePower">
+                Power-User Tools
+              </button>
+            </h2>
+            <div id="collapsePower" class="accordion-collapse collapse" data-bs-parent="#accordionPower">
+              <div class="accordion-body">
+                <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="enable-boolean" id="enableBoolean"><label class="form-check-label" for="enableBoolean">Enable Boolean Operators</label></div>
+                <div class="mb-2"><label class="form-label">Field Filters</label><input type="text" class="form-control" name="field-filters" placeholder="e.g. field-brand:Sony"></div>
+                <div class="mb-2"><label class="form-label">ASIN / ISBN Direct Lookup</label><input type="text" class="form-control" name="direct-lookup" placeholder="Enter ASIN, ISBN or UPC"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Deal-Hunter Goodies -->
+      <section>
+        <div class="accordion mb-4" id="accordionDeal">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingDeal">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDeal">
+                Deal-Hunter Goodies
+              </button>
+            </h2>
+            <div id="collapseDeal" class="accordion-collapse collapse" data-bs-parent="#accordionDeal">
+              <div class="accordion-body">
+                <div class="mb-3"><label class="form-label">Price Drop ≥ X% Below 90-Day Avg</label><input type="number" class="form-control" name="price-drop" placeholder="e.g. 20"></div>
+                <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="coupon-only" id="couponOnly"><label class="form-check-label" for="couponOnly">Coupon-Clippable Only</label></div>
+                <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="warehouse-refurb" id="warehouseRefurb"><label class="form-check-label" for="warehouseRefurb">Warehouse / Open-Box</label></div>
+                <div class="row g-3 mt-3">
+                  <div class="col-6 col-md-3"><label class="form-label">▼ % vs. 30-Day Avg</label><input type="number" min="0" class="form-control" name="below-avg-30" placeholder="e.g. 20"></div>
+                  <div class="col-6 col-md-3"><label class="form-label">▼ % vs. 60-Day Avg</label><input type="number" min="0" class="form-control" name="below-avg-60" placeholder="e.g. 15"></div>
+                  <div class="col-6 col-md-3"><label class="form-label">▼ % vs. 90-Day Avg</label><input type="number" min="0" class="form-control" name="below-avg-90" placeholder="e.g. 10"></div>
+                  <div class="col-6 col-md-3"><label class="form-label">▲ Max 7-Day Volatility</label><input type="number" min="0" class="form-control" name="max-volatility-7" placeholder="e.g. 5"></div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-                <!-- Brand Filters -->
-                <div class="col-12 mb-3">
-                  <div class="card border-success shadow-sm">
-                    <div class="card-body">
-                      <h5 class="card-title text-success mb-3">Brand Filters</h5>
-                      <div class="row g-3">
-                        <div class="col-12 col-md-6">
-                          <label class="form-label">Include Brands</label>
-                          <input type="text" class="form-control border border-success" name="brand-include" id="brandInclude" placeholder="e.g. Sony, LG" />
-                          <div class="form-check mt-2">
-                            <input class="form-check-input" type="checkbox" name="include-only" id="includeOnly" />
-                            <label class="form-check-label" for="includeOnly">Match only these brands</label>
-                          </div>
-                        </div>
-                        <div class="col-12 col-md-6">
-                          <label class="form-label">Exclude Brands</label>
-                          <input type="text" class="form-control border border-danger" name="brand-exclude" id="brandExclude" placeholder="e.g. Acer, Apple" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      <!-- Comparison & Research Aids -->
+      <section>
+        <div class="accordion mb-4" id="accordionCompare">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingCompare">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCompare">
+                Comparison &amp; Research Aids
+              </button>
+            </h2>
+            <div id="collapseCompare" class="accordion-collapse collapse" data-bs-parent="#accordionCompare">
+              <div class="accordion-body">
+                <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="side-by-side" id="sideBySide"><label class="form-check-label" for="sideBySide">Side-by-Side Spec Tables</label></div>
+                <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="verified-only" id="verifiedOnly"><label class="form-check-label" for="verifiedOnly">Verified-Purchase Only Reviews</label></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-                <!-- Checkbox Options -->
-                <div class="col-12 col-md-6 mb-3">
-                  <div class="card h-100">
-                    <div class="card-body">
-                      <h5 class="card-title mb-3">Checkbox Options <small class="text-muted">(select to filter)</small></h5>
-                      <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" name="prime-only" id="primeOnly"/>
-                        <label class="form-check-label" for="primeOnly">Prime Only</label>
-                      </div>
-                      <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" name="in-stock" id="inStock"/>
-                        <label class="form-check-label" for="inStock">In Stock</label>
-                      </div>
-                      <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" name="free-shipping" id="freeShipping"/>
-                        <label class="form-check-label" for="freeShipping">Free Shipping</label>
-                      </div>
-                      <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" name="fba-only" id="fbaOnly"/>
-                        <label class="form-check-label" for="fbaOnly">Sold &amp; Shipped by Amazon</label>
-                      </div>
-                      <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" name="lightning-deals" id="lightningDeals"/>
-                        <label class="form-check-label" for="lightningDeals">Lightning Deals</label>
-                      </div>
-                      <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" name="coupons" id="coupons"/>
-                        <label class="form-check-label" for="coupons">Coupons Available</label>
-                      </div>
-                      <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" name="subscribe-save" id="subscribeSave"/>
-                        <label class="form-check-label" for="subscribeSave">Subscribe &amp; Save</label>
-                      </div>
-                      <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" name="amazon-choice" id="amazonChoice"/>
-                        <label class="form-check-label" for="amazonChoice">Amazon’s Choice</label>
-                      </div>
-                      <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" name="best-seller" id="bestSeller"/>
-                        <label class="form-check-label" for="bestSeller">Best Seller</label>
-                      </div>
-                      <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" name="free-returns" id="freeReturns"/>
-                        <label class="form-check-label" for="freeReturns">Free Returns</label>
-                      </div>
-                      <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" name="gift-wrap" id="giftWrap"/>
-                        <label class="form-check-label" for="giftWrap">Gift Wrap Available</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      <!-- Personalization & AI-Driven -->
+      <section>
+        <div class="accordion mb-4" id="accordionPersonal">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingPersonal">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePersonal">
+                Personalization &amp; AI-Driven
+              </button>
+            </h2>
+            <div id="collapsePersonal" class="accordion-collapse collapse" data-bs-parent="#accordionPersonal">
+              <div class="accordion-body">
+                <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="predictive-score" id="predictiveScore"><label class="form-check-label" for="predictiveScore">Buy-Now-or-Wait Score</label></div>
+                <div class="mb-2"><label class="form-label">Restock Forecasts (ASIN)</label><input type="text" class="form-control" name="restock-forecast" placeholder="Enter ASIN"></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" name="emotion-feedback" id="emotionFeedback"><label class="form-check-label" for="emotionFeedback">Emotion-Feedback Loop</label></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-              </div> <!-- /.row g-3 -->
-            </div> <!-- /.accordion-body -->
-          </div> <!-- /.collapse -->
-        </div> <!-- /.accordion-item -->
-      </div> <!-- /.accordion -->
+      <!-- Visual & Voice Interfaces -->
+      <section>
+        <div class="accordion mb-4" id="accordionVisual">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingVisual">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseVisual">
+                Visual &amp; Voice Interfaces <small class="text-muted">(coming soon)</small>
+              </button>
+            </h2>
+            <div id="collapseVisual" class="accordion-collapse collapse" data-bs-parent="#accordionVisual">
+              <div class="accordion-body text-muted">We’re cooking up visual & voice input—stay tuned!</div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <div class="text-center mt-4 mb-5">
-        <button type="submit" class="btn btn-primary btn-lg w-100 w-md-auto pulse-glow">
-          Search Amazon
-        </button>
+      <!-- Niche & Lifestyle Filters -->
+      <section>
+        <div class="accordion mb-4" id="accordionNiche">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingNiche">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNiche">
+                Niche &amp; Lifestyle Filters <small class="text-muted">(coming soon)</small>
+              </button>
+            </h2>
+            <div id="collapseNiche" class="accordion-collapse collapse" data-bs-parent="#accordionNiche">
+              <div class="accordion-body text-muted">Filters for your hobbies & lifestyles are on the way.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Social & Collaborative -->
+      <section>
+        <div class="accordion mb-4" id="accordionSocial">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingSocial">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSocial">
+                Social &amp; Collaborative <small class="text-muted">(coming soon)</small>
+              </button>
+            </h2>
+            <div id="collapseSocial" class="accordion-collapse collapse" data-bs-parent="#accordionSocial">
+              <div class="accordion-body text-muted">Collaborative wish-lists and shared carts—very soon!</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Submit Button -->
+      <div class="text-center mb-5">
+        <button type="submit" class="btn btn-primary btn-lg w-100 pulse-glow">Search Amazon</button>
       </div>
+
+      <!-- Share With Friends -->
+      <section id="share" class="mb-5">
+        <h2>Share With Friends</h2>
+        <p>Spread the word about Amazon Super Search:</p>
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'_blank');return false;" class="btn btn-primary">Share on Facebook</a>
+          <a href="#" onclick="window.open('https://twitter.com/intent/tweet?url='+encodeURIComponent(location.href)+'&text='+encodeURIComponent('Check out Amazon Super Search!'),'_blank');return false;" class="btn btn-info">Share on Twitter</a>
+          <a href="mailto:?subject=Amazon Super Search&body=Check out Amazon Super Search: https://amazonsupersearch.blogspot.com/" class="btn btn-secondary">Share via Email</a>
+          <a href="#" onclick="window.open('sms:?&body='+encodeURIComponent('Check out Amazon Super Search: '+location.href),'_blank');return false;" class="btn btn-success">Share via SMS</a>
+        </div>
+        <label class="form-label">Copy Link</label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="shareLink" readonly>
+          <button class="btn btn-outline-secondary pulse-orange" type="button" onclick="navigator.clipboard.writeText(document.getElementById('shareLink').value)">Copy URL</button>
+        </div>
+        <script>document.getElementById('shareLink').value = location.href;</script>
+      </section>
+
+      <!-- Help & Usage Guide -->
+      <section id="help" class="mb-5">
+        <h2>Help &amp; Usage Guide</h2>
+        <h3>Control Descriptions</h3>
+        <ul>
+          <li><h4>Search Keywords:</h4> Enter terms and use Boolean operators (AND, OR, NOT).</li>
+          <li><h4>Price Range ($):</h4> Minimum and maximum price (supports cents).</li>
+          <li><h4>% Off Discount ≥:</h4> Filter by discount percentage (5% steps from 5% up to 100%).</li>
+          <li><h4>Customer Review:</h4> Filter by star rating (1★ through 5★).</li>
+          <li><h4>Sort By:</h4> Order results by relevance, price low→high, price high→low, review, or newest.</li>
+          <li><h4>Include Brands:</h4> Tag brands to include; check “Match only these brands” to exclude all others.</li>
+          <li><h4>Exclude Brands:</h4> Tag brands to exclude.</li>
+          <li><h4>Prime Only:</h4> Show only Prime-eligible products.</li>
+          <li><h4>In Stock:</h4> Show only currently in-stock items.</li>
+          <li><h4>Free Shipping:</h4> Filter for free-shipping items.</li>
+          <li><h4>Sold &amp; Shipped by Amazon:</h4> Only Amazon-sold items.</li>
+          <li><h4>Lightning Deals:</h4> Active lightning deals only.</li>
+          <li><h4>Coupons Available:</h4> Items with coupons.</li>
+          <li><h4>Subscribe &amp; Save:</h4> Subscribe & Save eligible items.</li>
+          <li><h4>Amazon’s Choice:</h4> Amazon’s Choice products.</li>
+          <li><h4>Best Seller:</h4> Amazon Best Sellers.</li>
+          <li><h4>Free Returns:</h4> Items with free returns option.</li>
+          <li><h4>Gift Wrap Available:</h4> Items offering gift wrap.</li>
+          <li><h4>Enable Boolean Operators:</h4> Turn on/off Boolean parsing in keywords.</li>
+          <li><h4>Field Filters:</h4> Advanced field queries (e.g. <code>field-brand:Sony</code>).</li>
+          <li><h4>ASIN/ISBN Direct Lookup:</h4> Jump to a product by ASIN, ISBN or UPC.</li>
+          <li><h4>Price Drop ≥ X% Below 90-Day Avg:</h4> Filter by drop vs. 90-day average price.</li>
+          <li><h4>Coupon-Clippable Only:</h4> Show only coupon-clippable items.</li>
+          <li><h4>Warehouse / Open-Box:</h4> Warehouse and open-box deals.</li>
+          <li><h4>▼ % vs. Avg (30/60/90-Day):</h4> Filter by price drop vs. short-term average.</li>
+          <li><h4>▲ Max 7-Day Volatility:</h4> Limit by 7-day price volatility.</li>
+          <li><h4>Side-by-Side Spec Tables:</h4> Compare specs of two products side by side.</li>
+          <li><h4>Verified-Purchase Only Reviews:</h4> Show only reviews with verified purchase.</li>
+          <li><h4>Buy-Now-or-Wait Score:</h4> AI-driven purchase timing recommendation.</li>
+          <li><h4>Restock Forecasts:</h4> Enter ASIN to see restock estimates.</li>
+          <li><h4>Emotion-Feedback Loop:</h4> AI-driven emotional insights on purchases.</li>
+          <li><em>(Coming Soon):</em> URL Parameter Builder, API Scratchpad, Visual &amp; Voice Interfaces, Niche &amp; Lifestyle Filters, Social &amp; Collaborative features.</li>
+        </ul>
+      </section>
+
     </form>
+  </div><!-- /.container -->
 
-    <!-- Share & Help sections unchanged… -->
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
-    <script>
+  <!-- Bootstrap JS Bundle (includes Popper) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+  <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // initialize Tagify
-      new Tagify(document.getElementById('brandInclude'), { whitelist: ["Sony","Samsung","LG","Acer","Apple","Dell"], dropdown: { enabled: 0, maxItems: 10 } });
-      new Tagify(document.getElementById('brandExclude'), { whitelist: ["Sony","Samsung","LG","Acer","Apple","Dell"], dropdown: { enabled: 0, maxItems: 10 } });
+      // Initialize Tagify
+      new Tagify(document.getElementById('brandInclude'), {
+        whitelist: ["Sony","Samsung","LG","Acer","Apple","Dell"],
+        dropdown: { enabled: 0, maxItems: 10 }
+      });
+      new Tagify(document.getElementById('brandExclude'), {
+        whitelist: ["Sony","Samsung","LG","Acer","Apple","Dell"],
+        dropdown: { enabled: 0, maxItems: 10 }
+      });
 
+      // Form submit logic unchanged
       document.getElementById('amazon-search-form').addEventListener('submit', function(e) {
         e.preventDefault();
         const data = new FormData(this);
         const params = new URLSearchParams();
         const rh = [];
 
-        // Boolean keywords
-        let q = (data.get('q')||'').trim();
-        if (data.get('enable-boolean')==='on' && q) {
-          q = q.replace(/\bAND\b/gi,' ').replace(/\bNOT\b/gi,'-');
+        // 1) Boolean keywords
+        let q = (data.get('q') || '').trim();
+        if (data.get('enable-boolean') === 'on' && q) {
+          q = q.replace(/\bAND\b/gi, ' ').replace(/\bNOT\b/gi, '-');
           params.set('bop','enable');
         }
-        if (q) params.set('k',q);
+        if (q) params.set('k', q);
 
-        // Price
+        // 2) Core Filters
         const low = data.get('min-price')?.trim(), high = data.get('max-price')?.trim();
-        if (low && high) rh.push(`p_36:${Math.floor(low*100)}-${Math.ceil(high*100)}`);
-
-        // Discount & rating
+        if (low && high) rh.push(`p_36:${Math.floor(parseFloat(low)*100)}-${Math.ceil(parseFloat(high)*100)}`);
         if (data.get('percent-off')) rh.push(`p_n_pct-off-with-discount:${data.get('percent-off')}`);
         if (data.get('min-rating')) rh.push(`p_72:${data.get('min-rating')}00`);
+        if (data.get('sort')) params.set('s', data.get('sort'));
 
-        // Flags
-        if (data.get('prime-only')==='on')    rh.push('p_89:ATVPDKIKX0DER');
+        // 3) Checkbox Flags
+        if (data.get('prime-only')==='on')    rh.push('p_n_feature_fulfilled_by_amazon:1');
         if (data.get('in-stock')==='on')      rh.push('p_n_availability:1248879011');
         if (data.get('free-shipping')==='on') rh.push('p_76:13184787011');
-        if (data.get('fba-only')==='on')      rh.push('p_85:2470955011');
-        if (data.get('lightning-deals')==='on') rh.push('p_n_specials_match:15529609011');
-        if (data.get('coupons')==='on')       rh.push('p_5:AN1VRQENFRJN5');
-        if (data.get('subscribe-save')==='on') rh.push('p_n_feature_two_browse-bin:3242353011');
-        if (data.get('amazon-choice')==='on') rh.push('p_n_feature_seven_browse-bin:10553976011');
-        if (data.get('best-seller')==='on')   rh.push('p_n_feature_twelve_browse-bin:18426507011');
-        if (data.get('free-returns')==='on')  rh.push('p_76:13184871011');
-        if (data.get('gift-wrap')==='on')     rh.push('p_76:2335752011');
+        if (data.get('fba-only')==='on')      rh.push('p_6:ATVPDKIKX0DER');
+        if (data.get('lightning-deals')==='on') rh.push('p_n_specials_match:4366');
+        if (data.get('coupons')==='on')       rh.push('p_n_coupons_available:1');
+        if (data.get('subscribe-save')==='on') rh.push('p_n_subscribe:8');
+        if (data.get('amazon-choice')==='on') rh.push('p_n_feature_browse-bin:15527960011');
+        if (data.get('best-seller')==='on')   rh.push('p_n_feature_browse-bin:15527981011');
+        if (data.get('free-returns')==='on')  rh.push('p_n_free_returns_option:1');
+        if (data.get('gift-wrap')==='on')     rh.push('p_n_gift_wrap_available:1');
 
-        // Brand include/exclude
-        const incOnly = data.get('include-only')==='on';
-        let incArr=[], excArr=[];
+        // 4) Brand Include/Exclude
+        const incOnly = data.get('include-only') === 'on';
+        let incArr = [], excArr = [];
         try { incArr = JSON.parse(data.get('brand-include')||'[]').map(o=>encodeURIComponent(o.value)); } catch{}
         try { excArr = JSON.parse(data.get('brand-exclude')||'[]').map(o=>`-${encodeURIComponent(o.value)}`); } catch{}
         if (incArr.length) {
           rh.push( incOnly
             ? incArr.map(v=>`p_89:${v}`).join(',')
-            : `p_89:${incArr.join('|')}` );
+            : `p_89:${incArr.join('|')}`
+          );
         }
         if (excArr.length) rh.push(`p_89:${excArr.join('|')}`);
 
-        // Single rh= param
+        // 5) Deal-Hunter Goodies
+        if (data.get('price-drop')?.trim())     rh.push(`p_n_pct-off-with-discount:${data.get('price-drop')}`);
+        if (data.get('below-avg-30')?.trim())   rh.push(`p_n_pct-off-with-discount:${data.get('below-avg-30')}`);
+        if (data.get('below-avg-60')?.trim())   rh.push(`p_n_pct-off-with-discount:${data.get('below-avg-60')}`);
+        if (data.get('below-avg-90')?.trim())   rh.push(`p_n_pct-off-with-discount:${data.get('below-avg-90')}`);
+        if (data.get('max-volatility-7')?.trim()) rh.push(`p_n_pct-off-with-discount:${data.get('max-volatility-7')}`);
+        if (data.get('coupon-only')==='on')     rh.push('p_n_coupons_available:1');
+        if (data.get('warehouse-refurb')==='on') rh.push('p_n_warehouse_refurbished:1');
+
+        // 6) Power-User & Comparison
+        if (data.get('field-filters')?.trim()) rh.push(data.get('field-filters'));
+        if (data.get('direct-lookup')?.trim()) rh.push(`asin:${data.get('direct-lookup')}`);
+        if (data.get('side-by-side')==='on')   rh.push('comparison-specs:enabled');
+        if (data.get('verified-only')==='on')  rh.push('review-verified:1');
+
+        // 7) AI/Personalization
+        if (data.get('predictive-score')==='on')  rh.push('predictive-score:1');
+        if (data.get('restock-forecast')?.trim()) rh.push(`restock:${data.get('restock-forecast')}`);
+        if (data.get('emotion-feedback')==='on')  rh.push('emotion-feedback:1');
+
+        // Combine & open
         if (rh.length) params.set('rh', rh.join(','));
-
-        // Sort
-        if (data.get('sort')) params.set('s', data.get('sort'));
-
-        // Tag and open
         params.set('tag', encodeURIComponent(data.get('tag')));
         window.open(`https://www.amazon.com/s?${params.toString()}`, '_blank');
       });
     });
-    </script>
-  </div>
+  </script>
 </body>
 </html>
