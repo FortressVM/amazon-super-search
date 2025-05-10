@@ -83,6 +83,53 @@
     .form-check-input {
       width: 1.4em; height: 1.4em; border: 3px solid #000 !important; border-radius: 3px;
     }
+    
+    .expand-icon {
+  position: absolute;
+  top: 10px;
+  left: -25px;
+  font-size: 22px;
+  background: #007bff;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+.minimized + .expand-icon {
+  display: flex;
+}
+
+/* Place this after it, at top level */
+#helpPanel,
+#helpPanel .card-body,
+#helpPanel select,
+#helpPanel button,
+#helpPanel ol,
+#helpPanel h6,
+#helpPanel div {
+  background-color: #fff !important;
+}
+
+
+}
+
+}
+
+    .minimized {
+  right: -260px; /* slide out of view */
+  opacity: 0.3;
+  transition: all 0.3s ease-in-out;
+}
+.minimized:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
     /* Pulse animations */
     @keyframes pulse-glow {0%{box-shadow:0 0 0 0 rgba(13,110,253,0.5);}50%{box-shadow:0 0 20px 10px rgba(13,110,253,0.5);}100%{box-shadow:0 0 0 0 rgba(13,110,253,0.5);} }
     .pulse-glow {animation:pulse-glow 2s infinite;transition:box-shadow .3s ease-in-out;}
@@ -102,52 +149,48 @@
 <!-- … your existing GA4 snippet on lines 82–88 … -->
 
 <!-- helper to fire events -->
-<script>
-  function trackClick(category, action, label) {
-    if (typeof gtag === 'function') {
-      gtag('event', action, {
-        'event_category': category,
-        'event_label':    label
-      });
-    }
-  }
-</script>
-  <!-- at bottom, wire up clicks -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Filter toggles
-      document.querySelectorAll('.form-check-input').forEach(el => {
-        el.addEventListener('change', e => {
-          const name  = e.target.name;                         // e.g. "in-stock"
-          const state = e.target.checked ? 'on' : 'off';
-          trackClick('Filter Toggle', `filter_${name}`, state);
-        });
-      });
 
-      // Search form submission
-      document.getElementById('amazon-search-form')
-        .addEventListener('submit', () => {
-          trackClick('Form', 'search_submitted', location.search);
-        });
-    });
-  </script>
   </head>
 <body>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  const closeBtn = document.getElementById('closeHelpPanel');
+  const expandIcon = document.getElementById('expandHelpIcon');
+  const helpPanel = document.getElementById('helpPanel');
+
+  if (closeBtn && helpPanel) {
+   closeBtn.addEventListener('click', () => {
+  helpPanel.classList.add('minimized');
+});
+  }
+
+  if (expandIcon && helpPanel) {
+   expandIcon.addEventListener('click', () => {
+  helpPanel.classList.remove('minimized');
+});
+  }
+
+
+</script>
+
+
   <header class="container py-4 text-center">
   <h1 class="mb-4 text-center text-pulse">Amazon Super Search</h1>
   <p class="lead text-center mb-4">
     Amazon Super Search is a powerful, web-based tool designed for savvy shoppers who want to uncover in-stock lightning deals, set deep-discount thresholds, and track price drops across Amazon’s vast catalog. Tailored for busy bargain hunters, it filters products by free shipping, Prime eligibility, and customer ratings—so you can zero in on the best offers in seconds. Never waste time sifting through endless listings again: find exactly what you want at the price you want, every time.
   </p>
 </header>
-  <!-- Floating How-To Panel -->
-<div class="position-fixed top-0 end-0 m-3" style="width: 280px; z-index: 1050;">
-  <div class="card shadow-sm">
-    <div class="card-header">
-      <strong>How-To Guide</strong>
-    </div>
+
+<!-- Help panel -->
+<div id="helpPanel" class="position-fixed top-0 end-0 m-3" style="width: 280px; z-index: 1050;">
+  <div class="card-header">
+    <strong>How-To Guide</strong>
+  </div>
+
   <div class="card-body p-2">
   <select id="howToSelector" class="form-select form-select-sm mb-2">
-    <option value="">Select topic…</option>
+    <option value="">Select topic // Close Help Panel</option>
     <option value="price">Price Filter</option>
     <option value="brand">Brand Filters</option>
     <option value="deals">Deal-Hunter Goodies</option>
@@ -155,23 +198,15 @@
     <option value="bestDeals">How to Find the Best Deals</option>
     <option value="field">Field Filters</option>
     <option value="lookup">ASIN/ISBN Lookup</option>
-    <option value="compare">Side-by-Side Compare</option>
-    <option value="verified">Verified-Only Reviews</option>
-    <option value="score">Buy-Now-or-Wait Score</option>
-    <option value="forecast">Restock Forecasts</option>
-    <option value="emotion">Emotion-Feedback Loop</option>
     <option value="quickBestDeals">Quick Tips: Best Deals</option>
-    <option value="trackRestocks">Track Lightning Deal Restocks</option>
     <option value="buildUrl">Build URL Parameters</option>
     <option value="filterSeller">Filter by Seller Type</option>
     <option value="fieldFilters">Field-Level Filters</option>
     <option value="sortBargains">Sort Top-Rated Bargains</option>
-    <option value="emotionLoop">Leverage Emotion-Feedback Loop</option>
     <option value="shareSearch">Share Custom Searches</option>
   </select>
 
   <div id="howToContent" style="max-height: 200px; overflow-y: auto;">
-
     <div id="howPrice" class="d-none">
       <h6>Using the Price Filter</h6>
       <ol class="ps-3">
@@ -265,60 +300,6 @@
   </ol>
 </div>
 
-<div id="howCompare" class="d-none">
-  <h6>Comparing Side-by-Side Specs</h6>
-  <ol class="ps-3">
-    <li>✔ Tick “Side-by-Side Spec Tables.”</li>
-    <li>✔ Enter two ASINs or keywords (one per field).</li>
-    <li>✔ Click “Search Amazon” for a spec comparison table.</li>
-  </ol>
-</div>
-
-<div id="howVerified" class="d-none">
-  <h6>Filtering for Verified-Only Reviews</h6>
-  <ol class="ps-3">
-    <li>✔ Check “Verified-Purchase Only Reviews.”</li>
-    <li>✔ Click “Search Amazon.”</li>
-    <li>✔ Only confirmed-buyer reviews will show.</li>
-  </ol>
-</div>
-
-<div id="howScore" class="d-none">
-  <h6>Reading the Buy-Now-or-Wait Score</h6>
-  <ol class="ps-3">
-    <li>✔ Enable “Buy-Now-or-Wait Score.”</li>
-    <li>✔ Perform your search.</li>
-    <li>✔ See each item’s AI score: “Buy Now” or “Wait.”</li>
-  </ol>
-</div>
-
-<div id="howForecast" class="d-none">
-  <h6>Checking Restock Forecasts</h6>
-  <ol class="ps-3">
-    <li>✔ Enter an ASIN into “Restock Forecasts.”</li>
-    <li>✔ Click “Search Amazon.”</li>
-    <li>✔ View our estimated restock window.</li>
-  </ol>
-</div>
-
-<div id="howEmotion" class="d-none">
-  <h6>Using the Emotion-Feedback Loop</h6>
-  <ol class="ps-3">
-    <li>✔ Check “Emotion-Feedback Loop.”</li>
-    <li>✔ Run your search.</li>
-    <li>✔ Read the AI-generated sentiment summary under each result.</li>
-  </ol>
-</div>
-
-<div id="howTrackRestocks" class="d-none">
-  <h6>Track Lightning Deal Restocks</h6>
-  <ol class="ps-3">
-    <li>✔ Check “In Stock”.</li>
-    <li>✔ Enter your ASIN in “Restock Forecasts.”</li>
-    <li>✔ Click “Search Amazon” to see upcoming restock windows.</li>
-  </ol>
-</div>
-
 <div id="howBuildUrl" class="d-none">
   <h6>Build URL Parameters Manually</h6>
   <ol class="ps-3">
@@ -357,14 +338,6 @@
   </ol>
 </div>
 
-<div id="howEmotionLoop" class="d-none">
-  <h6>Leverage the Emotion-Feedback Loop</h6>
-  <ol class="ps-3">
-    <li>✔ Check “Emotion-Feedback Loop.”</li>
-    <li>✔ Run your search as usual.</li>
-    <li>✔ Read the sentiment summary under each result.</li>
-  </ol>
-</div>
 
 <div id="howShareSearch" class="d-none">
   <h6>Share Custom Searches</h6>
@@ -379,27 +352,59 @@
 </div>
 </div>  <!-- closes .card -->
 </div>  <!-- closes .position-fixed -->
+  <div class="container mt-4 text-center">
+  <figure>
+    <img src="save-big-deals-amazon-super-search.gif"
+         alt="Save Big Deals Banner"
+         class="img-fluid rounded shadow"
+         style="width: 200px; height: 160px; object-fit: cover;">
+    <figcaption class="mt-2 text-muted">Save more by mastering Amazon filters with Super Search</figcaption>
+  </figure>
+</div>
 
+
+<div id="expandHelpIcon" class="expand-icon">›</div>
 
 <!-- How-To Panel Logic -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const sel = document.getElementById('howToSelector');
-  if (!sel) return;
+  const closeBtn = document.getElementById('closeHelpPanel');
+  const expandIcon = document.getElementById('expandHelpIcon');
+  const helpPanel = document.getElementById('helpPanel');
 
-  sel.addEventListener('change', e => {
-    // hide all the topic panels
-    document.querySelectorAll('#howToContent > div')
-            .forEach(d => d.classList.add('d-none'));
+  if (closeBtn && helpPanel) {
+    closeBtn.addEventListener('click', () => {
+      helpPanel.classList.add('minimized');
+    });
+  }
 
-    // build the ID to show (e.g. "howCompare" for value="compare")
-    const id = 'how'
-             + e.target.value.charAt(0).toUpperCase()
-             + e.target.value.slice(1);
-
-    document.getElementById(id)?.classList.remove('d-none');
-  });
+  if (expandIcon && helpPanel) {
+    expandIcon.addEventListener('click', () => {
+      helpPanel.classList.remove('minimized');
+    });
+  }
 });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const selector = document.getElementById('howToSelector');
+    const contentContainer = document.getElementById('howToContent');
+
+    selector.addEventListener('change', () => {
+      const allSections = contentContainer.querySelectorAll('div[id^="how"]');
+      allSections.forEach(sec => sec.classList.add('d-none'));
+
+      const selected = selector.value;
+      if (selected) {
+        const targetId = `how${selected.charAt(0).toUpperCase()}${selected.slice(1)}`;
+        const target = document.getElementById(targetId);
+        if (target) {
+          target.classList.remove('d-none');
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    });
+  });
 </script>
 
   <div class="container-fluid bg-white p-3 p-md-4 rounded shadow-sm">
@@ -410,8 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
      <!-- department & node (FMC Everyday Essentials) -->
 
 
-      <section>
-  <h2 class="mb-3">Search Keywords</h2>
+      <h2 class="mb-3">Search Keywords (or enter ASIN, ISBN, or UPC)</h2>
   <div class="card p-3 mb-4">
     <input
       type="text"
@@ -446,14 +450,31 @@ document.addEventListener('DOMContentLoaded', () => {
                   <div class="col-12 col-md-6">
                     <h4>Price Range ($)</h4>
                     <div class="card p-3">
-                      <div class="row g-2">
-                        <div class="col">
-                          <input type="number" step="0.01" class="form-control" name="min-price" placeholder="Min">
-                        </div>
-                        <div class="col">
-                          <input type="number" step="0.01" class="form-control" name="max-price" placeholder="Max">
-                        </div>
-                      </div>
+                      <div class="row g-3 align-items-end">
+  <!-- Min Price -->
+  <div class="col-12 col-lg-4">
+    <label class="form-label">Min</label>
+    <input type="number" step="0.01" class="form-control" name="min-price" placeholder="Min">
+  </div>
+
+  <!-- Max Price -->
+  <div class="col-12 col-lg-4">
+    <label class="form-label">Max</label>
+    <input type="number" step="0.01" class="form-control" name="max-price" placeholder="Max">
+  </div>
+
+  <!-- Type Dropdown (optional) -->
+  <div class="col-12 col-lg-4">
+    <label class="form-label">Type</label>
+    <select class="form-select" name="price-type">
+      <option value="">Any</option>
+      <option value="usd">USD</option>
+      <option value="sale">Sale Price</option>
+      <option value="list">List Price</option>
+    </select>
+  </div>
+</div>
+
                     </div>
                   </div>
 
@@ -591,14 +612,15 @@ document.addEventListener('DOMContentLoaded', () => {
             </h2>
             <div id="collapseDeal" class="accordion-collapse collapse" data-bs-parent="#accordionDeal">
               <div class="accordion-body">
-                <div class="mb-3"><label class="form-label">Price Drop ≥ X% Below 90-Day Avg</label><input type="number" class="form-control" name="price-drop" placeholder="e.g. 20"></div>
+                <div class="mb-3"><label class="form-label">Discount (%) from 90-Day Average Price</label>
+<input type="number" class="form-control" name="price-drop" placeholder="e.g. 20"></div>
                 <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="coupon-only" id="couponOnly"><label class="form-check-label" for="couponOnly">Coupon-Clippable Only</label></div>
                 <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="warehouse-refurb" id="warehouseRefurb"><label class="form-check-label" for="warehouseRefurb">Warehouse / Open-Box</label></div>
                 <div class="row g-3 mt-3">
-                  <div class="col-6 col-md-3"><label class="form-label">▼ % vs. 30-Day Avg</label><input type="number" min="0" class="form-control" name="below-avg-30" placeholder="e.g. 20"></div>
-                  <div class="col-6 col-md-3"><label class="form-label">▼ % vs. 60-Day Avg</label><input type="number" min="0" class="form-control" name="below-avg-60" placeholder="e.g. 15"></div>
-                  <div class="col-6 col-md-3"><label class="form-label">▼ % vs. 90-Day Avg</label><input type="number" min="0" class="form-control" name="below-avg-90" placeholder="e.g. 10"></div>
-                  <div class="col-6 col-md-3"><label class="form-label">▲ Max 7-Day Volatility</label><input type="number" min="0" class="form-control" name="max-volatility-7" placeholder="e.g. 5"></div>
+                  <div class="col-6 col-md-3"><label class="form-label">Discount (%) from 30-Day Average</label><input type="number" min="0" class="form-control" name="below-avg-30" placeholder="e.g. 20"></div>
+                  <div class="col-6 col-md-3"><label class="form-label">Discount (%) from 60-Day Average</label><input type="number" min="0" class="form-control" name="below-avg-60" placeholder="e.g. 15"></div>
+                  <div class="col-6 col-md-3"><label class="form-label">Discount (%) from 90-Day Average</label><input type="number" min="0" class="form-control" name="below-avg-90" placeholder="e.g. 10"></div>
+                  <div class="col-6 col-md-3"><label class="form-label">Maximum Daily Price Fluctuation (%)</label><input type="number" min="0" class="form-control" name="max-volatility-7" placeholder="e.g. 5"></div>
                 </div>
               </div>
             </div>
